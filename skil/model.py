@@ -52,7 +52,7 @@ class Model():
 
         deploy_model_request = skil_client.ImportModelRequest(
             name=self.name,
-            scale=1, # TODO: what is this?
+            scale=1,
             file_location=self.model_path,
             model_type="model",
             uri=uris,
@@ -61,10 +61,3 @@ class Model():
 
         model_deployment_response = self.skil.api.deploy_model(deployment.response.id, deploy_model_request)
         self.skil.printer.pprint(model_deployment_response)
-
-class Deployment():
-
-    def __init__(self, skil, name):
-        self.name = name
-        create_deployment_request = skil_client.CreateDeploymentRequest(name)
-        self.response = skil.api.deployment_create(create_deployment_request)

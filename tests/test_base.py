@@ -1,5 +1,5 @@
 import pytest
-from skil import Skil, WorkSpace, Experiment, Model
+from skil import Skil, WorkSpace, Experiment, Model, Deployment
 
 def test_base_api():
     model_path = './tf_graph.pb'
@@ -13,3 +13,6 @@ def test_base_api():
 
     model = Model(experiment, model_path, id='model_id', name='model', version=1)
     model.add_evaluation(id='eval', name='eval', version=1, accuracy=0.93)
+
+    deployment = Deployment(skil_server, 'test_deployment')
+    model.deploy(deployment)
