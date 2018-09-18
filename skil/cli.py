@@ -100,7 +100,6 @@ def to_bool(string):
     return True if string[0] in ["Y", "y"] else False
 
 
-
 def handle():
     try:
         cli = CLI()

@@ -45,8 +45,8 @@ class Model():
         self.evaluations[id] = eval_response
 
     def deploy(self, deployment, input_names=["input_node", "keep_prob_input"],
-               output_names=["output_node"]):   
-        
+               output_names=["output_node"]):
+
         uris = ["{}/model/{}/default".format(deployment.name, self.name),
                 "{}/model/{}/v1".format(deployment.name, self.name)]
 
@@ -59,5 +59,6 @@ class Model():
             input_names=input_names,
             output_names=output_names)
 
-        model_deployment_response = self.skil.api.deploy_model(deployment.response.id, deploy_model_request)
+        model_deployment_response = self.skil.api.deploy_model(
+            deployment.response.id, deploy_model_request)
         self.skil.printer.pprint(model_deployment_response)
