@@ -13,8 +13,7 @@ sudo docker run --rm -it -p 9008:9008 -p 8080:8080 skymindops/skil-ce bash /star
 git clone https://github.com/SkymindIO/skil-python
 cd examples/keras-mnist-mlp
 virtualenv venv && source venv/bin/activate
-pip install skil
-pip install tensorflow keras
+pip install skil tensorflow keras
 python train.py
 ```
 
