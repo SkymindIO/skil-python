@@ -5,7 +5,7 @@ setup(
     name='skil',
     version='0.1',
     packages=find_packages(),
-    install_requires=['skil_client'],
+    install_requires=['skil_client', 'requests'],
     extras_require={
         'tests': ['pytest', 'pytest-pep8', 'pytest-cov']
     },
