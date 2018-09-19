@@ -7,7 +7,7 @@ sudo docker pull skymindops/skil-ce
 sudo docker run --rm -it -p 9008:9008 -p 8080:8080 skymindops/skil-ce bash /start-skil.sh
 ```
 
-## Install Python SKIL client, train and persist Keras model
+## Install Python SKIL client, train and persist a Keras model
 
 ```bash
 git clone https://github.com/SkymindIO/skil-python
