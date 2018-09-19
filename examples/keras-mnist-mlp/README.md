@@ -10,7 +10,8 @@ sudo docker run --rm -it -p 9008:9008 -p 8080:8080 skymindops/skil-ce bash /star
 ## Install Python SKIL client, train and persist Keras model
 
 ```python
-virtualenv venv && source venv/bin/activate
+virtualenv venv
+source venv/bin/activate
 pip install skil
 pip install tensorflow keras
 python train.py
@@ -33,4 +34,5 @@ deployment = Deployment(skil_server, 'keras-deployment')
 model.deploy(deployment)
 
 model.serve()
-```                                                                                                                        1 ↵
+```
+                                                                                                                    1 ↵

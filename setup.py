@@ -12,12 +12,10 @@ setup(
     include_package_data=True,
     license='Apache',
     description='Deploy your Python models with SKIL',
-    url='https://github.com/deeplearning4j/pyskil',
-    entry_points={
-        'console_scripts': [
-            'skil=skil.cli:handle'
-        ]
-    },
+    long_description='Deploy your Python models with SKIL',
+    author='Max Pumperla',
+    author_email='max@skymind.io',
+    url='https://github.com/SkymindIO/skil-python',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
