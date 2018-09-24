@@ -41,6 +41,12 @@ class Model:
         if verbose:
             self.skil.printer.pprint(add_model_instance_response)
 
+    def delete(self):
+        try:
+            self.skil.api.delete_model_instance(self.skil.server_id, self.id)
+        except skil_client.rest.ApiException as e:
+            self.skil.printer.pprint(">>> Exception when calling delete_model_instance: %s\n" % e)
+
     def add_evaluation(self, accuracy,  id=None, name=None, version=None):
 
         eval_version = version if version else 1
@@ -81,9 +87,15 @@ class Model:
 
         self.deployment = deployment.response
         self.model_deployment = self.skil.api.deploy_model(
-            deployment.response.id, deploy_model_request)
+            self.deployment.id, deploy_model_request)
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
+
+    def undeploy(self):
+        try:
+            self.skil.api.delete_model(self.deployment.id, self.id)
+        except skil_client.rest.ApiException as e:
+            self.skil.printer.pprint(">>> Exception when calling delete_model_instance: %s\n" % e)
 
     def serve(self):
         if not self.model_deployment:

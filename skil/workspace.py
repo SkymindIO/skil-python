@@ -16,3 +16,11 @@ class WorkSpace:
 
         if verbose:
             self.printer.pprint(self.workspace)
+
+    def delete(self):
+        try:
+            api_response = self.skil.api.delete_model_history(self.skil.server_id, self.workspace.id)
+            self.skil.printer.pprint(api_response)
+        except skil_client.rest.ApiException as e:
+            self.skil.printer.pprint(">>> Exception when calling delete_model_history: %s\n" % e)
+
