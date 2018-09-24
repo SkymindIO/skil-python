@@ -12,6 +12,20 @@ pip install skil
 
 ## Example usage
 
+Lightning version: SKIL does everything necessary for you under the hood, i.e. creating a production-grade model server with batteries included. 
+
+```python
+import skil
+
+skil_server = skil.Skil()
+
+model = skil.Model('your_model.h5')
+model.deploy()
+model.serve()
+```
+
+Slightly more extended example:
+
 ```python
 from skil import Skil, WorkSpace, Experiment, Model, Deployment
 
@@ -20,7 +34,6 @@ model_path = './tf_graph.pb'
 
 # connect to your running skil instance
 skil_server = Skil()
-skil_server.upload_model(model_path)
 
 # create a workspace and an experiment in it
 work_space = WorkSpace(skil_server)
@@ -29,7 +42,8 @@ experiment = Experiment(work_space)
 # add your model to SKIL
 model = Model(model_path, experiment)
 
-# deploy the model
+# deploy and serve your model
 deployment = Deployment(skil_server)
 model.deploy(deployment)
+model.serve()
 ```
