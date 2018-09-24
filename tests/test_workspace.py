@@ -1,9 +1,9 @@
+from skil import WorkSpace
 import sys
 if sys.version_info >= (3, 3):
     import unittest.mock as mock
 else:
     import mock as mock
-from skil import WorkSpace, Experiment, Model, Deployment
 
 
 @mock.patch('skil.Skil')

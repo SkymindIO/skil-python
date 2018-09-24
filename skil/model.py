@@ -48,7 +48,7 @@ class Model:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
-    def add_evaluation(self, accuracy,  id=None, name=None, version=None):
+    def add_evaluation(self, accuracy, id=None, name=None, version=None):
 
         eval_version = version if version else 1
         eval_id = id if id else self.id
