@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-python setup.py install
+pip install skil
 ```
 
 ## Example usage
@@ -19,19 +19,17 @@ from skil import Skil, WorkSpace, Experiment, Model, Deployment
 model_path = './tf_graph.pb'
 
 # connect to your running skil instance
-skil_server = Skil(model_server_id='dec0bbde-bf81-45cf-b223-f88c24d0ff99')
+skil_server = Skil()
 skil_server.upload_model(model_path)
 
 # create a workspace and an experiment in it
-ws = WorkSpace(skil_server, 'jupyter_ws')
-experiment = Experiment(ws, 'test_exp')
+work_space = WorkSpace(skil_server)
+experiment = Experiment(work_space)
 
 # add your model to SKIL
-model = Model(experiment, model_path, id='model_id',
-                name='model', version=1)
-model.add_evaluation(id='eval', name='eval', version=1, accuracy=0.93)
+model = Model(model_path, experiment)
 
 # deploy the model
-deployment = Deployment(skil_server, 'test_deployment')
+deployment = Deployment(skil_server)
 model.deploy(deployment)
 ```
