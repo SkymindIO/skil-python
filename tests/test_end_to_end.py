@@ -1,8 +1,12 @@
-from unittest.mock import patch
+import sys
+if sys.version_info >= (3, 3):
+    import unittest.mock as mock
+else:
+    import mock as mock
 from skil import WorkSpace, Experiment, Model, Deployment
 
 
-@patch('skil.Skil')
+@mock.patch('skil.Skil')
 def test_e2e(Skil):
     model_path = './dummy.pb'
 
