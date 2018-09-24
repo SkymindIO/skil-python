@@ -6,6 +6,7 @@ import requests
 import json
 import subprocess
 
+
 def start_skil_docker():
     devnull = open(os.devnull, 'w')
 
@@ -19,8 +20,9 @@ def start_skil_docker():
     time.sleep(20)
     print("SKIL started! Visit http://localhost:9008 to work with the UI.")
 
-class Skil():
-    def __init__(self, model_server_id=None, host='localhost', port=9008,
+
+class Skil:
+    def __init__(self, workspace_server_id=None, host='localhost', port=9008,
                  debug=False, user_id='admin', password='admin'):
 
         self.printer = pprint.PrettyPrinter(indent=4)
@@ -29,6 +31,9 @@ class Skil():
         config.host = "{}:{}".format(host, port)
         config.debug = debug
         self.config = config
+        self.uploads = []
+        self.uploaded_model_names = []
+        self.auth_headers = None
 
         self.api_client = skil_client.ApiClient(configuration=config)
         self.api = skil_client.DefaultApi(api_client=self.api_client)
@@ -46,8 +51,8 @@ class Skil():
             raise Exception(
                 "Exception when calling DefaultApi->login: {}\n".format(e))
 
-        if model_server_id:
-            self.server_id = model_server_id
+        if workspace_server_id:
+            self.server_id = workspace_server_id
         else:
             self.server_id = self.get_default_server_id()
 
@@ -62,20 +67,23 @@ class Skil():
         for s in services:
             if 'Model History' in s.get('name'):
                 id = s.get('id')
-
         if id:
             return id
         else:
             raise Exception("Could not detect default model history server instance. Is SKIL running?")
 
-
     def upload_model(self, model_name):
         self.printer.pprint('>>> Uploading model, this might take a while...')
-        self.uploads = self.api.upload(file=model_name)
+        self.uploads = self.uploads + self.api.upload(file=model_name)
+        self.uploaded_model_names.append(model_name)
         self.printer.pprint(self.uploads)
 
-    def get_model_path(self, model_name, verbose=False):
-        for upload in self.uploads.file_upload_response_list:
-            if model_name == upload.file_name:
-                return "file://" + upload.path
-        raise Exception("Model resource not found, did you upload it? ")
+    def get_uploaded_model_names(self):
+        return self.uploaded_model_names
+
+    def get_model_path(self, model_name):
+        for upload in self.uploads:
+            for u in upload.file_upload_response_list:
+                if model_name == u.file_name:
+                    return "file://" + u.path
+            raise Exception("Model resource not found, did you upload it? ")
