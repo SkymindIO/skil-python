@@ -45,9 +45,10 @@ class Model:
         try:
             self.skil.api.delete_model_instance(self.skil.server_id, self.id)
         except skil_client.rest.ApiException as e:
-            self.skil.printer.pprint(">>> Exception when calling delete_model_instance: %s\n" % e)
+            self.skil.printer.pprint(
+                ">>> Exception when calling delete_model_instance: %s\n" % e)
 
-    def add_evaluation(self, accuracy,  id=None, name=None, version=None):
+    def add_evaluation(self, accuracy, id=None, name=None, version=None):
 
         eval_version = version if version else 1
         eval_id = id if id else self.id
@@ -95,11 +96,13 @@ class Model:
         try:
             self.skil.api.delete_model(self.deployment.id, self.id)
         except skil_client.rest.ApiException as e:
-            self.skil.printer.pprint(">>> Exception when calling delete_model_instance: %s\n" % e)
+            self.skil.printer.pprint(
+                ">>> Exception when calling delete_model_instance: %s\n" % e)
 
     def serve(self):
         if not self.model_deployment:
-            self.skil.printer.pprint("No model deployed yet, call 'deploy()' on a model first.")
+            self.skil.printer.pprint(
+                "No model deployed yet, call 'deploy()' on a model first.")
         else:
             self.skil.api.model_state_change(
                 self.deployment.id,
@@ -117,7 +120,8 @@ class Model:
                 ).state
                 if model_state == "started":
                     time.sleep(2)
-                    self.skil.printer.pprint(">>> Model server started successfully!")
+                    self.skil.printer.pprint(
+                        ">>> Model server started successfully!")
                     break
                 else:
                     self.skil.printer.pprint(">>> Waiting for deployment...")

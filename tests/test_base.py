@@ -1,18 +1,22 @@
-from unittest.mock import patch, MagicMock
 import skil
+import sys
+if sys.version_info >= (3, 3):
+    import unittest.mock as mock
+else:
+    import mock as mock
 
 
-@patch('skil.Skil')
+@mock.patch('skil.Skil')
 def test_skil_mock(Skil):
     assert Skil is skil.Skil
     skil_server = Skil()
     assert Skil.called
 
-    skil_server.get_default_server_id = MagicMock(return_value=1337)
+    skil_server.get_default_server_id = mock.MagicMock(return_value=1337)
     skil_server.get_default_server_id()
 
 
-@patch('skil.Skil')
+@mock.patch('skil.Skil')
 def test_model_upload(Skil):
     skil_server = Skil()
 

@@ -7,7 +7,7 @@ setup(
     packages=find_packages(),
     install_requires=['skil_client', 'requests'],
     extras_require={
-        'tests': ['pytest', 'pytest-pep8', 'pytest-cov']
+        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock']
     },
     include_package_data=True,
     license='Apache',
