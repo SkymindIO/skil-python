@@ -20,8 +20,7 @@ import skil
 skil_server = skil.Skil()
 
 model = skil.Model('your_model.h5')
-model.deploy()
-model.serve()
+model.deploy(scale=42)
 ```
 
 Slightly more extended example:
@@ -44,6 +43,6 @@ model = Model(model_path, experiment)
 
 # deploy and serve your model
 deployment = Deployment(skil_server)
-model.deploy(deployment)
+model.deploy(deployment, start_server=False)
 model.serve()
 ```

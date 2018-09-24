@@ -20,4 +20,4 @@ def test_e2e(Skil):
     model.add_evaluation(accuracy=0.93)
 
     deployment = Deployment(skil_server, 'test_deployment')
-    model.deploy(deployment)
+    model.deploy(deployment, start_server=False)

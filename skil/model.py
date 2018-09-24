@@ -68,7 +68,7 @@ class Model:
         )
         self.evaluations[id] = eval_response
 
-    def deploy(self, deployment=None, input_names=None,
+    def deploy(self, deployment=None, start_server=True, scale=1, input_names=None,
                output_names=None, verbose=True):
 
         if not deployment:
@@ -79,7 +79,7 @@ class Model:
 
         deploy_model_request = skil_client.ImportModelRequest(
             name=self.name,
-            scale=1,
+            scale=scale,
             file_location=self.model_path,
             model_type="model",
             uri=uris,
@@ -91,6 +91,9 @@ class Model:
             self.deployment.id, deploy_model_request)
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
+
+        if start_server:
+            self.serve()
 
     def undeploy(self):
         try:
