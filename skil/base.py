@@ -14,7 +14,7 @@ def start_skil_docker():
     subprocess.call(["sudo", "docker", "pull", "skymindops/skil-ce"])
     print(">>> Starting SKIL docker container.")
     subprocess.Popen(["sudo", "docker", "run", "--rm", "-it", "-p", "9008:9008",
-                     "-p", "8080:8080", "skymindops/skil-ce", "bash", "/start-skil.sh", "&"], 
+                      "-p", "8080:8080", "skymindops/skil-ce", "bash", "/start-skil.sh", "&"],
                      stdout=devnull, stderr=subprocess.STDOUT)
     print("Starting SKIL. This process will take a few seconds to start.")
     time.sleep(20)
@@ -58,7 +58,8 @@ class Skil:
 
     def get_default_server_id(self):
         self.auth_headers = {'Authorization': 'Bearer %s' % self.token}
-        r = requests.get('http://{}/services'.format(self.config.host), headers=self.auth_headers)
+        r = requests.get(
+            'http://{}/services'.format(self.config.host), headers=self.auth_headers)
         if r.status_code != 200:
             r.raise_for_status()
 
@@ -70,7 +71,8 @@ class Skil:
         if id:
             return id
         else:
-            raise Exception("Could not detect default model history server instance. Is SKIL running?")
+            raise Exception(
+                "Could not detect default model history server instance. Is SKIL running?")
 
     def upload_model(self, model_name):
         self.printer.pprint('>>> Uploading model, this might take a while...')

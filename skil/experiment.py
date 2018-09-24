@@ -22,8 +22,9 @@ class Experiment:
 
     def delete(self):
         try:
-            api_response = self.skil.api.delete_experiment(self.work_space.id, self.id)
+            api_response = self.skil.api.delete_experiment(
+                self.work_space.id, self.id)
             self.skil.printer.pprint(api_response)
         except skil_client.rest.ApiException as e:
-            self.skil.printer.pprint(">>> Exception when calling delete_experiment: %s\n" % e)
-
+            self.skil.printer.pprint(
+                ">>> Exception when calling delete_experiment: %s\n" % e)
