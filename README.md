@@ -1,5 +1,9 @@
 # High-level Python SKIL client
 
+[![Build Status](https://travis-ci.org/SkymindIO/skil-python.svg?branch=master)](https://travis-ci.org/SkymindIO/skil-python)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SkymindIO/skil-python/blob/master/LICENSE)
+[![PyPI version](https://badge.fury.io/py/skil.svg)](https://badge.fury.io/py/skil)
+
 ## Installation
 
 ```bash
