@@ -1,6 +1,6 @@
 # High-level Python SKIL client
 
-[![Build Status](https://travis-ci.org/SkymindIO/skil-python.svg?branch=master)](https://travis-ci.org/SkymindIO/skil-python)
+[![Build Status](https://jenkins.ci.skymind.io/buildStatus/icon?job=skymind/skil-python/master)](https://jenkins.ci.skymind.io/blue/organizations/jenkins/skymind%2Fskil-python/activity)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SkymindIO/skil-python/blob/master/LICENSE)
 [![PyPI version](https://badge.fury.io/py/skil.svg)](https://badge.fury.io/py/skil)
 
