@@ -11,9 +11,9 @@ def start_skil_docker():
     devnull = open(os.devnull, 'w')
 
     print(">>> Downloading latest SKIL docker image.")
-    subprocess.call(["sudo", "docker", "pull", "skymindops/skil-ce"])
+    subprocess.call(["docker", "pull", "skymindops/skil-ce"])
     print(">>> Starting SKIL docker container.")
-    subprocess.Popen(["sudo", "docker", "run", "--rm", "-it", "-p", "9008:9008",
+    subprocess.Popen(["docker", "run", "--rm", "-it", "-p", "9008:9008",
                       "-p", "8080:8080", "skymindops/skil-ce", "bash", "/start-skil.sh", "&"],
                      stdout=devnull, stderr=subprocess.STDOUT)
     print("Starting SKIL. This process will take a few seconds to start.")
