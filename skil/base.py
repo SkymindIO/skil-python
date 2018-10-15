@@ -76,7 +76,8 @@ class Skil:
 
     def upload_model(self, model_name):
         self.printer.pprint('>>> Uploading model, this might take a while...')
-        self.uploads = self.uploads + self.api.upload(file=model_name)
+        upload = self.api.upload(file=model_name).file_upload_response_list
+        self.uploads = self.uploads + upload
         self.uploaded_model_names.append(model_name)
         self.printer.pprint(self.uploads)
 
@@ -85,7 +86,6 @@ class Skil:
 
     def get_model_path(self, model_name):
         for upload in self.uploads:
-            for u in upload.file_upload_response_list:
-                if model_name == u.file_name:
-                    return "file://" + u.path
-            raise Exception("Model resource not found, did you upload it? ")
+            if model_name == upload.file_name:
+                return "file://" + upload.path
+        raise Exception("Model resource not found, did you upload it? ")

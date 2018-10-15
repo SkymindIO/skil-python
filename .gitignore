@@ -106,6 +106,7 @@ venv.bak/
 # Keras resources
 *.h5
 *.hdf5
+history.json
 
 # Intellij
 .idea
