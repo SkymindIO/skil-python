@@ -5,7 +5,7 @@ import os
 
 
 class Model:
-    def __init__(self, model_file_name, id=None, name=None, version=None, experiment=None,
+    def __init__(self, model_file_name, id, name=None, version=None, experiment=None,
                  labels='', verbose=False):
 
         if not experiment:
@@ -72,7 +72,7 @@ class Model:
                output_names=None, verbose=True):
 
         if not deployment:
-            deployment = skil.Deployment(self.skil)
+            deployment = skil.Deployment(skil=self.skil, name=self.name)
 
         uris = ["{}/model/{}/default".format(deployment.name, self.name),
                 "{}/model/{}/v1".format(deployment.name, self.name)]
