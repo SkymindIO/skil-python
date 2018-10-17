@@ -1,4 +1,6 @@
 import skil
+from skil.services import Service
+
 import skil_client
 import time
 import os
@@ -10,8 +12,8 @@ class Model:
 
         if not experiment:
             self.skil = skil.Skil()
-            self.work_space = skil.workspace.WorkSpace(self.skil)
-            self.experiment = skil.experiment.Experiment(self.work_space)
+            self.work_space = skil.workspaces.WorkSpace(self.skil)
+            self.experiment = skil.experiments.Experiment(self.work_space)
         else:
             self.experiment = experiment
             self.work_space = experiment.work_space
@@ -92,8 +94,10 @@ class Model:
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
 
+        service = Service(self.skil, self.name, self.deployment, self.model_deployment)
         if start_server:
-            self.serve()
+            service.start()
+        return service
 
     def undeploy(self):
         try:
