@@ -105,30 +105,3 @@ class Model:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
-
-    def serve(self):
-        if not self.model_deployment:
-            self.skil.printer.pprint(
-                "No model deployed yet, call 'deploy()' on a model first.")
-        else:
-            self.skil.api.model_state_change(
-                self.deployment.id,
-                self.model_deployment.id,
-                skil_client.SetState("start")
-            )
-
-            self.skil.printer.pprint(">>> Starting to serve model...")
-            while True:
-                time.sleep(5)
-                model_state = self.skil.api.model_state_change(
-                    self.deployment.id,
-                    self.model_deployment.id,
-                    skil_client.SetState("start")
-                ).state
-                if model_state == "started":
-                    time.sleep(2)
-                    self.skil.printer.pprint(
-                        ">>> Model server started successfully!")
-                    break
-                else:
-                    self.skil.printer.pprint(">>> Waiting for deployment...")
