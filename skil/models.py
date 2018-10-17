@@ -4,10 +4,11 @@ from skil.services import Service
 import skil_client
 import time
 import os
+import uuid
 
 
 class Model:
-    def __init__(self, model_file_name, id, name=None, version=None, experiment=None,
+    def __init__(self, model_file_name, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False):
 
         if not experiment:
@@ -22,7 +23,7 @@ class Model:
 
         self.model_name = model_file_name
         self.model_path = self.skil.get_model_path(model_file_name)
-        self.id = id if id else model_file_name
+        self.id = id if id else uuid.uuid1()
         self.name = name if name else model_file_name
         self.version = version if version else 1
 

@@ -1,7 +1,7 @@
 import skil_client
 import time
 import uuid
-
+import numpy as np
 
 class Service:
 
@@ -49,6 +49,10 @@ class Service:
     def predict(self, data):
         # TODO: this evaluates a single example, i.e. mini-batch of one.
         # generalize this to general case.
+
+        if len(data.shape) == 1:
+            data = data.reshape((1, data.shape[0]))
+
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
             model_name=self.model_name,
@@ -60,7 +64,7 @@ class Service:
                     skil_client.INDArray(
                         ordering='c',
                         shape=list(data.shape),
-                        data=data.tolist()
+                        data=data.tolist()[0]
                     ),
                     skil_client.INDArray(  # This is the keep_prob placeholder data
                         ordering='c',
@@ -70,7 +74,7 @@ class Service:
                 ]
             )
         )
-        output = classification_response.get('outputs')[0]
-        prediction = output.get('data')
-        shape = output.get('shape')
+        output = classification_response.outputs[0]
+        prediction = np.asarray(output.data)
+        shape = output.shape
         return prediction.reshape(shape)
