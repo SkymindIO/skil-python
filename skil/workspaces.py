@@ -25,3 +25,6 @@ class WorkSpace:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
+
+
+# TODO: define "get_workspace_by_id"

@@ -1,17 +1,20 @@
 import skil
+from skil.services import Service
+
 import skil_client
 import time
 import os
+import uuid
 
 
 class Model:
-    def __init__(self, model_file_name, id, name=None, version=None, experiment=None,
+    def __init__(self, model_file_name, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False):
 
         if not experiment:
             self.skil = skil.Skil()
-            self.work_space = skil.workspace.WorkSpace(self.skil)
-            self.experiment = skil.experiment.Experiment(self.work_space)
+            self.work_space = skil.workspaces.WorkSpace(self.skil)
+            self.experiment = skil.experiments.Experiment(self.work_space)
         else:
             self.experiment = experiment
             self.work_space = experiment.work_space
@@ -20,7 +23,7 @@ class Model:
 
         self.model_name = model_file_name
         self.model_path = self.skil.get_model_path(model_file_name)
-        self.id = id if id else model_file_name
+        self.id = id if id else uuid.uuid1()
         self.name = name if name else model_file_name
         self.version = version if version else 1
 
@@ -92,8 +95,10 @@ class Model:
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
 
+        service = Service(self.skil, self.name, self.deployment, self.model_deployment)
         if start_server:
-            self.serve()
+            service.start()
+        return service
 
     def undeploy(self):
         try:
@@ -101,30 +106,3 @@ class Model:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
-
-    def serve(self):
-        if not self.model_deployment:
-            self.skil.printer.pprint(
-                "No model deployed yet, call 'deploy()' on a model first.")
-        else:
-            self.skil.api.model_state_change(
-                self.deployment.id,
-                self.model_deployment.id,
-                skil_client.SetState("start")
-            )
-
-            self.skil.printer.pprint(">>> Starting to serve model...")
-            while True:
-                time.sleep(5)
-                model_state = self.skil.api.model_state_change(
-                    self.deployment.id,
-                    self.model_deployment.id,
-                    skil_client.SetState("start")
-                ).state
-                if model_state == "started":
-                    time.sleep(2)
-                    self.skil.printer.pprint(
-                        ">>> Model server started successfully!")
-                    break
-                else:
-                    self.skil.printer.pprint(">>> Waiting for deployment...")

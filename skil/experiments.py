@@ -28,3 +28,6 @@ class Experiment:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_experiment: %s\n" % e)
+
+
+# TODO: define "get_experiment_by_id"
