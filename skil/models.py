@@ -8,9 +8,19 @@ import uuid
 
 
 class Model:
-    def __init__(self, model_file_name, id=None, name=None, version=None, experiment=None,
+    def __init__(self, model, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False):
 
+        if os.path.isfile(model):
+            model_file_name = model
+        else:
+            if hasattr(model, 'save'):
+                model_file_name = 'temp_model.h5'
+                if os.path.isfile(model_file_name):
+                    os.remove(model_file_name)
+                model.save(model_file_name)
+            else:
+                raise Exception('Invalid model: ' + str(model))
         if not experiment:
             self.skil = skil.Skil()
             self.work_space = skil.workspaces.WorkSpace(self.skil)
