@@ -31,12 +31,13 @@ class Service:
                     skil_client.SetState("start")
                 ).state
                 if model_state == "started":
-                    time.sleep(2)
+                    time.sleep(15)
                     self.skil.printer.pprint(
                         ">>> Model server started successfully!")
                     break
                 else:
                     self.skil.printer.pprint(">>> Waiting for deployment...")
+
 
     def stop(self):
         # TODO: test this
