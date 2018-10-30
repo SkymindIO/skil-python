@@ -9,7 +9,7 @@ from keras.optimizers import RMSprop
 
 batch_size = 128
 num_classes = 10
-epochs = 10
+epochs = 2
 
 # the data, split between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
