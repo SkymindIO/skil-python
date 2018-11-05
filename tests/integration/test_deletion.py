@@ -14,8 +14,8 @@ def _get_ws():
 
 def test_work_space_deletion():
     sk = skil.Skil()
-    work_sapce = skil.WorkSpace(sk)
-    work_sapce.delete()
+    work_space = skil.WorkSpace(sk)
+    work_space.delete()
 
 
 def test_experiment_deletion():
