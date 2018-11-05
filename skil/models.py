@@ -8,51 +8,63 @@ import uuid
 
 
 class Model:
-    def __init__(self, model, id=None, name=None, version=None, experiment=None,
-                 labels='', verbose=False):
-
-        if os.path.isfile(model):
-            model_file_name = model
-        else:
-            if hasattr(model, 'save'):
-                model_file_name = 'temp_model.h5'
-                if os.path.isfile(model_file_name):
-                    os.remove(model_file_name)
-                model.save(model_file_name)
+    def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
+                 labels='', verbose=False, create=True):
+        if create:
+            if os.path.isfile(model):
+                model_file_name = model
             else:
-                raise Exception('Invalid model: ' + str(model))
-        if not experiment:
-            self.skil = skil.Skil()
-            self.work_space = skil.workspaces.WorkSpace(self.skil)
-            self.experiment = skil.experiments.Experiment(self.work_space)
+                if hasattr(model, 'save'):
+                    model_file_name = 'temp_model.h5'
+                    if os.path.isfile(model_file_name):
+                        os.remove(model_file_name)
+                    model.save(model_file_name)
+                else:
+                    raise Exception('Invalid model: ' + str(model))
+            if not experiment:
+                self.skil = skil.Skil()
+                self.work_space = skil.workspaces.WorkSpace(self.skil)
+                self.experiment = skil.experiments.Experiment(self.work_space)
+            else:
+                self.experiment = experiment
+                self.work_space = experiment.work_space
+                self.skil = self.work_space.skil
+            self.skil.upload_model(os.path.join(os.getcwd(), model_file_name))
+
+            self.model_name = model_file_name
+            self.model_path = self.skil.get_model_path(model_file_name)
+            self.id = id if id else uuid.uuid1()
+            self.name = name if name else model_file_name
+            self.version = version if version else 1
+
+            self.evaluations = {}
+
+            add_model_instance_response = self.skil.api.add_model_instance(
+                self.skil.server_id,
+                skil_client.ModelInstanceEntity(
+                    uri=self.model_path,
+                    model_id=id,
+                    model_labels=labels,
+                    model_name=name,
+                    model_version=self.version,
+                    created=int(round(time.time() * 1000)),
+                    experiment_id=self.experiment.id
+                )
+            )
+            if verbose:
+                self.skil.printer.pprint(add_model_instance_response)
         else:
             self.experiment = experiment
             self.work_space = experiment.work_space
             self.skil = self.work_space.skil
-        self.skil.upload_model(os.path.join(os.getcwd(), model_file_name))
-
-        self.model_name = model_file_name
-        self.model_path = self.skil.get_model_path(model_file_name)
-        self.id = id if id else uuid.uuid1()
-        self.name = name if name else model_file_name
-        self.version = version if version else 1
-
-        self.evaluations = {}
-
-        add_model_instance_response = self.skil.api.add_model_instance(
-            self.skil.server_id,
-            skil_client.ModelInstanceEntity(
-                uri=self.model_path,
-                model_id=id,
-                model_labels=labels,
-                model_name=name,
-                model_version=self.version,
-                created=int(round(time.time() * 1000)),
-                experiment_id=self.experiment.id
-            )
-        )
-        if verbose:
-            self.skil.printer.pprint(add_model_instance_response)
+            assert id is not None
+            self.id = id
+            model_entity = self.skil.api.get_model_instance(self.skil.server_id,
+                                                            id)
+            self.name = model_entity.model_name
+            self.version = model_entity.model_version
+            self.model_path = self.skil.get_model_path(model_file_name)
+            self.model = None
 
     def delete(self):
         try:
@@ -116,3 +128,7 @@ class Model:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
+
+
+def get_model_by_id(self, experiment, id):
+    return Model(id=id, experiment=experiment, create=False)
