@@ -36,4 +36,5 @@ def get_workspace_by_id(self, skil, id):
     ws.printer = skil.printer
     ws.workspace = response
     ws.id = id
+    ws.name = response.model_name
     return ws

@@ -9,10 +9,12 @@ class Deployment:
             if response is None:
                 raise KeyError('Deployment not found: ' + str(id))
             self.response = response
+            self.name = self.response.name
         else:
             self.name = name if name else 'deployment'
             create_deployment_request = skil_client.CreateDeploymentRequest(self.name)
             self.response = skil.api.deployment_create(create_deployment_request)
+            self.id = self.response.id
 
 
 def get_deployement_by_id(skil, id):
