@@ -3,8 +3,8 @@ from __future__ import print_function
 import json
 import keras
 from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.models import Model
+from keras.layers import Dense, Dropout, Input
 from keras.optimizers import RMSprop
 
 batch_size = 128
@@ -27,12 +27,14 @@ print(x_test.shape[0], 'test samples')
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
-model = Sequential()
-model.add(Dense(512, activation='relu', input_shape=(784,)))
-model.add(Dropout(0.2))
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(num_classes, activation='softmax'))
+inp = Input((784,))
+x = Dense(512, activation='relu')(inp)
+x = Dropout(0.2)(x)
+x = Dense(512, activation='relu')(x)
+x = Dropout(0.2)(x)
+out = Dense(num_classes, activation='softmax')(x)
+
+model = Model(inp, out)
 
 model.summary()
 
