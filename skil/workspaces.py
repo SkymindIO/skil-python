@@ -3,7 +3,9 @@ import skil_client
 
 class WorkSpace:
 
-    def __init__(self, skil, name=None, labels=None, verbose=False):
+    def __init__(self, skil=None, name=None, labels=None, verbose=False, create=True):
+        if not create:
+            return
         self.skil = skil
         self.printer = self.skil.printer
         self.name = name if name else 'skil_workspace'
@@ -26,5 +28,12 @@ class WorkSpace:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
 
-
-# TODO: define "get_workspace_by_id"
+def get_workspace_by_id(self, skil, id):
+    server_id = skil.server_id
+    response = skil.api.get_model_history(server_id, id)
+    ws = WorkSpace(create=False)
+    ws.skil = skil
+    ws.printer = skil.printer
+    ws.workspace = response
+    ws.id = id
+    return ws
