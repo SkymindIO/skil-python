@@ -47,12 +47,18 @@ class Service:
             skil_client.SetState("stop")
         )
 
-    def predict(self, data):
-        # TODO: this evaluates a single example, i.e. mini-batch of one.
-        # generalize this to general case.
+    def indarray(self, np_array):
+        return skil_client.INDArray(
+            ordering='c',
+            shape=list(np_array.shape),
+            data = np_array.tolist()
+        )
 
-        if len(data.shape) == 1:
-            data = data.reshape((1, data.shape[0]))
+    def predict(self, data):
+        inputs = [self.indarray(x) for x in data]
+
+        # This is the keep_prob placeholder data
+        inputs.append(self.indarray(np.array([1.0])))
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
@@ -61,21 +67,30 @@ class Service:
             body=skil_client.MultiPredictRequest(
                 id=str(uuid.uuid1()),
                 needs_pre_processing=False,
-                inputs=[
-                    skil_client.INDArray(
-                        ordering='c',
-                        shape=list(data.shape),
-                        data=data.tolist()[0]
-                    ),
-                    skil_client.INDArray(  # This is the keep_prob placeholder data
-                        ordering='c',
-                        shape=[1],
-                        data=[1.0]
-                    )
-                ]
+                inputs=inputs
             )
         )
-        output = classification_response.outputs[0]
-        prediction = np.asarray(output.data)
-        shape = output.shape
-        return prediction.reshape(shape)
+        outputs = classification_response.outputs
+        outputs = [np.asarray(o.data).reshape(o.shape) for o in outputs]
+        if len(outputs) == 1:
+            return outputs[0]
+        return outputs
+
+    def predict_single(self, data):
+        inputs = [self.indarray(data.expand_dims(0))]
+
+        # This is the keep_prob placeholder data
+        inputs.append(self.indarray(np.array([1.0])))
+
+        classification_response = self.skil.api.multipredict(
+            deployment_name=self.deployment.name,
+            model_name=self.model_name,
+            version_name="default",
+            body=skil_client.MultiPredictRequest(
+                id=str(uuid.uuid1()),
+                needs_pre_processing=False,
+                inputs=inputs
+            )
+        )
+        output = classification_response[0]
+        return np.asarray(output.data).reshape(output.shape)
