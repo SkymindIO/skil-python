@@ -8,6 +8,22 @@ import uuid
 
 
 class Model:
+    """
+    SKIL wrapper for DL4j, Keras and TF models
+
+    SKIL has a robust model storage, serving, and import system for supporting major deep learning libraries.
+    SKIL can be used for end-to-end training, configuration, and deployment of models or alternatively you can import models into SKIL.
+
+    # Arguments
+    model: string. Model file path.
+    id: integer. Unique id for model. If `None`, a unique id will be generated.
+    name: string. Name for the model.
+    version: integer. Version of the model. Defaults to 1.
+    experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
+    labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+    verbose: boolean. If `True`, prints api response.
+    create: boolean. Internal. Do not use.
+    """
     def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
@@ -67,6 +83,8 @@ class Model:
             self.model = None
 
     def delete(self):
+        """Deletes the model
+        """
         try:
             self.skil.api.delete_model_instance(self.skil.server_id, self.id)
         except skil_client.rest.ApiException as e:
@@ -74,7 +92,6 @@ class Model:
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
     def add_evaluation(self, accuracy, id=None, name=None, version=None):
-
         eval_version = version if version else 1
         eval_id = id if id else self.id
         eval_name = name if name else self.id
@@ -95,7 +112,19 @@ class Model:
 
     def deploy(self, deployment=None, start_server=True, scale=1, input_names=None,
                output_names=None, verbose=True):
+        """Deploys the model
 
+        # Arguments:
+        deployment: `Deployment` instance.
+        start_server: boolean. If `True`, the service is immedietely started.
+        scale: integer. Scale for deployment.
+        input_names: list of strings. Input variable names of the model.
+        output_names: list of strings. Output variable names of the model.
+        verbose: boolean. If `True`, api response will be printed.
+
+        # Returns:
+        `Service` instance.
+        """
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
 
@@ -123,6 +152,8 @@ class Model:
         return service
 
     def undeploy(self):
+        """Undeploy the model.
+        """
         try:
             self.skil.api.delete_model(self.deployment.id, self.id)
         except skil_client.rest.ApiException as e:
