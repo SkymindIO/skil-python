@@ -4,6 +4,12 @@ import uuid
 
 import keras
 
+try:
+  basestring
+except NameError:
+  basestring = str
+
+
 class SkilContext(object):
     '''SkilContext manages models from within a Zeppelin notebook
     hosted by SKIL. The Spark context necessary for initialization
@@ -35,7 +41,6 @@ class SkilContext(object):
             os.mkdir(models_path)
 
         return models_path
-
 
     def experiment_id(self, z):
         '''Get the experiment ID of the current notebook or None.
@@ -120,11 +125,11 @@ class SkilContext(object):
 
         return model_id
 
-    def add_evaluation_to_model(self, z, modelId, model, data, labels, name=None):
+    def add_evaluation_to_model(self, z, model_id, model, data, labels, name=None):
         '''
         Gathers the evalutation results of the model on the specified test data.
         :param z: The ZeppelinContext
-        :param modelId: The ModelInstanceID
+        :param model_id: The ModelInstanceID
         :param model: The model to use
         :param data: The dataset to evaluate
         :param labels: The labels of the dataset
@@ -155,4 +160,20 @@ class SkilContext(object):
         e = self.Evaluation(int(nd_y.shape()[1]))
         e.eval(nd_y, nd_pred)
 
-        return self._ctx.addEvaluationToModel(z.z, modelId, e, name)
+        return self._ctx.addEvaluationToModel(z.z, model_id, e, name)
+
+    # Camel case methods for backward compatibility
+    def experimentId(self, z):
+        return self.experiment_id(z)
+    
+    def saveModel(self, z, model):
+        return self.save_model(z, model)
+
+    def copyModel(self, z, source_path, model_type):
+        return self.copy_model(z, source_path, model_type)
+
+    def addModelToExperiment(self, z, model, name=None):
+        return self.add_model_to_experiment(z, model, name)
+
+    def addEvaluationToModel(self, z, model_id, model, data, labels, name=None):
+        return self.add_evaluation_to_model(z, model_id, model, data, labels, name)
