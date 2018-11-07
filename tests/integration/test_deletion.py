@@ -3,17 +3,27 @@ import skil
 
 
 work_space = None  # because number of workspaces is limited
+_sk = None
+
+
+def _get_sk():
+    global _sk
+    if _sk is None:
+        _sk = skil.Skil()
+    return _sk
 
 
 def _get_ws():
     global work_space
-    if work_space is None:
-        work_space = skil.WorkSpace(skil.Skil())
+    if work_space is not None:
+        return work_space
+    sk = _get_sk()
+    work_space = skil.WorkSpace(sk)
     return work_space
 
 
 def test_work_space_deletion():
-    sk = skil.Skil()
+    sk = _get_sk()
     work_space = skil.WorkSpace(sk)
     work_space.delete()
 

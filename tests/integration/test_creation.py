@@ -3,22 +3,33 @@ import skil
 
 
 work_space = None  # because number of workspaces is limited
+_sk = None
+
+
+def _get_sk():
+    global _sk
+    if _sk is None:
+        _sk = skil.Skil()
+    return _sk
 
 
 def _get_ws():
     global work_space
-    if work_space is None:
-        work_space = skil.WorkSpace(skil.Skil())
+    if work_space is not None:
+        return work_space
+    sk = _get_sk()
+    work_space = skil.WorkSpace(sk)
     return work_space
 
 
 def test_skil_creation():
+    global sk
     sk = skil.Skil()
 
 
 def test_work_sapce_creation():
     global work_space
-    sk = skil.Skil()
+    global work_space_id
     work_sapce = skil.WorkSpace(sk)
 
 
@@ -28,7 +39,7 @@ def test_experiment_creation():
 
 
 def test_deployment_creation():
-    sk = skil.Skil()
+    sk = _get_sk()
     dep = skil.Deployment(sk)
 
 
