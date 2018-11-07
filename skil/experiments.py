@@ -8,7 +8,7 @@ class Experiment:
             self.work_space = work_space
             self.skil = self.work_space.skil
             self.id = id if id else work_space.id + "_experiment"
-
+            self.name = name
             experiment_entity = skil_client.ExperimentEntity(
                                             experiment_id=self.id,
                                             experiment_name=name,
@@ -33,6 +33,7 @@ class Experiment:
             self.experiment_entity = experiment_entity
             self.work_space = work_space
             self.id = id
+            self.name = experiment_entity.experiment_name
 
     def delete(self):
         try:
