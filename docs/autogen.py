@@ -14,7 +14,7 @@ if sys.version[0] == '2':
 sys.setdefaultencoding('utf8')
 
 
-ROOT = ''  # TODO
+ROOT = 'http://skymindio.github.com/skil-python'
 
 PAGES = [
     {
