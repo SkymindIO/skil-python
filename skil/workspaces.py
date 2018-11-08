@@ -2,7 +2,18 @@ import skil_client
 
 
 class WorkSpace:
+    """Workspaces are a collection of features that enable different tasks such as conducting experiments, training models, and test different dataset transforms.
 
+    Workspaces are distinct from Deployments by operating as a space for non-production work.
+
+    # Arguments
+    skil: Skil server instance
+    name: string. Name for the workspace.
+    labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+    verbose: boolean. If True, api response will be printed.
+    create: boolean. Internal, do not use.
+        
+    """
     def __init__(self, skil=None, name=None, labels=None, verbose=False, create=True):
         if not create:
             return
@@ -20,6 +31,8 @@ class WorkSpace:
             self.printer.pprint(self.workspace)
 
     def delete(self):
+        """Deletes the work space.
+        """
         try:
             api_response = self.skil.api.delete_model_history(
                 self.skil.server_id, self.workspace.id)
