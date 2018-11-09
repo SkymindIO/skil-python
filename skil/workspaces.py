@@ -1,3 +1,4 @@
+from .experiments import Experiment
 import skil_client
 
 
@@ -51,3 +52,6 @@ def get_workspace_by_id(self, skil, id):
     ws.id = id
     ws.name = response.model_name
     return ws
+
+def add_experiment(self, id=None, name='test', description='test', verbose=False):
+    return Experiment(self, id=id, name=name, description=description, verbose=verbose)
