@@ -1,3 +1,4 @@
+from .workspaces import WorkSpace
 import skil_client
 import pprint
 import os
@@ -89,3 +90,6 @@ class Skil:
             if model_name == upload.file_name:
                 return "file://" + upload.path
         raise Exception("Model resource not found, did you upload it? ")
+
+    def add_work_space(self, name=None, labels=None, verbose=False):
+        return WorkSpace(self, name=name, labels=labels, verbose=verbose)
