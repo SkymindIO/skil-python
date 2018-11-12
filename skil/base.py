@@ -1,3 +1,4 @@
+from .workspaces import WorkSpace
 import skil_client
 import pprint
 import os
@@ -120,3 +121,6 @@ class Skil:
     
     # TODO: cover resource groups. add, delete etc.
     # TODO: add & remove credentials
+
+    def add_work_space(self, name=None, labels=None, verbose=False):
+        return WorkSpace(self, name=name, labels=labels, verbose=verbose)

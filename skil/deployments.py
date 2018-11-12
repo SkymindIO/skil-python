@@ -2,7 +2,13 @@ import skil_client
 
 
 class Deployment:
+    """ Deployments operate independently of workspaces to ensure that there are no accidental interruptions or mistakes in a production environment.
 
+    # Arguments:
+    skil: Skil server instance.
+    name: string. Name for the deployment.
+    id: Unique id for the deployment. If `None`, a unique id will be generated.
+    """
     def __init__(self, skil, name=None, id=None):
         if id is not None:
             response = skil.api.deployment_get(id)

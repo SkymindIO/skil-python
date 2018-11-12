@@ -4,7 +4,8 @@ import uuid
 import numpy as np
 
 class Service:
-
+    '''A wrapper around a deployed model for inference.
+    '''
     def __init__(self, skil, model_name, deployment, model_deployment):
         self.skil = skil
         self.model_name = model_name
@@ -12,6 +13,8 @@ class Service:
         self.deployment = deployment
 
     def start(self):
+        '''Starts the service.
+        '''
         if not self.model_deployment:
             self.skil.printer.pprint(
                 "No model deployed yet, call 'deploy()' on a model first.")
@@ -40,6 +43,8 @@ class Service:
 
 
     def stop(self):
+        '''Stop the service.
+        '''
         # TODO: test this
         self.skil.api.model_state_change(
             self.deployment.id,
@@ -47,7 +52,15 @@ class Service:
             skil_client.SetState("stop")
         )
 
-    def indarray(self, np_array):
+    def _indarray(self, np_array):
+        '''Convert a numpy array to `skil_client.INDArray` instance.
+
+        # Arguments
+        np_array: `numpy.ndarray` instance.
+
+        # Returns
+        `skil_client.INDArray` instance.
+        '''
         return skil_client.INDArray(
             ordering='c',
             shape=list(np_array.shape),
@@ -55,10 +68,21 @@ class Service:
         )
 
     def predict(self, data):
-        inputs = [self.indarray(x) for x in data]
+        '''Predict for given batch of data.
+
+        # Argments
+        data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
+
+        # Returns
+        `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
+        '''
+        if isinstance(data, list):
+            inputs = [self._indarray(x) for x in data]
+        else:
+            inputs = [self._indarray(data)]
 
         # This is the keep_prob placeholder data
-        inputs.append(self.indarray(np.array([1.0])))
+        inputs.append(self._indarray(np.array([1.0])))
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
@@ -77,10 +101,18 @@ class Service:
         return outputs
 
     def predict_single(self, data):
-        inputs = [self.indarray(data.expand_dims(0))]
+        '''Predict for a single input.
+
+        # Argments
+        data: `numpy.ndarray` (or list thereof). Input data.
+
+        # Returns
+        `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
+        '''
+        inputs = [self._indarray(data.expand_dims(0))]
 
         # This is the keep_prob placeholder data
-        inputs.append(self.indarray(np.array([1.0])))
+        inputs.append(self._indarray(np.array([1.0])))
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
