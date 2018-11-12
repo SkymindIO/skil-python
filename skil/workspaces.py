@@ -10,11 +10,11 @@ class WorkSpace:
     non-production work.
 
     # Arguments
-    skil: Skil server instance
-    name: string. Name for the workspace.
-    labels: string. Labels associated with the workspace, useful for searching (comma seperated).
-    verbose: boolean. If True, api response will be printed.
-    create: boolean. Internal, do not use.
+        skil: Skil server instance
+        name: string. Name for the workspace.
+        labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+        verbose: boolean. If True, api response will be printed.
+        create: boolean. Internal, do not use.
         
     """
     def __init__(self, skil=None, name=None, labels=None, verbose=False, create=True):

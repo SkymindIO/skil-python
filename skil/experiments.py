@@ -10,11 +10,11 @@ class Experiment:
     candidate.
 
     # Arguments:
-    work_space: `WorkSpace` instance.
-    id: integer. Unique id for workspace. If `None`, a unique id will be generated.
-    name: string. Name for the experiment.
-    description: string. Description for the experiment.
-    verbose: boolean. If `True`, api response will be printed.
+        work_space: `WorkSpace` instance.
+        id: integer. Unique id for workspace. If `None`, a unique id will be generated.
+        name: string. Name for the experiment.
+        description: string. Description for the experiment.
+        verbose: boolean. If `True`, api response will be printed.
     """
     def __init__(self, work_space=None, id=None, name='test', description='test', verbose=False, create=True):
         if create:

@@ -5,3 +5,4 @@ from skil.models import *
 from skil.workspaces import *
 from skil.context import *
 from skil.services import *
+from skil.resources import *

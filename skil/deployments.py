@@ -6,9 +6,9 @@ class Deployment:
     no accidental interruptions or mistakes in a production environment.
 
     # Arguments:
-    skil: Skil server instance.
-    name: string. Name for the deployment.
-    id: Unique id for the deployment. If `None`, a unique id will be generated.
+        skil: Skil server instance.
+        name: string. Name for the deployment.
+        id: Unique id for the deployment. If `None`, a unique id will be generated.
     """
     def __init__(self, skil, name=None, id=None):
         if id is not None:

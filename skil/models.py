@@ -17,14 +17,14 @@ class Model:
     or alternatively you can import models into SKIL.
 
     # Arguments
-    model: string. Model file path.
-    id: integer. Unique id for model. If `None`, a unique id will be generated.
-    name: string. Name for the model.
-    version: integer. Version of the model. Defaults to 1.
-    experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
-    labels: string. Labels associated with the workspace, useful for searching (comma seperated).
-    verbose: boolean. If `True`, prints api response.
-    create: boolean. Internal. Do not use.
+        model: string. Model file path.
+        id: integer. Unique id for model. If `None`, a unique id will be generated.
+        name: string. Name for the model.
+        version: integer. Version of the model. Defaults to 1.
+        experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
+        labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+        verbose: boolean. If `True`, prints api response.
+        create: boolean. Internal. Do not use.
     """
     def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):

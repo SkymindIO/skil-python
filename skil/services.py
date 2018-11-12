@@ -56,10 +56,10 @@ class Service:
         '''Convert a numpy array to `skil_client.INDArray` instance.
 
         # Arguments
-        np_array: `numpy.ndarray` instance.
+            np_array: `numpy.ndarray` instance.
 
         # Returns
-        `skil_client.INDArray` instance.
+            `skil_client.INDArray` instance.
         '''
         return skil_client.INDArray(
             ordering='c',
@@ -71,10 +71,10 @@ class Service:
         '''Predict for given batch of data.
 
         # Argments
-        data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
+            data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
 
         # Returns
-        `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
+            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
         '''
         if isinstance(data, list):
             inputs = [self._indarray(x) for x in data]
@@ -104,10 +104,10 @@ class Service:
         '''Predict for a single input.
 
         # Argments
-        data: `numpy.ndarray` (or list thereof). Input data.
+            data: `numpy.ndarray` (or list thereof). Input data.
 
         # Returns
-        `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
+            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
         '''
         inputs = [self._indarray(data.expand_dims(0))]
 
