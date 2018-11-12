@@ -77,3 +77,51 @@ class DataProcResourceDetails(ComputeResource):
     
     def delete(self):
         self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+
+
+class HDInsightResourceDetails(ComputeResource):
+
+    def __init__(self, skil, name, subscription_id, resource_group_name, cluster_name):
+        self.skil = skil
+        self.name = name
+        self.subscription_id = subscription_id
+        self.resource_group_name = resource_group_name
+        self.cluster_name = cluster_name
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.DataProcResourceDetails(
+                subscription_id=self.subscription_id, 
+                resource_group_name=self.resource_group_name,
+                cluster_name=self.cluster_name
+            ),
+            type="COMPUTE",
+            sub_type="HDInsight")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
+    
+    def delete(self):
+        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+
+
+class YARNResourceDetails(ComputeResource):
+
+    def __init__(self, skil, name, local_spark_home):
+        self.skil = skil
+        self.name = name
+        self.local_spark_home = local_spark_home
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.DataProcResourceDetails(
+                local_spark_home = self.local_spark_home
+            ),
+            type="COMPUTE",
+            sub_type="YARN")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
+    
+    def delete(self):
+        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
