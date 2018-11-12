@@ -46,6 +46,19 @@ PAGES = [
         'classes': [
             skil.Service
         ]
+    },
+        {
+        'page': 'resources.md',
+        'classes': [
+            skil.resources.compute.EMR,
+            skil.resources.compute.DataProc,
+            skil.resources.compute.HDInsight,
+            skil.resources.compute.YARN,
+            skil.resources.storage.AzureStorage,
+            skil.resources.storage.GoogleStorage,
+            skil.resources.storage.HDFS,
+            skil.resources.storage.S3
+        ]
     }
 ]
 

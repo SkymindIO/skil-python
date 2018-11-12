@@ -9,8 +9,9 @@ dev_addr: '0.0.0.0:8000'
 
 pages:
 - Home: index.md
-- Work Space: work_sapce.md
+- Work Space: work_space.md
 - Experiment: experiment.md
 - Model: model.md
 - Deployment: deployment.md
 - Service: service.md
+- Resources: resources.md
