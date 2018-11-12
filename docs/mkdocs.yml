@@ -1,7 +1,7 @@
 site_name: SKIL Python Documentation
 theme: readthedocs
 docs_dir: sources
-repo_url: https://github.com/skymindIO/skil-python
+repo_url: https://skymind.ai/skil-python
 site_url: https://skymind.ai/platforms
 site_description: 'Documentation for SKIL python client'
 
