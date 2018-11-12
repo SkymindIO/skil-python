@@ -80,7 +80,7 @@ class HDInsightResourceDetails(ComputeResource):
 
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
-            resource_details=skil_client.DataProcResourceDetails(
+            resource_details=skil_client.HDInsightResourceDetails(
                 subscription_id=self.subscription_id, 
                 resource_group_name=self.resource_group_name,
                 cluster_name=self.cluster_name
@@ -101,7 +101,7 @@ class YARNResourceDetails(ComputeResource):
 
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
-            resource_details=skil_client.DataProcResourceDetails(
+            resource_details=skil_client.YARNResourceDetails(
                 local_spark_home = self.local_spark_home
             ),
             type="COMPUTE",

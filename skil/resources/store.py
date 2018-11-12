@@ -28,7 +28,7 @@ class AzureStorageResourceDetails(StorageResource):
 
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
-            resource_details=skil_client.DataProcResourceDetails(
+            resource_details=skil_client.AzureStorageResourceDetails(
                 container_name = self.container_name
             ),
             type="STORAGE",
