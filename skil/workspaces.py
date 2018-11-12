@@ -3,9 +3,11 @@ import skil_client
 
 
 class WorkSpace:
-    """Workspaces are a collection of features that enable different tasks such as conducting experiments, training models, and test different dataset transforms.
+    """Workspaces are a collection of features that enable different tasks such as 
+    conducting experiments, training models, and test different dataset transforms.
 
-    Workspaces are distinct from Deployments by operating as a space for non-production work.
+    Workspaces are distinct from Deployments by operating as a space for 
+    non-production work.
 
     # Arguments
     skil: Skil server instance

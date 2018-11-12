@@ -9,10 +9,12 @@ import uuid
 
 class Model:
     """
-    SKIL wrapper for DL4j, Keras and TF models
+    SKIL wrapper for DL4J, Keras and TF models
 
-    SKIL has a robust model storage, serving, and import system for supporting major deep learning libraries.
-    SKIL can be used for end-to-end training, configuration, and deployment of models or alternatively you can import models into SKIL.
+    SKIL has a robust model storage, serving, and import system for supporting major 
+    deep learning libraries.
+    SKIL can be used for end-to-end training, configuration, and deployment of models 
+    or alternatively you can import models into SKIL.
 
     # Arguments
     model: string. Model file path.

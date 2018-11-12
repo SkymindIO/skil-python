@@ -2,9 +2,12 @@ import skil_client
 
 
 class Experiment:
-    """Experiments in SKIL are useful for defining different model configurations, encapsulating training of models, and carrying out different data cleaning tasks.
+    """Experiments in SKIL are useful for defining different model configurations, 
+    encapsulating training of models, and carrying out different data cleaning tasks.
 
-    Experiments have a one-to-one relationship with Notebooks and have their own storage mechanism for saving different model configurations when seeking a best candidate.
+    Experiments have a one-to-one relationship with Notebooks and have their own 
+    storage mechanism for saving different model configurations when seeking a best 
+    candidate.
 
     # Arguments:
     work_space: `WorkSpace` instance.
