@@ -110,3 +110,6 @@ history.json
 
 # Intellij
 .idea
+
+# autogen sources
+sources/
