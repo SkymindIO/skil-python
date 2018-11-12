@@ -51,3 +51,29 @@ class EMRResource(ComputeResource):
     
     def delete(self):
         self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+
+
+class DataProcResourceDetails(ComputeResource):
+
+    def __init__(self, skil, name, project_id, region, spark_cluster_name):
+        self.skil = skil
+        self.name = name
+        self.project_id = project_id
+        self.region = region
+        self.cluster_name = spark_cluster_name
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.DataProcResourceDetails(
+                project_id=self.project_id, 
+                region=self.region,
+                spark_cluster_name=self.cluster_name
+            ),
+            type="COMPUTE",
+            sub_type="DataProc")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
+    
+    def delete(self):
+        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
