@@ -18,7 +18,7 @@ class StorageResource:
         self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
-class AzureStorageResourceDetails(StorageResource):
+class AzureStorage(StorageResource):
 
     def __init__(self, skil, name, container_name):
 
@@ -38,9 +38,9 @@ class AzureStorageResourceDetails(StorageResource):
         self.resource_id = resource_response.get("resourceId")
     
 
-class GoogleStorageResourceDetails(StorageResource):
+class GoogleStorage(StorageResource):
 
-    def __init__(self, skil, project_id, bucket_name):
+    def __init__(self, skil, name, project_id, bucket_name):
 
         self.skil = skil
         self.name = name
@@ -60,9 +60,9 @@ class GoogleStorageResourceDetails(StorageResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class HDFSResourceDetails(StorageResource):
+class HDFS(StorageResource):
 
-    def __init__(self, skil, name_node_host, name_node_port):
+    def __init__(self, skil, name, name_node_host, name_node_port):
 
         self.skil = skil
         self.name = name
@@ -82,9 +82,9 @@ class HDFSResourceDetails(StorageResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class S3ResourceDetails(StorageResource):
+class S3(StorageResource):
 
-    def __init__(self, skil, bucket, region):
+    def __init__(self, skil, name, bucket, region):
 
         self.skil = skil
         self.name = name

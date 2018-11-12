@@ -18,7 +18,7 @@ class ComputeResource:
         self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
-class EMRResource(ComputeResource):
+class EMR(ComputeResource):
 
     def __init__(self, skil, name, region, credential_uri, cluster_id=None):
         self.skil = skil
@@ -46,7 +46,7 @@ class EMRResource(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class DataProcResourceDetails(ComputeResource):
+class DataProc(ComputeResource):
 
     def __init__(self, skil, name, project_id, region, spark_cluster_name):
         self.skil = skil
@@ -69,7 +69,7 @@ class DataProcResourceDetails(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class HDInsightResourceDetails(ComputeResource):
+class HDInsight(ComputeResource):
 
     def __init__(self, skil, name, subscription_id, resource_group_name, cluster_name):
         self.skil = skil
@@ -92,7 +92,7 @@ class HDInsightResourceDetails(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class YARNResourceDetails(ComputeResource):
+class YARN(ComputeResource):
 
     def __init__(self, skil, name, local_spark_home):
         self.skil = skil
