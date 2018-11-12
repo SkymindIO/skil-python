@@ -1,4 +1,3 @@
-import abc
 import skil_client
 
 class ComputeResource:
@@ -8,18 +7,15 @@ class ComputeResource:
     compute capabilities, including systems like AWS EMR
     and GCE DataProc.
     """
-    __metaclass__ = abc.ABCMeta
-
     def __init__(self):
         """Adds the compute resource to SKIL.
         """
-        raise NotImplementedError
-
-    @abc.abstractmethod
+        pass
+        
     def delete(self):
         """Delete the compute resource from SKIL.
         """
-        raise NotImplementedError
+        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
 class EMRResource(ComputeResource):
@@ -48,9 +44,6 @@ class EMRResource(ComputeResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
-    
-    def delete(self):
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
 class DataProcResourceDetails(ComputeResource):
@@ -74,9 +67,6 @@ class DataProcResourceDetails(ComputeResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
-    
-    def delete(self):
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
 class HDInsightResourceDetails(ComputeResource):
@@ -100,9 +90,6 @@ class HDInsightResourceDetails(ComputeResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
-    
-    def delete(self):
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
 class YARNResourceDetails(ComputeResource):
@@ -122,6 +109,3 @@ class YARNResourceDetails(ComputeResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
-    
-    def delete(self):
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)

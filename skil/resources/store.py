@@ -22,7 +22,6 @@ class AzureStorageResourceDetails(StorageResource):
 
     def __init__(self, skil, name, container_name):
 
-        super(AzureStorageResourceDetails, self).__init__()
         self.skil = skil
         self.name = name
         self.container_name = container_name
