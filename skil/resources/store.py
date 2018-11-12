@@ -37,3 +37,68 @@ class AzureStorageResourceDetails(StorageResource):
 
         self.resource_id = resource_response.get("resourceId")
     
+
+class GoogleStorageResourceDetails(StorageResource):
+
+    def __init__(self, skil, project_id, bucket_name):
+
+        self.skil = skil
+        self.name = name
+        self.project_id = project_id
+        self.bucket_name = bucket_name
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.GoogleStorageResourceDetails(
+                project_id = self.project_id,
+                bucket_name = self.bucket_name
+            ),
+            type="STORAGE",
+            sub_type="GoogleStorage")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
+
+
+class HDFSResourceDetails(StorageResource):
+
+    def __init__(self, skil, name_node_host, name_node_port):
+
+        self.skil = skil
+        self.name = name
+        self.name_node_host = name_node_host
+        self.name_node_port = name_node_port
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.HDFSResourceDetails(
+                name_node_host = self.name_node_host,
+                name_node_port = self.name_node_port
+            ),
+            type="STORAGE",
+            sub_type="HDFS")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
+
+
+class S3ResourceDetails(StorageResource):
+
+    def __init__(self, skil, bucket, region):
+
+        self.skil = skil
+        self.name = name
+        self.bucket = bucket
+        self.region = region
+
+        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+            resource_name=self.name,
+            resource_details=skil_client.S3ResourceDetails(
+                bucket = self.bucket,
+                region = self.region
+            ),
+            type="STORAGE",
+            sub_type="S3")
+        )
+
+        self.resource_id = resource_response.get("resourceId")
