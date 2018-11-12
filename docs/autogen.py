@@ -1,7 +1,7 @@
-import skil
-
 from __future__ import print_function
 from __future__ import unicode_literals
+
+import skil
 
 import re
 import inspect
@@ -47,11 +47,11 @@ PAGES = [
             skil.Service
         ]
     },
-        {
+    {
         'page': 'resources.md',
         'classes': [
-            skil.resources.compute.EMR,
             skil.resources.compute.DataProc,
+            skil.resources.compute.EMR,
             skil.resources.compute.HDInsight,
             skil.resources.compute.YARN,
             skil.resources.storage.AzureStorage,
@@ -142,7 +142,7 @@ def count_leading_spaces(s):
     if ws:
         return ws.start()
     else:
-    return 0
+        return 0
 
 
 def process_list_block(docstring, starting_point, leading_spaces, marker):
@@ -182,7 +182,7 @@ def process_list_block(docstring, starting_point, leading_spaces, marker):
             text_block = False
             indent = 0
     block = '\n'.join(lines)
-return docstring, block
+    return docstring, block
 
 
 def process_docstring(docstring):
@@ -401,4 +401,4 @@ if __name__ == '__main__':
         if not os.path.exists(subdir):
             os.makedirs(subdir)
         with open(path, 'w') as f:
-    f.write(mkdown)
+            f.write(mkdown)
