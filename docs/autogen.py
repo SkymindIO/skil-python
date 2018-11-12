@@ -13,6 +13,7 @@ if sys.version[0] == '2':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
+EXCLUDE = {}
 
 ROOT = 'http://skymind.ai/skil-python'
 

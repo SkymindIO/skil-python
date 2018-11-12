@@ -10,6 +10,9 @@ class Deployment:
         name: string. Name for the deployment.
         id: Unique id for the deployment. If `None`, a unique id will be generated.
     """
+    # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
+    # Make sure to keep this up-to-date.
+
     def __init__(self, skil, name=None, id=None):
         if id is not None:
             response = skil.api.deployment_get(id)

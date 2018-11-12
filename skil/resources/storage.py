@@ -3,7 +3,7 @@ import skil_client
 class StorageResource:
     """StorageResource
 
-    A SKIL storage resource is an abstraction for (cloud)
+    A SKIL storage resource is an abstraction for (cloud and on-premise)
     storage capabilities, including systems like AWS S3,
     HDFS, Azure Storage or Google Cloud storage.
     """

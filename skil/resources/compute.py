@@ -3,7 +3,7 @@ import skil_client
 class ComputeResource:
     """ComputeResource
 
-    A SKIL compute resource is an abstraction for (cloud)
+    A SKIL compute resource is an abstraction for (cloud and on-premise)
     compute capabilities, including systems like AWS EMR
     and GCE DataProc.
     """
