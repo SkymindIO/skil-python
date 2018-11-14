@@ -78,7 +78,7 @@ class TrainingJob:
         self.skil = skil
         self.training_config = training_config
 
-        create_job_request = skil_client.CreateJobRequest(
+        training_create_job_request = skil_client.CreateJobRequest(
             compute_resource_id=self.training_config.compute_id,
             storage_resource_id=self.training_config.storage_id,
             job_args = self._training_job_args(),
@@ -87,7 +87,7 @@ class TrainingJob:
 
         # TODO: why on earth do I need to specify the training type
         # here if the request already knows it?
-        self.skil.api.create_job("TRAINING", create_job_request)
+        self.skil.api.create_job("TRAINING", training_create_job_request)
 
     def run(self):
         pass
@@ -119,16 +119,14 @@ class InferenceJob:
         self.skil = skil
         self.inference_config = inference_config
 
-        create_job_request = skil_client.CreateJobRequest(
+        inference_create_job_request = skil_client.CreateJobRequest(
             compute_resource_id=self.inference_config.compute_id,
             storage_resource_id=self.inference_config.storage_id,
             job_args = self._inference_job_args(),
             output_file_name=self.inference_config.output_path
         )
 
-        # TODO: why on earth do I need to specify the training type
-        # here if the request already knows it?
-        self.skil.api.create_job("TRAINING", create_job_request)
+        self.skil.api.create_job("INFERENCE", inference_create_job_request)
 
     def run(self):
         pass
