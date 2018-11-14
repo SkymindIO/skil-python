@@ -60,6 +60,15 @@ PAGES = [
             skil.resources.storage.HDFS,
             skil.resources.storage.S3
         ]
+    },
+    {
+        'page': 'jobs.md',
+        'classes': [
+            skil.jobs.InferenceJobConfiguration,
+            skil.jobs.TrainingJobConfiguration,
+            skil.jobs.InferenceJob,
+            skil.jobs.TrainingJob
+        ]
     }
 ]
 

@@ -44,6 +44,10 @@ class WorkSpace:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
 
+    def add_experiment(self, id=None, name='test', description='test', verbose=False):
+        return Experiment(self, id=id, name=name, description=description, verbose=verbose)
+
+
 def get_workspace_by_id(skil, id):
     server_id = skil.server_id
     response = skil.api.get_model_history(server_id, id)
@@ -54,6 +58,3 @@ def get_workspace_by_id(skil, id):
     ws.id = id
     ws.name = response.model_name
     return ws
-
-def add_experiment(self, id=None, name='test', description='test', verbose=False):
-    return Experiment(self, id=id, name=name, description=description, verbose=verbose)
