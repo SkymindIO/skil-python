@@ -44,7 +44,7 @@ class WorkSpace:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
 
-def get_workspace_by_id(self, skil, id):
+def get_workspace_by_id(skil, id):
     server_id = skil.server_id
     response = skil.api.get_model_history(server_id, id)
     ws = WorkSpace(create=False)

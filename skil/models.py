@@ -163,5 +163,5 @@ class Model:
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
 
-def get_model_by_id(self, experiment, id):
+def get_model_by_id(experiment, id):
     return Model(id=id, experiment=experiment, create=False)
