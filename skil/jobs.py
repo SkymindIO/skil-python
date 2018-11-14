@@ -89,6 +89,9 @@ class TrainingJob:
         # here if the request already knows it?
         self.skil.api.create_job("TRAINING", create_job_request)
 
+    def run(self):
+        pass
+
     
     def _training_job_args(self):
 
@@ -108,6 +111,43 @@ class TrainingJob:
         return inference + output + num_epochs + model_path + dsp + \
             eval_dsp + eval_type + tm + mds + verbose
 
+
+class InferenceJob:
+
+    def __init__(self, skil, inference_config):
+
+        self.skil = skil
+        self.inference_config = inference_config
+
+        create_job_request = skil_client.CreateJobRequest(
+            compute_resource_id=self.inference_config.compute_id,
+            storage_resource_id=self.inference_config.storage_id,
+            job_args = self._inference_job_args(),
+            output_file_name=self.inference_config.output_path
+        )
+
+        # TODO: why on earth do I need to specify the training type
+        # here if the request already knows it?
+        self.skil.api.create_job("TRAINING", create_job_request)
+
+    def run(self):
+        pass
+
+
+    def _inference_job_args(self):
+
+        ic = self.inference_config
+
+        inference = "-i true "
+        output = "-o {} ".format(ic.output_path)
+        batch_size = "--batchSize {} ".format(ic.batch_size)
+        model_path = "-mo {} ".format(ic.model.model_path)
+        dsp = "-dsp {} ".format(ic.dsp)
+        mds = "--multiDataSet {} ".format(_bool_to_string(ic.mds))
+        verbose = "--verbose {} ".format(_bool_to_string(ic.verbose))
+
+        return inference + output + batch_size + model_path + dsp + \
+            mds + verbose
 
 def get_job_by_id(skil, job_id):
     pass
