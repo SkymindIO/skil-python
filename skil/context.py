@@ -64,6 +64,9 @@ class SkilContext(object):
         if isinstance(model, keras.models.Model):
             models_path = self._models_path()
             file_path = os.path.join(models_path, str(uuid.uuid1()) + '.h5')
+            
+            if isinstance(file_path, unicode):
+                file_path = file_path.encode(sys.getfilesystemencoding())
 
             model.save(file_path)
 
