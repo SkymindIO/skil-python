@@ -127,5 +127,5 @@ class Service:
                 inputs=inputs
             )
         )
-        output = classification_response[0]
+        output = classification_response.outputs[0]
         return np.asarray(output.data).reshape(output.shape)
