@@ -27,7 +27,7 @@ class Model:
     def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
-            if os.path.isfile(model):
+            if isinstance(model, str) and os.path.isfile(model):
                 model_file_name = model
             else:
                 if hasattr(model, 'save'):
