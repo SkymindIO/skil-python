@@ -7,7 +7,7 @@ model_path = os.path.join('model', 'model.pb')
 skil_server = Skil()
 work_space = WorkSpace(skil_server)
 experiment = Experiment(work_space)
-model = Model(model_path, experiment=experiment)
+model = Model(model_path, name='tf_model', experiment=experiment)
 
 deployment = Deployment(skil_server, "tf_model")
 service = model.deploy(deployment)
