@@ -109,7 +109,10 @@ class Service:
         # Returns
         `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
         '''
-        inputs = [self._indarray(np.expand_dims(data, 0))]
+        if isinstance(data, list):
+            inputs = [self._indarray(np.expand_dims(x, 0)) for x in data]
+        else:
+            inputs = [self._indarray(np.expand_dims(data, 0))]
 
         # This is the keep_prob placeholder data
         inputs.append(self._indarray(np.array([1.0])))
