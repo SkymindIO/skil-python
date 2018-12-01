@@ -79,8 +79,8 @@ class Model:
                                                             id)
             self.name = model_entity.model_name
             self.version = model_entity.model_version
-            self.model_path = self.skil.get_model_path(model_file_name)
-            self.model = None
+            self.model_path = model_entity.uri
+            self.model = model_entity
 
     def delete(self):
         """Deletes the model
