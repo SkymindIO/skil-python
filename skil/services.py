@@ -81,9 +81,6 @@ class Service:
         else:
             inputs = [self._indarray(data)]
 
-        # This is the keep_prob placeholder data
-        inputs.append(self._indarray(np.array([1.0])))
-
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
             model_name=self.model_name,
@@ -113,9 +110,6 @@ class Service:
             inputs = [self._indarray(np.expand_dims(x, 0)) for x in data]
         else:
             inputs = [self._indarray(np.expand_dims(data, 0))]
-
-        # This is the keep_prob placeholder data
-        inputs.append(self._indarray(np.array([1.0])))
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
