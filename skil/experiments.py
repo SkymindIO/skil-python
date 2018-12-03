@@ -13,6 +13,7 @@ class Experiment:
     description: string. Description for the experiment.
     verbose: boolean. If `True`, api response will be printed.
     """
+
     def __init__(self, work_space=None, id=None, name='test', description='test', verbose=False, create=True):
         if create:
             self.work_space = work_space
@@ -20,12 +21,12 @@ class Experiment:
             self.id = id if id else work_space.id + "_experiment"
             self.name = name
             experiment_entity = skil_client.ExperimentEntity(
-                                            experiment_id=self.id,
-                                            experiment_name=name,
-                                            experiment_description=description,
-                                            model_history_id=self.work_space.id
-                                            )
-    
+                experiment_id=self.id,
+                experiment_name=name,
+                experiment_description=description,
+                model_history_id=self.work_space.id
+            )
+
             add_experiment_response = self.skil.api.add_experiment(
                 self.skil.server_id,
                 experiment_entity
@@ -55,6 +56,7 @@ class Experiment:
         except skil_client.rest.ApiException as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_experiment: %s\n" % e)
+
 
 def get_experiment_by_id(work_space, id):
     return Experiment(work_space=work_space, id=id, create=False)

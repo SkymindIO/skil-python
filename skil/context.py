@@ -6,9 +6,9 @@ import uuid
 import keras
 
 try:
-  basestring
+    basestring
 except NameError:
-  basestring = str
+    basestring = str
 
 
 class SkilContext(object):
@@ -19,6 +19,7 @@ class SkilContext(object):
     SkilContext can upload models, add them to an experiment and
     add evaluation metrics to a model.  
     '''
+
     def __init__(self, sc):
         self._sc = sc
 
@@ -29,7 +30,6 @@ class SkilContext(object):
         self.ModelInstanceEntity = sc._jvm.io.skymind.modelproviders.history.model.ModelInstanceEntity
         self.Nd4j = sc._jvm.org.nd4j.linalg.factory.Nd4j
         self.Evaluation = sc._jvm.org.deeplearning4j.eval.Evaluation
-
 
     def _models_path(self):
         service_path = self.SKILEnvironment.skilServiceWorkingDirFile().toString()
@@ -65,7 +65,7 @@ class SkilContext(object):
         if isinstance(model, keras.models.Model):
             models_path = self._models_path()
             file_path = os.path.join(models_path, str(uuid.uuid1()) + '.h5')
-            
+
             if isinstance(file_path, unicode):
                 file_path = file_path.encode(sys.getfilesystemencoding())
 
@@ -90,7 +90,8 @@ class SkilContext(object):
         elif model_type.lower() == 'onnx':
             dest_path = os.path.join(models_path, str(uuid.uuid1()) + '.onnx')
         else:
-            raise NotImplementedError('Only TensorFlow and ONNX model types are supported.')
+            raise NotImplementedError(
+                'Only TensorFlow and ONNX model types are supported.')
 
         shutil.copyfile(source_path, dest_path)
 
@@ -112,18 +113,19 @@ class SkilContext(object):
         elif isinstance(model, keras.models.Model):
             model_path = self.save_model(z, model)
         else:
-            raise NotImplementedError("Can only auto-save Keras models. For TensorFlow or ONNX models please save them separately.")
+            raise NotImplementedError(
+                "Can only auto-save Keras models. For TensorFlow or ONNX models please save them separately.")
 
         instance = (self.ModelInstanceEntity
-            .builder()
-            .modelName(name)
-            .experiment_id(self.experiment_id(z))
-            .modelId(model_id)
-            .created(self._sc._jvm.java.util.Date())
-            .uri('file://' + model_path)
-            .etlJson(None)
-            .notebookJson(None)
-            .build())
+                    .builder()
+                    .modelName(name)
+                    .experiment_id(self.experiment_id(z))
+                    .modelId(model_id)
+                    .created(self._sc._jvm.java.util.Date())
+                    .uri('file://' + model_path)
+                    .etlJson(None)
+                    .notebookJson(None)
+                    .build())
 
         self._ctx.getClient().addModelInstance(instance)
 
@@ -154,10 +156,12 @@ class SkilContext(object):
             raise NotImplementedError("Only Keras models currently supported.")
 
         preds = model.predict(data)
-        p_arr = self._sc._gateway.new_array(self._sc._gateway.jvm.double, preds.shape[0], preds.shape[1])
+        p_arr = self._sc._gateway.new_array(
+            self._sc._gateway.jvm.double, preds.shape[0], preds.shape[1])
         assign(preds, p_arr)
         nd_pred = self.Nd4j.create(p_arr)
-        y_arr = self._sc._gateway.new_array(self._sc._gateway.jvm.double, labels.shape[0], labels.shape[1])
+        y_arr = self._sc._gateway.new_array(
+            self._sc._gateway.jvm.double, labels.shape[0], labels.shape[1])
         assign(labels, y_arr)
         nd_y = self.Nd4j.create(y_arr)
 
@@ -169,7 +173,7 @@ class SkilContext(object):
     # Camel case methods for backward compatibility
     def experimentId(self, z):
         return self.experiment_id(z)
-    
+
     def saveModel(self, z, model):
         return self.save_model(z, model)
 

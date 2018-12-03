@@ -13,8 +13,9 @@ class WorkSpace:
     labels: string. Labels associated with the workspace, useful for searching (comma seperated).
     verbose: boolean. If True, api response will be printed.
     create: boolean. Internal, do not use.
-        
+
     """
+
     def __init__(self, skil=None, name=None, labels=None, verbose=False, create=True):
         if not create:
             return
@@ -42,6 +43,7 @@ class WorkSpace:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
 
+
 def get_workspace_by_id(self, skil, id):
     server_id = skil.server_id
     response = skil.api.get_model_history(server_id, id)
@@ -52,6 +54,7 @@ def get_workspace_by_id(self, skil, id):
     ws.id = id
     ws.name = response.model_name
     return ws
+
 
 def add_experiment(self, id=None, name='test', description='test', verbose=False):
     return Experiment(self, id=id, name=name, description=description, verbose=verbose)

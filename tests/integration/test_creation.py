@@ -34,7 +34,7 @@ def test_work_sapce_creation():
 
 
 def test_experiment_creation():
-    ws =_get_ws()
+    ws = _get_ws()
     exp = skil.Experiment(work_space)
 
 
