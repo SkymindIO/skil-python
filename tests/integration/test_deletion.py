@@ -29,7 +29,7 @@ def test_work_space_deletion():
 
 
 def test_experiment_deletion():
-    ws =_get_ws()
+    ws = _get_ws()
     exp = skil.Experiment(ws)
     exp.delete()
 
