@@ -7,7 +7,7 @@ setup(
     packages=find_packages(),
     install_requires=['skil_client', 'requests', 'numpy'],
     extras_require={
-        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock', 'tensorflow', 'keras']
+        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock', 'six', 'tensorflow', 'keras']
     },
     include_package_data=True,
     license='Apache',
