@@ -3,9 +3,11 @@ import time
 import uuid
 import numpy as np
 
+
 class Service:
     '''A wrapper around a deployed model for inference.
     '''
+
     def __init__(self, skil, model_name, deployment, model_deployment):
         self.skil = skil
         self.model_name = model_name
@@ -41,7 +43,6 @@ class Service:
                 else:
                     self.skil.printer.pprint(">>> Waiting for deployment...")
 
-
     def stop(self):
         '''Stop the service.
         '''
@@ -64,7 +65,7 @@ class Service:
         return skil_client.INDArray(
             ordering='c',
             shape=list(np_array.shape),
-            data = np_array.reshape(-1).tolist()
+            data=np_array.reshape(-1).tolist()
         )
 
     def predict(self, data):

@@ -24,6 +24,7 @@ class Model:
     verbose: boolean. If `True`, prints api response.
     create: boolean. Internal. Do not use.
     """
+
     def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
@@ -146,7 +147,8 @@ class Model:
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
 
-        service = Service(self.skil, self.name, self.deployment, self.model_deployment)
+        service = Service(self.skil, self.name,
+                          self.deployment, self.model_deployment)
         if start_server:
             service.start()
         return service

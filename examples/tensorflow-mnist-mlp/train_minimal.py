@@ -7,7 +7,6 @@ from tensorflow.python.training import saver as saver_lib
 from tensorflow.python.framework import graph_io
 
 
-
 epochs = 100
 batch_size = 32
 
@@ -17,15 +16,17 @@ saver_write_version = 2
 
 mnist = tf.keras.datasets.mnist
 
-(x_train, y_train),(x_test, y_test) = mnist.load_data()
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train, x_test = x_train / 255.0, x_test / 255.0
+
 
 def one_hot(x, num_classes):
     y = np.zeros((len(x), num_classes))
     for i in range(len(x)):
         y[i][x[i]] = 1
     return y
-    
+
+
 y_train_one_hot = one_hot(y_train, 10)
 y_test_one_hot = one_hot(y_test, 10)
 
@@ -54,17 +55,18 @@ with tf.Session() as sess:
     labels = tf.placeholder(tf.float32, (None, 10), name='labels')
 
     cross_entropy = tf.reduce_mean(
-    tf.nn.softmax_cross_entropy_with_logits(labels=labels, logits=prediction))
+        tf.nn.softmax_cross_entropy_with_logits(labels=labels, logits=prediction))
 
     train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
-    correct_prediction = tf.equal(tf.argmax(prediction, 1), tf.argmax(labels, 1))
+    correct_prediction = tf.equal(
+        tf.argmax(prediction, 1), tf.argmax(labels, 1))
 
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     checkpoint_prefix = os.path.join(work_directory, "saved_checkpoint")
     checkpoint_meta_graph_file = os.path.join(work_directory,
-                                            "saved_checkpoint.meta")
+                                              "saved_checkpoint.meta")
     checkpoint_state_name = "checkpoint_state"
     input_graph_name = "input_graph.pb"
     output_graph_name = "model.pb"
@@ -74,7 +76,7 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for epoch in range(epochs):
-        print ("Epoch " + str(epoch))
+        print("Epoch " + str(epoch))
         for i in range(0, len(x_train), batch_size):
             x_batch = x_train[i: i + 32]
             y_batch = y_train_one_hot[i: i + 32]
@@ -117,4 +119,3 @@ with tf.Session() as sess:
         input_meta_graph,
         checkpoint_version=saver_write_version)
     print("Graph frozen successfully!")
-
