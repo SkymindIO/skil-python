@@ -49,7 +49,7 @@ class SkilContext(object):
         :return: the experiment ID
         '''
 
-        return self._ctx.experiment_id(z.z)
+        return self._ctx.experimentId(z.z)
 
     def save_model(self, z, model):
         '''Save the model into the managed models directory.
@@ -69,7 +69,7 @@ class SkilContext(object):
             if isinstance(file_path, unicode):
                 file_path = file_path.encode(sys.getfilesystemencoding())
 
-            model.save(file_path)
+            model.save(str(file_path))
 
             return file_path
         else:
@@ -119,7 +119,7 @@ class SkilContext(object):
         instance = (self.ModelInstanceEntity
                     .builder()
                     .modelName(name)
-                    .experiment_id(self.experiment_id(z))
+                    .experimentId(self.experiment_id(z))
                     .modelId(model_id)
                     .created(self._sc._jvm.java.util.Date())
                     .uri('file://' + model_path)
