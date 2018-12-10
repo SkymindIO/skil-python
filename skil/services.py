@@ -3,9 +3,11 @@ import time
 import uuid
 import numpy as np
 
+
 class Service:
     '''A wrapper around a deployed model for inference.
     '''
+
     def __init__(self, skil, model_name, deployment, model_deployment):
         self.skil = skil
         self.model_name = model_name
@@ -41,7 +43,6 @@ class Service:
                 else:
                     self.skil.printer.pprint(">>> Waiting for deployment...")
 
-
     def stop(self):
         '''Stop the service.
         '''
@@ -64,7 +65,7 @@ class Service:
         return skil_client.INDArray(
             ordering='c',
             shape=list(np_array.shape),
-            data = np_array.tolist()
+            data=np_array.reshape(-1).tolist()
         )
 
     def predict(self, data):
@@ -80,9 +81,6 @@ class Service:
             inputs = [self._indarray(x) for x in data]
         else:
             inputs = [self._indarray(data)]
-
-        # This is the keep_prob placeholder data
-        inputs.append(self._indarray(np.array([1.0])))
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
@@ -109,10 +107,10 @@ class Service:
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
         '''
-        inputs = [self._indarray(data.expand_dims(0))]
-
-        # This is the keep_prob placeholder data
-        inputs.append(self._indarray(np.array([1.0])))
+        if isinstance(data, list):
+            inputs = [self._indarray(np.expand_dims(x, 0)) for x in data]
+        else:
+            inputs = [self._indarray(np.expand_dims(data, 0))]
 
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
@@ -124,5 +122,5 @@ class Service:
                 inputs=inputs
             )
         )
-        output = classification_response[0]
+        output = classification_response.outputs[0]
         return np.asarray(output.data).reshape(output.shape)

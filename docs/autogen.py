@@ -168,7 +168,8 @@ def process_list_block(docstring, starting_point, leading_spaces, marker):
     # These have to be removed, but first the list roots have to be detected.
     top_level_regex = r'^    ([^\s\\\(]+):(.*)'
     top_level_replacement = r'- __\1__:\2'
-    lines = [re.sub(top_level_regex, top_level_replacement, line) for line in lines]
+    lines = [re.sub(top_level_regex, top_level_replacement, line)
+             for line in lines]
     # All the other lines get simply the 4 leading space (if present) removed
     lines = [re.sub(r'^    ', '', line) for line in lines]
     # Fix text lines after lists
@@ -212,7 +213,7 @@ def process_docstring(docstring):
             num_leading_spaces = snippet_lines[-1].find('`')
             snippet_lines = ([snippet_lines[0]] +
                              [line[num_leading_spaces:]
-                             for line in snippet_lines[1:]])
+                              for line in snippet_lines[1:]])
             # Most code snippets have 3 or 4 more leading spaces
             # on inner lines, but not all. Remove them.
             inner_lines = snippet_lines[1:-1]
@@ -271,10 +272,6 @@ def process_docstring(docstring):
     return docstring
 
 
-
-
-
-
 def read_file(path):
     with open(path) as f:
         return f.read()
@@ -315,7 +312,7 @@ def read_page_data(page_data, type):
                 continue
             module_member = getattr(module, name)
             if (inspect.isclass(module_member) and type == 'classes' or
-               inspect.isfunction(module_member) and type == 'functions'):
+                    inspect.isfunction(module_member) and type == 'functions'):
                 instance = module_member
                 if module.__name__ in instance.__module__:
                     if instance not in module_data:

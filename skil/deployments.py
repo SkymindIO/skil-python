@@ -12,7 +12,6 @@ class Deployment:
     """
     # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
     # Make sure to keep this up-to-date.
-
     def __init__(self, skil, name=None, id=None):
         if id is not None:
             response = skil.api.deployment_get(id)
@@ -22,8 +21,10 @@ class Deployment:
             self.name = self.response.name
         else:
             self.name = name if name else 'deployment'
-            create_deployment_request = skil_client.CreateDeploymentRequest(self.name)
-            self.response = skil.api.deployment_create(create_deployment_request)
+            create_deployment_request = skil_client.CreateDeploymentRequest(
+                self.name)
+            self.response = skil.api.deployment_create(
+                create_deployment_request)
             self.id = self.response.id
 
 

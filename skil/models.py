@@ -26,10 +26,11 @@ class Model:
         verbose: boolean. If `True`, prints api response.
         create: boolean. Internal. Do not use.
     """
+
     def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
-            if os.path.isfile(model):
+            if isinstance(model, str) and os.path.isfile(model):
                 model_file_name = model
             else:
                 if hasattr(model, 'save'):
@@ -81,8 +82,8 @@ class Model:
                                                             id)
             self.name = model_entity.model_name
             self.version = model_entity.model_version
-            self.model_path = self.skil.get_model_path(model_file_name)
-            self.model = None
+            self.model_path = model_entity.uri
+            self.model = model_entity
 
     def delete(self):
         """Deletes the model
@@ -148,7 +149,8 @@ class Model:
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
 
-        service = Service(self.skil, self.name, self.deployment, self.model_deployment)
+        service = Service(self.skil, self.name,
+                          self.deployment, self.model_deployment)
         if start_server:
             service.start()
         return service

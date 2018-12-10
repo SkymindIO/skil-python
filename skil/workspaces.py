@@ -17,6 +17,7 @@ class WorkSpace:
         create: boolean. Internal, do not use.
         
     """
+
     def __init__(self, skil=None, name=None, labels=None, verbose=False, create=True):
         if not create:
             return

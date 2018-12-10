@@ -3,11 +3,11 @@ from setuptools import find_packages
 
 setup(
     name='skil',
-    version='0.2.2',
+    version='0.2.7',
     packages=find_packages(),
-    install_requires=['skil_client', 'requests'],
+    install_requires=['skil_client', 'requests', 'numpy'],
     extras_require={
-        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock']
+        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock', 'six', 'tensorflow', 'keras']
     },
     include_package_data=True,
     license='Apache',

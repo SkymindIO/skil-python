@@ -111,6 +111,9 @@ history.json
 # Intellij
 .idea
 
-# autogen sources
-sources/
-site/
+# autogen docs
+docs/site
+docs/sources
+
+# VS code
+.vscode/
