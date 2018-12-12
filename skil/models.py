@@ -27,7 +27,7 @@ class Model:
         create: boolean. Internal. Do not use.
     """
 
-    def __init__(self, model=None, id=None, name=None, version=None, experiment=None,
+    def __init__(self, model=None, model_id=None, name=None, version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
             if isinstance(model, str) and os.path.isfile(model):
@@ -52,7 +52,7 @@ class Model:
 
             self.model_name = model_file_name
             self.model_path = self.skil.get_model_path(model_file_name)
-            self.id = id if id else uuid.uuid1()
+            self.id = model_id if model_id else uuid.uuid1()
             self.name = name if name else model_file_name
             self.version = version if version else 1
 
@@ -62,7 +62,7 @@ class Model:
                 self.skil.server_id,
                 skil_client.ModelInstanceEntity(
                     uri=self.model_path,
-                    model_id=id,
+                    model_id=model_id,
                     model_labels=labels,
                     model_name=name,
                     model_version=self.version,
@@ -76,10 +76,10 @@ class Model:
             self.experiment = experiment
             self.work_space = experiment.work_space
             self.skil = self.work_space.skil
-            assert id is not None
-            self.id = id
+            assert model_id is not None
+            self.id = model_id
             model_entity = self.skil.api.get_model_instance(self.skil.server_id,
-                                                            id)
+                                                            self.model_id)
             self.name = model_entity.model_name
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
@@ -94,9 +94,9 @@ class Model:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
-    def add_evaluation(self, accuracy, id=None, name=None, version=None):
+    def add_evaluation(self, accuracy, eval_id=None, name=None, version=None):
         eval_version = version if version else 1
-        eval_id = id if id else self.id
+        eval_id = eval_id if eval_id else self.id
         eval_name = name if name else self.id
 
         eval_response = self.skil.api.add_evaluation_result(
@@ -111,22 +111,22 @@ class Model:
                 eval_version=eval_version
             )
         )
-        self.evaluations[id] = eval_response
+        self.evaluations[eval_id] = eval_response
 
     def deploy(self, deployment=None, start_server=True, scale=1, input_names=None,
                output_names=None, verbose=True):
         """Deploys the model
 
         # Arguments:
-        deployment: `Deployment` instance.
-        start_server: boolean. If `True`, the service is immedietely started.
-        scale: integer. Scale for deployment.
-        input_names: list of strings. Input variable names of the model.
-        output_names: list of strings. Output variable names of the model.
-        verbose: boolean. If `True`, api response will be printed.
+            deployment: `Deployment` instance.
+            start_server: boolean. If `True`, the service is immedietely started.
+            scale: integer. Scale for deployment.
+            input_names: list of strings. Input variable names of the model.
+            output_names: list of strings. Output variable names of the model.
+            verbose: boolean. If `True`, api response will be printed.
 
         # Returns:
-        `Service` instance.
+            `Service` instance.
         """
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
@@ -149,7 +149,7 @@ class Model:
         if verbose:
             self.skil.printer.pprint(self.model_deployment)
 
-        service = Service(self.skil, self.name,
+        service = Service(self.skil, self,
                           self.deployment, self.model_deployment)
         if start_server:
             service.start()
