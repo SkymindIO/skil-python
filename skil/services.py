@@ -128,38 +128,39 @@ class Service:
         output = classification_response.outputs[0]
         return np.asarray(output.data).reshape(output.shape)
 
-        def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
-            ''' Detect ob
+    def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
+        ''' Detect objects in an image for this service. Only works when deploying an object detection
+            model like YOLO or SSD.
 
-            # Argments
-                image: `numpy.ndarray`. Input image to detect objects from.
-                threshold: floating point between 0 and 1. bounding box threshold, only objects with at
-                    least this threshold get returned.
-                needs_preprocessing: boolean. whether input data needs preprocessing
-                temp_path: local path to which intermediate numpy arrays get stored.
+        # Argments
+            image: `numpy.ndarray`. Input image to detect objects from.
+            threshold: floating point between 0 and 1. bounding box threshold, only objects with at
+                least this threshold get returned.
+            needs_preprocessing: boolean. whether input data needs preprocessing
+            temp_path: local path to which intermediate numpy arrays get stored.
 
-            # Returns
-                `DetectionResult`, a Python dictionary with labels, confidences and locations of bounding boxes
-                    of detected objects.
-            '''
-            cv2.imwrite(temp_path, image)
-            url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
-                self.skil.config.host,
-                self.model.deployment.name, 
-                self.model.name, 
-                self.model.version
-            )
+        # Returns
+            `DetectionResult`, a Python dictionary with labels, confidences and locations of bounding boxes
+                of detected objects.
+        '''
+        cv2.imwrite(temp_path, image)
+        url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
+            self.skil.config.host,
+            self.model.deployment.name, 
+            self.model.name, 
+            self.model.version
+        )
 
-            resp = requests.post(
-                url=url, 
-                headers=self.skil.auth_headers,
-                files={
-                'file': (temp_path, open(temp_path, 'rb'), 'image/jpeg')
-                },
-                data={
-                    'id': model.id,
-                    'needs_preprocessing': 'true' if needs_preprocessing else 'false',
-                    'threshold': str(threshold)
-                }
-            )
-            return json.loads(resp.content)
+        resp = requests.post(
+            url=url, 
+            headers=self.skil.auth_headers,
+            files={
+            'file': (temp_path, open(temp_path, 'rb'), 'image/jpeg')
+            },
+            data={
+                'id': model.id,
+                'needs_preprocessing': 'true' if needs_preprocessing else 'false',
+                'threshold': str(threshold)
+            }
+        )
+        return json.loads(resp.content)
