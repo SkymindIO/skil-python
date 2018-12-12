@@ -1,9 +1,9 @@
-from skil import Model, Deployment
+from skil import Skil, Model, Deployment
 from skil.utils.yolo import annotate_image
 import cv2
 
+skil_server = Skil()
 model = Model('yolo_v2.pb', name='yolo-tf', model_id='yolo-3493723')
-
 deployment = Deployment(skil_server, 'yolo')
 service = model.deploy(deployment, input_names=['input'], output_names=['output'], scale=2)
 
