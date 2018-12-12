@@ -151,6 +151,7 @@ class Service:
             self.model.version
         )
 
+        # TODO: use the official "detectobject" client API, once fixed in skil_client
         resp = requests.post(
             url=url, 
             headers=self.skil.auth_headers,
@@ -158,9 +159,12 @@ class Service:
             'file': (temp_path, open(temp_path, 'rb'), 'image/jpeg')
             },
             data={
-                'id': model.id,
+                'id': self.model.id,
                 'needs_preprocessing': 'true' if needs_preprocessing else 'false',
                 'threshold': str(threshold)
             }
         )
+        if os.path.isfile(temp_path):
+            os.remove(temp_path)
+
         return json.loads(resp.content)
