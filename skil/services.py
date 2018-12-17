@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import requests
 import json
+import os
 
 class Service:
     '''A wrapper around a deployed model for inference.
@@ -152,18 +153,30 @@ class Service:
         )
 
         # TODO: use the official "detectobject" client API, once fixed in skil_client
-        resp = requests.post(
-            url=url, 
-            headers=self.skil.auth_headers,
-            files={
-            'file': (temp_path, open(temp_path, 'rb'), 'image/jpeg')
-            },
-            data={
-                'id': self.model.id,
-                'needs_preprocessing': 'true' if needs_preprocessing else 'false',
-                'threshold': str(threshold)
-            }
-        )
+        # print(">>>> TEST")
+        # resp = self.skil.api.detectobjects(
+        #     id='foo',
+        #     needs_preprocessing=False,
+        #     threshold='0.5',
+        #     image_file=temp_path,
+        #     deployment_name=self.model.deployment.name,
+        #     version_name='default',
+        #     model_name=self.model.name
+        # )
+
+        with open(temp_path, 'rb') as data:
+            resp = requests.post(
+                url=url, 
+                headers=self.skil.auth_headers,
+                files={
+                'file': (temp_path, data, 'image/jpeg')
+                },
+                data={
+                    'id': self.model.id,
+                    'needs_preprocessing': 'true' if needs_preprocessing else 'false',
+                    'threshold': str(threshold)
+                }
+            )
         if os.path.isfile(temp_path):
             os.remove(temp_path)
 

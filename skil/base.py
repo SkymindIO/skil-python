@@ -68,9 +68,9 @@ class Skil:
         services = content.get('serviceInfoList')
         for s in services:
             if 'Model History' in s.get('name'):
-                id = s.get('id')
-        if id:
-            return id
+                server_id = s.get('id')
+        if server_id:
+            return server_id
         else:
             raise Exception(
                 "Could not detect default model history server instance. Is SKIL running?")
@@ -100,11 +100,11 @@ class Skil:
     def get_all_resources(self):
         return self.api.get_resources()
 
-    def get_resource_by_id(self, id):
-        return self.api.get_resource_by_id(resource_id=id)
+    def get_resource_by_id(self, resource_id):
+        return self.api.get_resource_by_id(resource_id=resource_id)
 
-    def get_resource_details_by_id(self, id):
-        return self.api.get_resource_details_by_id(resource_id=id)
+    def get_resource_details_by_id(self, resource_id):
+        return self.api.get_resource_details_by_id(resource_id=resource_id)
 
     def get_resource_by_type(self, resource_type):
         """            
