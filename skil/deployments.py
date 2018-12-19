@@ -2,7 +2,7 @@ import skil_client
 
 
 class Deployment:
-    """ Deployments operate independently of workspaces to ensure that there are 
+    """Deployments operate independently of workspaces to ensure that there are
     no accidental interruptions or mistakes in a production environment.
 
     # Arguments:
