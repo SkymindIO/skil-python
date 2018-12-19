@@ -27,25 +27,25 @@ def test_work_space_by_id():
     global work_space_id
     sk = _get_sk()
     work_space = skil.WorkSpace(sk, name='test_ws')
-    id = work_space.id
-    work_space_id = id
-    work_space2 = skil.get_workspace_by_id(sk, id)
+    ws_id = work_space.id
+    work_space_id = ws_id
+    work_space2 = skil.get_workspace_by_id(sk, ws_id)
     assert work_space.name == work_space2.name
 
 
 def test_experiment_by_id():
     ws = _get_ws()
     exp = skil.Experiment(ws, name='test_exp')
-    id = exp.id
-    exp2 = skil.get_experiment_by_id(ws, id)
+    exp_id = exp.id
+    exp2 = skil.get_experiment_by_id(ws, exp_id)
     assert exp.name == exp2.name
 
 
 def test_deployment_by_id():
     sk = _get_sk()
     dep = skil.Deployment(sk, name='test_dep')
-    id = dep.id
-    dep2 = skil.get_deployment_by_id(sk, id)
+    dep_id = dep.id
+    dep2 = skil.get_deployment_by_id(sk, dep_id)
     assert dep.name == dep2.name
 
 
@@ -53,8 +53,8 @@ def test_model_by_id():
     ws = _get_ws()
     exp = skil.Experiment(ws, name='test_exp2')
     model = skil.Model('model.h5', name='test_model', experiment=exp)
-    id = model.id
-    model2 = skil.get_model_by_id(exp, id)
+    model_id = model.id
+    model2 = skil.get_model_by_id(exp, model_id)
     assert model.name == model2.name
 
 
