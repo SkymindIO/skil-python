@@ -1,5 +1,6 @@
 import skil_client
 
+
 class ComputeResource:
     """ComputeResource
 
@@ -7,29 +8,38 @@ class ComputeResource:
     compute capabilities, including systems like AWS EMR
     and GCE DataProc.
     """
-    def __init__(self):
+    def __init__(self, skil):
         """Adds the compute resource to SKIL.
         """
+        self.skil = skil
         pass
         
-    def delete(self):
+    def delete(self, resource_id):
         """Delete the compute resource from SKIL.
         """
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+        self.skil.api.delete_resource_by_id(resource_id=resource_id)
 
 
 class EMR(ComputeResource):
+    """EMR
 
+    AWS Elastic Map Reduce compute resource
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Name of the resource
+        region: AWS region of the EMR cluster
+        credential_uri: path to credential file
+        cluster_id: ID of the EMR cluster
+    """
+    # TODO: if cluster_id is None, spin up a cluster and retrieve id (requires work in SKIL core)
+    # TODO: can we hide setting credentials? i.e. can these be put into a
+    #   little config file (similar to what we do in pydl4j?).
     def __init__(self, skil, name, region, credential_uri, cluster_id=None):
-        self.skil = skil
+        super(EMR, self).__init__(skil)
         self.name = name
         self.region = region
-        # TODO: can we hide setting credentials? i.e. can these be put into a
-        # little config file (similar to what we do in pydl4j?). this is tedious
-        # for users
         self.credential_uri = credential_uri
-
-        # TODO: if cluster_id is None, spin up a cluster and retrieve id (requires work in SKIL core)
         self.cluster_id = cluster_id
 
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
@@ -47,9 +57,20 @@ class EMR(ComputeResource):
 
 
 class DataProc(ComputeResource):
+    """DataProc
+
+    Google cloud engine DataProc compute resource
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        project_id: GCE project ID
+        region: GCE region
+        cluster_name: DataProc cluster name
+    """
 
     def __init__(self, skil, name, project_id, region, spark_cluster_name):
-        self.skil = skil
+        super(DataProc, self).__init__(skil)
         self.name = name
         self.project_id = project_id
         self.region = region
@@ -70,9 +91,20 @@ class DataProc(ComputeResource):
 
 
 class HDInsight(ComputeResource):
+    """HDInsight
+
+    Azure HDInsight compute resource.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        subscription_id: Azure subscription ID
+        resource_group_name: Resource group name  # TODO: is this SKIL or Azure?
+        cluster_name: HDInsight cluster name
+    """
 
     def __init__(self, skil, name, subscription_id, resource_group_name, cluster_name):
-        self.skil = skil
+        super(HDInsight, self).__init__(skil)
         self.name = name
         self.subscription_id = subscription_id
         self.resource_group_name = resource_group_name
@@ -93,9 +125,17 @@ class HDInsight(ComputeResource):
 
 
 class YARN(ComputeResource):
+    """YARN
 
+    YARN compute resource for local Spark computation on YARN.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        local_spark_home: full path to local Spark binary
+    """
     def __init__(self, skil, name, local_spark_home):
-        self.skil = skil
+        super(YARN, self).__init__(skil)
         self.name = name
         self.local_spark_home = local_spark_home
 
