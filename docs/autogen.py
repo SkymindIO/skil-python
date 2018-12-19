@@ -1,7 +1,7 @@
-import skil
-
 from __future__ import print_function
 from __future__ import unicode_literals
+
+import skil
 
 import re
 import inspect
@@ -11,10 +11,11 @@ import shutil
 import sys
 if sys.version[0] == '2':
     reload(sys)
-sys.setdefaultencoding('utf8')
+    sys.setdefaultencoding('utf8')
 
+EXCLUDE = {}
 
-ROOT = 'http://skymindio.github.com/skil-python'
+ROOT = 'http://skymind.ai/skil-python'
 
 PAGES = [
     {
@@ -45,6 +46,28 @@ PAGES = [
         'page': 'service.md',
         'classes': [
             skil.Service
+        ]
+    },
+    {
+        'page': 'resources.md',
+        'classes': [
+            skil.resources.compute.DataProc,
+            skil.resources.compute.EMR,
+            skil.resources.compute.HDInsight,
+            skil.resources.compute.YARN,
+            skil.resources.storage.AzureStorage,
+            skil.resources.storage.GoogleStorage,
+            skil.resources.storage.HDFS,
+            skil.resources.storage.S3
+        ]
+    },
+    {
+        'page': 'jobs.md',
+        'classes': [
+            skil.jobs.InferenceJobConfiguration,
+            skil.jobs.TrainingJobConfiguration,
+            skil.jobs.InferenceJob,
+            skil.jobs.TrainingJob
         ]
     }
 ]
@@ -129,7 +152,7 @@ def count_leading_spaces(s):
     if ws:
         return ws.start()
     else:
-    return 0
+        return 0
 
 
 def process_list_block(docstring, starting_point, leading_spaces, marker):
@@ -170,9 +193,7 @@ def process_list_block(docstring, starting_point, leading_spaces, marker):
             text_block = False
             indent = 0
     block = '\n'.join(lines)
-
-
-return docstring, block
+    return docstring, block
 
 
 def process_docstring(docstring):
@@ -312,10 +333,10 @@ for subdir, dirs, fnames in os.walk('templates'):
         if not os.path.exists(new_subdir):
             os.makedirs(new_subdir)
 
-if fname[-3:] == '.md':
-    fpath = os.path.join(subdir, fname)
-    new_fpath = fpath.replace('templates', 'sources')
-    shutil.copy(fpath, new_fpath)
+        if fname[-3:] == '.md':
+            fpath = os.path.join(subdir, fname)
+            new_fpath = fpath.replace('templates', 'sources')
+            shutil.copy(fpath, new_fpath)
 
 
 if __name__ == '__main__':
@@ -387,4 +408,4 @@ if __name__ == '__main__':
         if not os.path.exists(subdir):
             os.makedirs(subdir)
         with open(path, 'w') as f:
-    f.write(mkdown)
+            f.write(mkdown)

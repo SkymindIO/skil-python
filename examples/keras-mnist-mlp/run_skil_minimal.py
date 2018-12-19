@@ -5,7 +5,7 @@ from keras.datasets import mnist
 skil_server = Skil()
 work_space = WorkSpace(skil_server)
 experiment = Experiment(work_space)
-model = Model('model.h5', id="keras", experiment=experiment)
+model = Model('model.h5', model_id="keras", experiment=experiment)
 
 deployment = Deployment(skil_server, "keras_model")
 service = model.deploy(deployment)
@@ -16,5 +16,6 @@ x_test = x_test.reshape(10000, 784)
 x_test = x_test.astype('float32')
 x_test /= 255
 
+# TODO: predict(_single) seems broken
 print(service.predict_single(x_test[0]))
 print(service.predict(x_test[:10]))

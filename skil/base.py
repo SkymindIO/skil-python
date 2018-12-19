@@ -1,5 +1,7 @@
 from .workspaces import WorkSpace
 import skil_client
+from skil_client.rest import ApiException as api_exception
+
 import pprint
 import os
 import time
@@ -48,7 +50,7 @@ class Skil:
             config.api_key['authorization'] = self.token
             config.api_key_prefix['authorization'] = "Bearer"
             self.printer.pprint('>>> Done!')
-        except skil_client.rest.ApiException as e:
+        except api_exception as e:
             raise Exception(
                 "Exception when calling DefaultApi->login: {}\n".format(e))
 
@@ -66,11 +68,12 @@ class Skil:
 
         content = json.loads(r.content.decode('utf-8'))
         services = content.get('serviceInfoList')
+        server_id = None
         for s in services:
             if 'Model History' in s.get('name'):
-                id = s.get('id')
-        if id:
-            return id
+                server_id = s.get('id')
+        if server_id:
+            return server_id
         else:
             raise Exception(
                 "Could not detect default model history server instance. Is SKIL running?")
@@ -90,6 +93,38 @@ class Skil:
             if model_name == upload.file_name:
                 return "file://" + upload.path
         raise Exception("Model resource not found, did you upload it? ")
+    
+    def get_all_compute_resources(self):
+        return self.api.get_resource_by_type(resource_type="COMPUTE")
+
+    def get_all_data_resources(self):
+        return self.api.get_resource_by_type(resource_type="STORAGE")
+
+    def get_all_resources(self):
+        return self.api.get_resources()
+
+    def get_resource_by_id(self, resource_id):
+        return self.api.get_resource_by_id(resource_id=resource_id)
+
+    def get_resource_details_by_id(self, resource_id):
+        return self.api.get_resource_details_by_id(resource_id=resource_id)
+
+    def get_resource_by_type(self, resource_type):
+        """            
+        - EMR                   # AWS Elastic Map Reduce(Compute)
+        - S3                    # AWS Simple Storage Service
+        - GoogleStorage         # Google Cloud Storage
+        - DataProc              # Google Big Data Compute Engine
+        - HDInsight             # Azure Compute
+        - AzureStorage          # Azure Blob Storage
+        - HDFS                  # in house Hadoop (Storage)
+        - YARN                  # in house YARN (Compute)
+        """
+        return self.api.get_resource_by_sub_type(resource_sub_type=resource_type)
+    
+    # TODO: cover resource groups. add, delete etc.
+    # TODO: add & remove credentials
 
     def add_work_space(self, name=None, labels=None, verbose=False):
         return WorkSpace(self, name=name, labels=labels, verbose=verbose)
+

@@ -1,5 +1,6 @@
 import skil
 import sys
+import pytest
 if sys.version_info >= (3, 3):
     import unittest.mock as mock
 else:
@@ -22,3 +23,7 @@ def test_model_upload(Skil):
 
     model_file_name = './dummy.pb'
     skil_server.upload_model(model_file_name)
+
+
+if __name__ == '__main__':
+    pytest.main([__file__])

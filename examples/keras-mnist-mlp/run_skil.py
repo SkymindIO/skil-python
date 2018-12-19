@@ -11,7 +11,7 @@ deployment = Deployment(skil_server, "keras_models")
 skil_services = []
 for epoch in range(2):
     model_name = 'model_{epoch:02d}.hdf5'.format(epoch=epoch + 1)
-    model = Model(model_name, id=epoch, experiment=experiment)
+    model = Model(model_name, model_id=epoch, experiment=experiment)
     service = model.deploy(start_server=False, deployment=deployment)
     skil_services.append(service)
 

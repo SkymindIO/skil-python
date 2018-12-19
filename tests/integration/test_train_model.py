@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import pytest
 import os.path
 
 import keras
@@ -13,6 +13,7 @@ import skil
 from skil import Skil, WorkSpace, Experiment, Model as SkilModel
 
 import uuid
+
 
 def test_train_keras_model():
     # Read the SKIL conf and initialize if missing.
@@ -45,7 +46,7 @@ def test_train_keras_model():
         work_space = WorkSpace(skil_server, name="Mnist Sample")
         skil_conf['workspace_id'] = work_space.id
     else:
-        work_space = skil.get_workspace_by_id(None, skil_server, skil_conf['workspace_id'])
+        work_space = skil.get_workspace_by_id(skil_server, skil_conf['workspace_id'])
 
     experiment = None
     if skil_conf['experiment_id'] == '':
@@ -102,12 +103,15 @@ def test_train_keras_model():
     # Save the model to SKIL with a descriptive name.
     model_id = str(uuid.uuid1())
     skil_model = SkilModel('keras_mnist.h5', 
-        id= model_id,
+        model_id= model_id,
         experiment=experiment, 
         name="3-layer-MLP-with-dropout-" + str(epochs) + "-epochs" )
     skil_model.add_evaluation(accuracy=acc, name="MNIST test set")
     skil_conf['model_id'] = skil_model.id
 
-
     with open('.skil', 'w') as f:
         json.dump(skil_conf, f)
+
+
+if __name__ == '__main__':
+    pytest.main([__file__])

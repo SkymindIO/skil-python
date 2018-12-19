@@ -44,19 +44,19 @@ def test_deployment_creation():
 
 
 def test_model_creation_1():
-    model = skil.Model('model.h5')
+    model = skil.Model('keras_mnist.h5')
 
 
 def test_model_creation_2():
     ws = _get_ws()
     exp = skil.Experiment(ws)
-    model = skil.Model('model.h5', experiment=exp)
+    model = skil.Model('keras_mnist.h5', experiment=exp)
 
 
 def test_service_creation():
     ws = _get_ws()
     exp = skil.Experiment(ws)
-    model = skil.Model('model.h5', experiment=exp)
+    model = skil.Model('keras_mnist.h5', experiment=exp)
     dep = skil.Deployment(ws.skil)
     model.deploy(dep)
 

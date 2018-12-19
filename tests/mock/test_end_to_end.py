@@ -1,14 +1,16 @@
+import pytest
 import sys
 from skil import WorkSpace, Experiment, Model, Deployment
 if sys.version_info >= (3, 3):
     import unittest.mock as mock
 else:
     import mock as mock
-
+import os
 
 @mock.patch('skil.Skil')
 def test_e2e(Skil):
     model_path = './dummy.pb'
+    open(model_path, 'a').close()
 
     skil_server = Skil()
     skil_server.upload_model(model_path)
@@ -21,3 +23,9 @@ def test_e2e(Skil):
 
     deployment = Deployment(skil_server, 'test_deployment')
     model.deploy(deployment, start_server=False)
+
+    os.remove(model_path)
+
+
+if __name__ == '__main__':
+    pytest.main([__file__])
