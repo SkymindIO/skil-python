@@ -1,4 +1,5 @@
 import skil_client
+from .base import Skil
 
 
 class Deployment:
@@ -12,7 +13,9 @@ class Deployment:
     """
     # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
     # Make sure to keep this up-to-date.
-    def __init__(self, skil, name=None, deployment_id=None):
+    def __init__(self, skil=None, name=None, deployment_id=None):
+        if not skil:
+            skil = Skil()  # TODO: take care of auth
         if deployment_id is not None:
             response = skil.api.deployment_get(deployment_id)
             if response is None:

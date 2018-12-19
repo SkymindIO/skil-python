@@ -63,4 +63,4 @@ class Experiment:
 
 
 def get_experiment_by_id(work_space, experiment_id):
-    return Experiment(work_space=work_space, id=experiment_id, create=False)
+    return Experiment(work_space=work_space, experiment_id=experiment_id, create=False)
