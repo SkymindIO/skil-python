@@ -1,5 +1,7 @@
 from .workspaces import WorkSpace
 import skil_client
+from skil_client.rest import ApiException
+
 import pprint
 import os
 import time
@@ -48,7 +50,7 @@ class Skil:
             config.api_key['authorization'] = self.token
             config.api_key_prefix['authorization'] = "Bearer"
             self.printer.pprint('>>> Done!')
-        except skil_client.rest.ApiException as e:
+        except ApiException as e:
             raise Exception(
                 "Exception when calling DefaultApi->login: {}\n".format(e))
 
@@ -66,6 +68,7 @@ class Skil:
 
         content = json.loads(r.content.decode('utf-8'))
         services = content.get('serviceInfoList')
+        server_id = None
         for s in services:
             if 'Model History' in s.get('name'):
                 server_id = s.get('id')
