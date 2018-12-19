@@ -62,5 +62,5 @@ class Experiment:
                 ">>> Exception when calling delete_experiment: %s\n" % e)
 
 
-def get_experiment_by_id(work_space, id):
-    return Experiment(work_space=work_space, id=id, create=False)
+def get_experiment_by_id(work_space, experiment_id):
+    return Experiment(work_space=work_space, id=experiment_id, create=False)

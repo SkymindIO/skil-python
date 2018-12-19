@@ -45,7 +45,7 @@ def test_deployment_by_id():
     sk = _get_sk()
     dep = skil.Deployment(sk, name='test_dep')
     id = dep.id
-    dep2 = skil.get_deployement_by_id(sk, id)
+    dep2 = skil.get_deployment_by_id(sk, id)
     assert dep.name == dep2.name
 
 

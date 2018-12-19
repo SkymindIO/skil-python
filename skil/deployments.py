@@ -6,17 +6,17 @@ class Deployment:
     no accidental interruptions or mistakes in a production environment.
 
     # Arguments:
-        skil: Skil server instance.
+        skil: `Skil` server instance.
         name: string. Name for the deployment.
         id: Unique id for the deployment. If `None`, a unique id will be generated.
     """
     # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
     # Make sure to keep this up-to-date.
-    def __init__(self, skil, name=None, id=None):
-        if id is not None:
-            response = skil.api.deployment_get(id)
+    def __init__(self, skil, name=None, deployment_id=None):
+        if deployment_id is not None:
+            response = skil.api.deployment_get(deployment_id)
             if response is None:
-                raise KeyError('Deployment not found: ' + str(id))
+                raise KeyError('Deployment not found: ' + str(deployment_id))
             self.response = response
             self.name = self.response.name
         else:
@@ -28,6 +28,11 @@ class Deployment:
             self.id = self.response.id
 
 
-def get_deployement_by_id(skil, id):
-    dep = Deployment(skil, id=id)
-    return dep
+def get_deployment_by_id(skil, deployment_id):
+    """ Get model deployment by ID
+
+    # Arguments
+        skil: `Skil` server instance
+        deployment_id: deployment ID
+    """
+    return Deployment(skil, deployment_id=deployment_id)

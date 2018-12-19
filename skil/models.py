@@ -18,8 +18,8 @@ class Model:
     or alternatively you can import models into SKIL.
 
     # Arguments
-        model: string. Model file path.
-        id: integer. Unique id for model. If `None`, a unique id will be generated.
+        model: Model file path or Keras model instance
+        model_id: integer. Unique id for model. If `None`, a unique id will be generated.
         name: string. Name for the model.
         version: integer. Version of the model. Defaults to 1.
         experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
@@ -124,7 +124,7 @@ class Model:
         # Arguments:
             deployment: `Deployment` instance.
             start_server: boolean. If `True`, the service is immedietely started.
-            scale: integer. Scale for deployment.
+            scale: integer. Scale-out for deployment.
             input_names: list of strings. Input variable names of the model.
             output_names: list of strings. Output variable names of the model.
             verbose: boolean. If `True`, api response will be printed.
@@ -160,7 +160,7 @@ class Model:
         return service
 
     def undeploy(self):
-        """Undeploy the model.
+        """Un-deploy the model.
         """
         try:
             self.skil.api.delete_model(self.deployment.id, self.id)
