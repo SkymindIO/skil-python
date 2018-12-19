@@ -5,7 +5,7 @@ from keras.datasets import mnist
 skil_server = Skil()
 work_space = WorkSpace(skil_server)
 experiment = Experiment(work_space)
-model = Model('model.h5', id="keras", experiment=experiment)
+model = Model('model.h5', model_id="keras", experiment=experiment)
 
 deployment = Deployment(skil_server, "keras_model")
 service = model.deploy(deployment)
