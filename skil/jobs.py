@@ -2,6 +2,24 @@ import skil_client
 
 
 class JobConfiguration:
+    """JobConfiguration
+
+    A SKIL job configuration collects all data needed to set up and run a SKIL Job.
+    SKIL currently has inference and training jobs, each come with their respective
+    configuration.
+
+    # Arguments:
+        skil_model: a `skil.Model` instance
+        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
+        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        output_path: string with path to folder in which job output should be stored.
+        data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
+        is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
+        verbose: boolean, log level. Set True for detailed logging.
+
+    """
+
+    # TODO: provide a smart default for output_path relative to input data or model path.
 
     def __init__(self, skil_model, compute_resource_id, 
                  storage_resource_id, output_path, data_set_provider_class,
@@ -16,22 +34,38 @@ class JobConfiguration:
 
 
 class InferenceJobConfiguration(JobConfiguration):
+    """InferenceJobConfiguration
 
-    # TODO signature to aim for: 
-    # (model, data_path (what), data_format (how), storage_id (where), compute_id)
-    # TODO: data format may eventually even be inferred.
+    Configuration for a SKIL inference job. On top of what you need to specify for a base JobConfiguration,
+    you need to set the batch size for the model as well.
+
+    # Arguments:
+        skil_model: a `skil.Model` instance
+        batch_size: int, data batch size to run inference with on the model.
+        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
+        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        output_path: string with path to folder in which job output should be stored.
+        data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
+        is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
+        verbose: boolean, log level. Set True for detailed logging.
+
+    """
+    # TODO signature to aim for: (model, data_path (what), data_format (how), storage_id (where), compute_id)
+    # TODO: data format may eventually even be inferred automatically. no reason not to. we can do so for models.
 
     # TODO: we could even consider *setting* compute and storage resources for workspaces
-    #       or experiments. No need to specify this every time. 
+    #       or experiments. No need to specify this every time.
+
+    # TODO batch_size should either be known to the model or the data, I don't believe this.
+    # TODO KILL DSP!!!1ONE
+    # TODO There must be a way to hide is_multi_data_set
+
     def __init__(self, skil_model, batch_size, compute_resource_id, storage_resource_id, output_path,
-                #  model_path,  # TODO if we link this to an experiment, this can go
-                #  batch_size,  # TODO this should either be known to the model or the data, I don't believe this.
-                 data_set_provider_class, # TODO: this is an abomination. kill with fire
-                 is_multi_data_set=False, # TODO There must be a way to hide this.
-                #  output_path=None, # TODO: provide a smart default relative to input data or model path.
+                 data_set_provider_class,
+                 is_multi_data_set=False,
                  verbose=False):
         super(InferenceJobConfiguration, self).__init__(
-            skil_model, batch_size, compute_resource_id, 
+            skil_model, compute_resource_id,
             storage_resource_id, output_path, data_set_provider_class, 
             is_multi_data_set, verbose)
 
@@ -40,25 +74,42 @@ class InferenceJobConfiguration(JobConfiguration):
 
 class TrainingJobConfiguration(JobConfiguration):
 
-    # TODO signature to aim for: 
-    # (model, num_epochs, data_path, eval_data_path, eval_types,
+    """TrainingJobConfiguration
+
+    Configuration for a SKIL training job. On top of what you need to specify for a base JobConfiguration,
+    you need to set the number of epochs to train for, a (distributed) training configuration and provide
+    information about how to evaluate your model.
+
+    # Arguments:
+        skil_model: a `skil.Model` instance
+        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
+        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        output_path: string with path to folder in which job output should be stored.
+        data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
+        is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
+        verbose: boolean, log level. Set True for detailed logging.
+    """
+    # TODO signature to aim for: (model, num_epochs, data_path, eval_data_path, eval_types,
     #  data_format, storage_id, compute_id)
     # TODO what if we want to split data on the go. what about validation data? cross validation?
-    # current concept seems insufficient to cover this properly.
-
-    def __init__(self,  skil_model, num_epochs, compute_resource_id, storage_resource_id,
+    #  current concept seems insufficient to cover this properly.
+    # TODO model_path, config_path, model config path... why both? should be able to guess this
+    # TODO model_history_url=None, can we infer this from experiment?
+    # TODO model_history_id=None, this is the workspace id
+    # TODO model_instance_id=None, is this alternatively to model/config path? don't get it.
+    # TODO: eval_type make this a proper class instead of (or additionally to) strings.
+    # TODO: allow multiple eval metrics?!
+    # TODO: the training master config should be deconstructed. maybe provide this to the job.run(...) as argument.
+    # TODO: user should just be *handed* a ui, not take care of a $%$%! URL.
+    def __init__(self,  skil_model, num_epochs,
+                 eval_type,
+                 eval_data_set_provider_class,  # good lord
+                 compute_resource_id, storage_resource_id,
                  output_path,
-                #  model_path, # model path
-                #  config_path, # TODO model config path... why both? should be able to guess this
                  data_set_provider_class,
-                 eval_data_set_provider_class, # good lord
-                 training_master_config, # TODO: the training master config should be deconstructed. maybe provide this to the job.run(...) as argument.
-                 eval_type, # TODO: make this a proper class instead of (or additionally to) strings. TODO: allow multiple eval metrics?!
+                 training_master_config,
                  is_multi_data_set=False,
-                #  model_history_url=None,  # TODO can we infer this from experiment?
-                #  model_history_id=None, # TODO this is the workspace id
-                #  model_instance_id=None, # TODO is this alternatively to model/config path? don't get it.
-                 ui_url=None, # TODO: user should just be handed a ui, not take care of url. 
+                 ui_url=None,
                  verbose=False):
         super(TrainingJobConfiguration, self).__init__(
             skil_model, compute_resource_id, 
@@ -69,8 +120,11 @@ class TrainingJobConfiguration(JobConfiguration):
         self.eval_dsp = eval_data_set_provider_class
         self.eval_type = eval_type
         self.tm = training_master_config
+        self.ui_url = ui_url
 
 
+# TODO: should we think about splitting regular and distributed training jobs?
+# TODO: Can we maybe integrate elephas as store front?
 class TrainingJob:
 
     def __init__(self, skil, training_config):
@@ -81,20 +135,17 @@ class TrainingJob:
         training_create_job_request = skil_client.CreateJobRequest(
             compute_resource_id=self.training_config.compute_id,
             storage_resource_id=self.training_config.storage_id,
-            job_args = self._training_job_args(),
+            job_args=self._training_job_args(),
             output_file_name=self.training_config.output_path
         )
 
-        # TODO: why on earth do I need to specify the training type
-        # here if the request already knows it?
+        # TODO: why do we need to specify the training type here if the request already knows it?
         self.skil.api.create_job("TRAINING", training_create_job_request)
 
     def run(self):
         pass
 
-    
     def _training_job_args(self):
-
         tc = self.training_config
 
         inference = "-i false "
@@ -131,9 +182,7 @@ class InferenceJob:
     def run(self):
         pass
 
-
     def _inference_job_args(self):
-
         ic = self.inference_config
 
         inference = "-i true "
@@ -147,7 +196,9 @@ class InferenceJob:
         return inference + output + batch_size + model_path + dsp + \
             mds + verbose
 
-def get_job_by_id(skil, job_id):
+
+def get_job_by_id(skil_server, job_id):
+    # TODO is this available?
     pass
 
 

@@ -1,6 +1,6 @@
 from .workspaces import WorkSpace
 import skil_client
-from skil_client.rest import ApiException
+from skil_client.rest import ApiException as api_exception
 
 import pprint
 import os
@@ -50,7 +50,7 @@ class Skil:
             config.api_key['authorization'] = self.token
             config.api_key_prefix['authorization'] = "Bearer"
             self.printer.pprint('>>> Done!')
-        except ApiException as e:
+        except api_exception as e:
             raise Exception(
                 "Exception when calling DefaultApi->login: {}\n".format(e))
 

@@ -1,5 +1,5 @@
 import skil_client
-
+from skil_client.rest import ApiException as api_exception
 
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
@@ -56,7 +56,7 @@ class Experiment:
             api_response = self.skil.api.delete_experiment(
                 self.work_space.id, self.id)
             self.skil.printer.pprint(api_response)
-        except skil_client.rest.ApiException as e:
+        except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_experiment: %s\n" % e)
 
