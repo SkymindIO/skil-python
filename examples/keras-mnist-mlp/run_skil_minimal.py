@@ -16,5 +16,6 @@ x_test = x_test.reshape(10000, 784)
 x_test = x_test.astype('float32')
 x_test /= 255
 
+# TODO: predict(_single) seems broken
 print(service.predict_single(x_test[0]))
 print(service.predict(x_test[:10]))

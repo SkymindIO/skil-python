@@ -85,11 +85,11 @@ class Service:
     def predict(self, data):
         """Predict for given batch of data.
 
-        # Argments
+        # Arguments:
             data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
 
         # Returns
-            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
+            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
         """
         if isinstance(data, list):
             inputs = [self._indarray(x) for x in data]
@@ -115,7 +115,7 @@ class Service:
     def predict_single(self, data):
         """Predict for a single input.
 
-        # Argments
+        # Arguments:
             data: `numpy.ndarray` (or list thereof). Input data.
 
         # Returns
