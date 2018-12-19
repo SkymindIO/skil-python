@@ -42,7 +42,7 @@ class Model:
                 else:
                     raise Exception('Invalid model: ' + str(model))
             if not experiment:
-                self.skil = skil.Skil()
+                self.skil = skil.Skil()  # TODO: auth
                 self.work_space = skil.workspaces.WorkSpace(self.skil)
                 self.experiment = skil.experiments.Experiment(self.work_space)
             else:
@@ -53,7 +53,7 @@ class Model:
 
             self.model_name = model_file_name
             self.model_path = self.skil.get_model_path(model_file_name)
-            self.id = model_id if model_id else uuid.uuid1()
+            self.id = model_id if model_id else str(uuid.uuid1())
             self.name = name if name else model_file_name
             self.version = version if version else 1
 
