@@ -5,9 +5,9 @@ setup(
     name='skil',
     version='0.2.7',
     packages=find_packages(),
-    install_requires=['skil_client>=1.2.1', 'requests', 'numpy', 'tensorflow', 'keras', 'opencv-python'],
+    install_requires=['skil_client>=1.2.1', 'requests', 'numpy', 'tensorflow', 'keras', 'opencv-python', 'six'],
     extras_require={
-        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock', 'six', 'tensorflow', 'keras']
+        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock']
     },
     include_package_data=True,
     license='Apache',

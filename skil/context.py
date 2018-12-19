@@ -4,11 +4,8 @@ import sys
 import uuid
 
 import keras
-
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import u as unicode
+from six import string_types
 
 
 class SkilContext(object):
@@ -107,8 +104,7 @@ class SkilContext(object):
         '''
 
         model_id = str(uuid.uuid1())
-        model_path = None
-        if isinstance(model, basestring):
+        if isinstance(model, string_types):
             model_path = model
         elif isinstance(model, keras.models.Model):
             model_path = self.save_model(z, model)
