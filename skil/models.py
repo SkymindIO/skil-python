@@ -2,6 +2,7 @@ import skil
 from skil.services import Service
 
 import skil_client
+from skil_client.rest import  ApiException as api_exception
 import time
 import os
 import uuid
@@ -58,6 +59,9 @@ class Model:
 
             self.evaluations = {}
 
+            self.deployment = None
+            self.model_deployment = None
+
             add_model_instance_response = self.skil.api.add_model_instance(
                 self.skil.server_id,
                 skil_client.ModelInstanceEntity(
@@ -79,7 +83,7 @@ class Model:
             assert model_id is not None
             self.id = model_id
             model_entity = self.skil.api.get_model_instance(self.skil.server_id,
-                                                            self.model_id)
+                                                            self.id)
             self.name = model_entity.model_name
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
@@ -90,14 +94,14 @@ class Model:
         """
         try:
             self.skil.api.delete_model_instance(self.skil.server_id, self.id)
-        except skil_client.rest.ApiException as e:
+        except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
     def add_evaluation(self, accuracy, eval_id=None, name=None, version=None):
         eval_version = version if version else 1
-        eval_id = eval_id if eval_id else self.id
-        eval_name = name if name else self.id
+        eval_id = eval_id if eval_id else uuid.uuid1()
+        eval_name = name if name else uuid.uuid1()
 
         eval_response = self.skil.api.add_evaluation_result(
             self.skil.server_id,
@@ -165,5 +169,5 @@ class Model:
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 
 
-def get_model_by_id(experiment, id):
-    return Model(id=id, experiment=experiment, create=False)
+def get_model_by_id(experiment, model_id):
+    return Model(model_id=model_id, experiment=experiment, create=False)

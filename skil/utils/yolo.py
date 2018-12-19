@@ -2,6 +2,15 @@ import cv2
 
 
 def annotate_image(image, detection):
+    """ Annotate images with object detection results
+
+    # Arguments:
+        image: numpy array representing the image used for detection
+        detection: `DetectionResult` result from SKIL on the same image
+
+    # Return value:
+        annotated image as numpy array
+    """
     objects = detection.get('objects')
     if objects:
         for detect in objects: 

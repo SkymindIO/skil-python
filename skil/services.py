@@ -7,9 +7,18 @@ import requests
 import json
 import os
 
+
 class Service:
-    '''A wrapper around a deployed model for inference.
-    '''
+    """Service
+
+    A service is a deployed model.
+
+    # Arguments:
+        skil: `Skil` server instance
+        model: `skil.Model` instance
+        deployment: `skil.Deployment` instance
+        model_deployment: result of `deploy_model` API call of a model
+    """
 
     def __init__(self, skil, model, deployment, model_deployment):
         self.skil = skil
@@ -19,8 +28,8 @@ class Service:
         self.deployment = deployment
 
     def start(self):
-        '''Starts the service.
-        '''
+        """Starts the service.
+        """
         if not self.model_deployment:
             self.skil.printer.pprint(
                 "No model deployed yet, call 'deploy()' on a model first.")
@@ -48,8 +57,8 @@ class Service:
                     self.skil.printer.pprint(">>> Waiting for deployment...")
 
     def stop(self):
-        '''Stop the service.
-        '''
+        """Stops the service.
+        """
         # TODO: test this
         self.skil.api.model_state_change(
             self.deployment.id,
@@ -57,15 +66,16 @@ class Service:
             skil_client.SetState("stop")
         )
 
-    def _indarray(self, np_array):
-        '''Convert a numpy array to `skil_client.INDArray` instance.
+    @staticmethod
+    def _indarray(np_array):
+        """Convert a numpy array to `skil_client.INDArray` instance.
 
         # Arguments
             np_array: `numpy.ndarray` instance.
 
         # Returns
             `skil_client.INDArray` instance.
-        '''
+        """
         return skil_client.INDArray(
             ordering='c',
             shape=list(np_array.shape),
@@ -73,14 +83,14 @@ class Service:
         )
 
     def predict(self, data):
-        '''Predict for given batch of data.
+        """Predict for given batch of data.
 
         # Argments
             data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
 
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
-        '''
+        """
         if isinstance(data, list):
             inputs = [self._indarray(x) for x in data]
         else:
@@ -103,14 +113,14 @@ class Service:
         return outputs
 
     def predict_single(self, data):
-        '''Predict for a single input.
+        """Predict for a single input.
 
         # Argments
             data: `numpy.ndarray` (or list thereof). Input data.
 
         # Returns
-            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-ouput model.
-        '''
+            `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
+        """
         if isinstance(data, list):
             inputs = [self._indarray(np.expand_dims(x, 0)) for x in data]
         else:
@@ -130,20 +140,20 @@ class Service:
         return np.asarray(output.data).reshape(output.shape)
 
     def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
-        ''' Detect objects in an image for this service. Only works when deploying an object detection
+        """Detect objects in an image for this service. Only works when deploying an object detection
             model like YOLO or SSD.
 
         # Argments
             image: `numpy.ndarray`. Input image to detect objects from.
             threshold: floating point between 0 and 1. bounding box threshold, only objects with at
                 least this threshold get returned.
-            needs_preprocessing: boolean. whether input data needs preprocessing
+            needs_preprocessing: boolean. whether input data needs pre-processing
             temp_path: local path to which intermediate numpy arrays get stored.
 
         # Returns
             `DetectionResult`, a Python dictionary with labels, confidences and locations of bounding boxes
                 of detected objects.
-        '''
+        """
         cv2.imwrite(temp_path, image)
         url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
             self.skil.config.host,
@@ -169,7 +179,7 @@ class Service:
                 url=url, 
                 headers=self.skil.auth_headers,
                 files={
-                'file': (temp_path, data, 'image/jpeg')
+                    'file': (temp_path, data, 'image/jpeg')
                 },
                 data={
                     'id': self.model.id,

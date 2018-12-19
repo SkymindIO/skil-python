@@ -1,5 +1,6 @@
 import skil_client
 
+
 class StorageResource:
     """StorageResource
 
@@ -7,22 +8,30 @@ class StorageResource:
     storage capabilities, including systems like AWS S3,
     HDFS, Azure Storage or Google Cloud storage.
     """
-    def __init__(self):
+    def __init__(self, skil):
         """Adds the storage resource to SKIL.
         """
-        pass
+        self.skil = skil
 
-    def delete(self):
+    def delete(self, resource_id):
         """Delete the storage resource from SKIL.
         """
-        self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+        self.skil.api.delete_resource_by_id(resource_id=resource_id)
 
 
 class AzureStorage(StorageResource):
+    """AzureStorage
 
+    SKIL Azure storage resource.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        container_name: Azure storage container name
+    """
     def __init__(self, skil, name, container_name):
+        super(AzureStorage, self).__init__(skil)
 
-        self.skil = skil
         self.name = name
         self.container_name = container_name
 
@@ -39,10 +48,19 @@ class AzureStorage(StorageResource):
     
 
 class GoogleStorage(StorageResource):
+    """GoogleStorage
 
+    SKIL Google storage resource.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        project_id: Google project ID
+        bucket_name: bucket name
+    """
     def __init__(self, skil, name, project_id, bucket_name):
 
-        self.skil = skil
+        super(GoogleStorage, self).__init__(skil)
         self.name = name
         self.project_id = project_id
         self.bucket_name = bucket_name
@@ -61,10 +79,19 @@ class GoogleStorage(StorageResource):
 
 
 class HDFS(StorageResource):
+    """HDFS
 
+    SKIL HDFS resource.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        name_node_host: host of the name node
+        name_node_port: port of the name node
+    """
     def __init__(self, skil, name, name_node_host, name_node_port):
 
-        self.skil = skil
+        super(HDFS, self).__init__(skil)
         self.name = name
         self.name_node_host = name_node_host
         self.name_node_port = name_node_port
@@ -83,10 +110,20 @@ class HDFS(StorageResource):
 
 
 class S3(StorageResource):
+    """S3
+
+    SKIL S3 resource.
+
+    # Arguments:
+        skil: `Skil` server instance
+        name: Resource name
+        bucket: S3 bucket name
+        region: AWS region
+    """
 
     def __init__(self, skil, name, bucket, region):
 
-        self.skil = skil
+        super(S3, self).__init__(skil)
         self.name = name
         self.bucket = bucket
         self.region = region

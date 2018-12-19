@@ -12,8 +12,7 @@ class ComputeResource:
         """Adds the compute resource to SKIL.
         """
         self.skil = skil
-        pass
-        
+
     def delete(self, resource_id):
         """Delete the compute resource from SKIL.
         """

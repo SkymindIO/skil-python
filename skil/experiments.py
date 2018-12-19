@@ -1,5 +1,7 @@
 import skil_client
 from skil_client.rest import ApiException as api_exception
+import uuid
+
 
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
@@ -11,17 +13,17 @@ class Experiment:
 
     # Arguments:
         work_space: `WorkSpace` instance.
-        id: integer. Unique id for workspace. If `None`, a unique id will be generated.
+        experiment_id: integer. Unique id for workspace. If `None`, a unique id will be generated.
         name: string. Name for the experiment.
         description: string. Description for the experiment.
         verbose: boolean. If `True`, api response will be printed.
     """
 
-    def __init__(self, work_space=None, id=None, name='test', description='test', verbose=False, create=True):
+    def __init__(self, work_space=None, experiment_id=None, name='test', description='test', verbose=False, create=True):
         if create:
             self.work_space = work_space
             self.skil = self.work_space.skil
-            self.id = id if id else work_space.id + "_experiment"
+            self.id = experiment_id if experiment_id else work_space.id + "_experiment_" + str(uuid.uuid1())
             self.name = name
             experiment_entity = skil_client.ExperimentEntity(
                 experiment_id=self.id,
@@ -34,7 +36,6 @@ class Experiment:
                 self.skil.server_id,
                 experiment_entity
             )
-
             self.experiment_entity = experiment_entity
 
             if verbose:
@@ -42,11 +43,11 @@ class Experiment:
         else:
             experiment_entity = work_space.skil.api.get_experiment(
                 work_space.skil.server_id,
-                id
+                experiment_id
             )
             self.experiment_entity = experiment_entity
             self.work_space = work_space
-            self.id = id
+            self.id = experiment_id
             self.name = experiment_entity.experiment_name
 
     def delete(self):
