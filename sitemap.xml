@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>https://skymind.ai/platform/skil-python/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/work_space/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/work_space/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/experiment/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/experiment/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/model/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/model/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/deployment/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/deployment/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/service/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/service/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://skymind.ai/platform/skil-python/resources/</loc>
-     <lastmod>2018-11-12</lastmod>
+     <loc>https://skymind.ai/skil-python/resources/</loc>
+     <lastmod>2018-12-20</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://skymind.ai/skil-python/jobs/</loc>
+     <lastmod>2018-12-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
