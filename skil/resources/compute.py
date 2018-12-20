@@ -12,11 +12,13 @@ class ComputeResource:
         """Adds the compute resource to SKIL.
         """
         self.skil = skil
+        self.resource_id = None
 
-    def delete(self, resource_id):
+    def delete(self):
         """Delete the compute resource from SKIL.
         """
-        self.skil.api.delete_resource_by_id(resource_id=resource_id)
+        if self.resource_id:
+            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 
 class EMR(ComputeResource):
@@ -148,3 +150,5 @@ class YARN(ComputeResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
+
+# TODO: get resource from ID

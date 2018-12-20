@@ -12,12 +12,13 @@ class StorageResource:
         """Adds the storage resource to SKIL.
         """
         self.skil = skil
+        self.resource_id = None
 
-    def delete(self, resource_id):
+    def delete(self):
         """Delete the storage resource from SKIL.
         """
-        self.skil.api.delete_resource_by_id(resource_id=resource_id)
-
+        if self.resource_id:
+            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
 
 class AzureStorage(StorageResource):
     """AzureStorage
@@ -139,3 +140,5 @@ class S3(StorageResource):
         )
 
         self.resource_id = resource_response.get("resourceId")
+
+# TODO: get resource from ID
