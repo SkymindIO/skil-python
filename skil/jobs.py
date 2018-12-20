@@ -10,8 +10,8 @@ class JobConfiguration:
 
     # Arguments:
         skil_model: a `skil.Model` instance
-        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
-        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
+        storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job.
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
@@ -21,12 +21,12 @@ class JobConfiguration:
 
     # TODO: provide a smart default for output_path relative to input data or model path.
 
-    def __init__(self, skil_model, compute_resource_id, 
-                 storage_resource_id, output_path, data_set_provider_class,
+    def __init__(self, skil_model, compute_resource, storage_resource, 
+                 output_path, data_set_provider_class,
                  is_multi_data_set, verbose):
         self.model = skil_model
-        self.compute_id = compute_resource_id
-        self.storage_id = storage_resource_id
+        self.compute_id = compute_resource.resource_id
+        self.storage_id = storage_resource.resource_id
         self.output_path = output_path
         self.dsp = data_set_provider_class
         self.mds = is_multi_data_set
@@ -42,8 +42,8 @@ class InferenceJobConfiguration(JobConfiguration):
     # Arguments:
         skil_model: a `skil.Model` instance
         batch_size: int, data batch size to run inference with on the model.
-        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
-        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
+        storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
@@ -60,13 +60,13 @@ class InferenceJobConfiguration(JobConfiguration):
     # TODO KILL DSP!!!1ONE
     # TODO There must be a way to hide is_multi_data_set
 
-    def __init__(self, skil_model, batch_size, compute_resource_id, storage_resource_id, output_path,
+    def __init__(self, skil_model, batch_size, compute_resource, storage_resource, output_path,
                  data_set_provider_class,
                  is_multi_data_set=False,
                  verbose=False):
         super(InferenceJobConfiguration, self).__init__(
-            skil_model, compute_resource_id,
-            storage_resource_id, output_path, data_set_provider_class, 
+            skil_model, compute_resource,
+            storage_resource, output_path, data_set_provider_class, 
             is_multi_data_set, verbose)
 
         self.batch_size = batch_size
@@ -82,8 +82,8 @@ class TrainingJobConfiguration(JobConfiguration):
 
     # Arguments:
         skil_model: a `skil.Model` instance
-        compute_resource_id: ID of the `skil.resources.compute.ComputeResource' created before running a job.
-        storage_resource_id: ID of the `skil.resources.storage.StorageResource`  created before runnning a job.
+        compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
+        storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
@@ -104,33 +104,41 @@ class TrainingJobConfiguration(JobConfiguration):
     def __init__(self,  skil_model, num_epochs,
                  eval_type,
                  eval_data_set_provider_class,  # good lord
-                 compute_resource_id, storage_resource_id,
+                 compute_resource, storage_resource,
                  output_path,
                  data_set_provider_class,
-                 training_master_config,
                  is_multi_data_set=False,
                  ui_url=None,
                  verbose=False):
         super(TrainingJobConfiguration, self).__init__(
-            skil_model, compute_resource_id, 
-            storage_resource_id, output_path, data_set_provider_class, 
+            skil_model, compute_resource, 
+            storage_resource, output_path, data_set_provider_class, 
             is_multi_data_set, verbose)
         
         self.num_epochs = num_epochs
         self.eval_dsp = eval_data_set_provider_class
         self.eval_type = eval_type
-        self.tm = training_master_config
         self.ui_url = ui_url
 
 
-# TODO: should we think about splitting regular and distributed training jobs?
-# TODO: Can we maybe integrate elephas as store front?
 class TrainingJob:
+    """TrainingJob
 
-    def __init__(self, skil, training_config):
+    Initialize and run a SKIL training job. If a distributed config is provided,
+    SKIL will run your model on Spark. Otherwise it will carry out regular training
+    on provided resources.
+
+    # Arguments:
+        training_config: `TrainingJobConfiguration` instance
+        distributed_config: `DistributedConfiguration` instance
+
+    """
+
+    def __init__(self, skil, training_config, distributed_config=None):
 
         self.skil = skil
         self.training_config = training_config
+        self.tm = distributed_config
 
         training_create_job_request = skil_client.CreateJobRequest(
             compute_resource_id=self.training_config.compute_id,
@@ -147,6 +155,7 @@ class TrainingJob:
 
     def _training_job_args(self):
         tc = self.training_config
+        tm = self.tm
 
         inference = "-i false "
         output = "-o {} ".format(tc.output_path)
