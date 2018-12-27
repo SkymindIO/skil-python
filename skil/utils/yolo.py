@@ -1,4 +1,8 @@
-import cv2
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+
 
 
 def annotate_image(image, detection):
@@ -11,6 +15,8 @@ def annotate_image(image, detection):
     # Return value:
         annotated image as numpy array
     """
+    if cv2 is None:
+        raise Exception("OpenCV is not installed.")
     objects = detection.get('objects')
     if objects:
         for detect in objects: 

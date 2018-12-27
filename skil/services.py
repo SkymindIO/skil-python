@@ -2,10 +2,14 @@ import skil_client
 import time
 import uuid
 import numpy as np
-import cv2
 import requests
 import json
 import os
+
+try:
+    import cv2
+except ImportError:
+    cv2 = None
 
 
 class Service:
@@ -154,6 +158,8 @@ class Service:
             `DetectionResult`, a Python dictionary with labels, confidences and locations of bounding boxes
                 of detected objects.
         """
+        if cv2 is None:
+            raise Exception("OpenCV is not installed.")
         cv2.imwrite(temp_path, image)
         url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
             self.skil.config.host,
