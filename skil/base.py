@@ -89,7 +89,6 @@ class Skil:
         return self.uploaded_model_names
 
     def get_model_path(self, model_name):
-        print(self.uploads)
         for upload in self.uploads:
             if model_name == upload.file_name:
                 return "file://" + upload.path
