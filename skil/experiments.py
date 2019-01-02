@@ -1,7 +1,9 @@
 import skil_client
 from skil_client.rest import ApiException as api_exception
 import uuid
-
+import json
+from .base import Skil
+from .workspaces import get_workspace_by_id
 
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
@@ -19,7 +21,8 @@ class Experiment:
         verbose: boolean. If `True`, api response will be printed.
     """
 
-    def __init__(self, work_space=None, experiment_id=None, name='test', description='test', verbose=False, create=True):
+    def __init__(self, work_space=None, experiment_id=None, name='test', description='test', verbose=False, create=True,
+                 *args, **kwargs):
         if create:
             self.work_space = work_space
             self.skil = self.work_space.skil
@@ -49,6 +52,28 @@ class Experiment:
             self.work_space = work_space
             self.id = experiment_id
             self.name = experiment_entity.experiment_name
+
+    def get_config(self):
+        return {
+            'experiment_id': self.id,
+            'experiment_name': self.name,
+            'workspace_id': self.work_space.id
+        }
+
+    def save(self, file_name):
+        config = self.get_config()
+        with open(file_name, 'w') as f:
+            json.dump(config, f)
+
+    @classmethod
+    def load(cls, file_name):
+        # TODO: If it doesn't exist, create it
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = Skil.from_config()
+        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
+        return get_experiment_by_id(work_space, config['experiment_id'])
 
     def delete(self):
         """Deletes the experiment.

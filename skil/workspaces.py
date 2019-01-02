@@ -1,4 +1,3 @@
-from .experiments import Experiment
 import skil_client
 from skil_client.rest import ApiException as api_exception
 
@@ -46,10 +45,6 @@ class WorkSpace:
         except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_history: %s\n" % e)
-
-    def add_experiment(self, experiment_id=None, name='test', description='test', verbose=False):
-        return Experiment(work_space=self, experiment_id=experiment_id, name=name,
-                          description=description, verbose=verbose)
 
 
 def get_workspace_by_id(skil, workspace_id):

@@ -8,3 +8,7 @@ from skil.services import *
 from skil.resources import *
 from skil.jobs import *
 from skil.utils import *
+from skil.config import load_skil_config
+
+# Try to find SKIL config when first importing skil
+load_skil_config()

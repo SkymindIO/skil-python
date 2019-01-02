@@ -1,4 +1,3 @@
-from .workspaces import WorkSpace
 import skil_client
 from skil_client.rest import ApiException as api_exception
 
@@ -8,20 +7,7 @@ import time
 import requests
 import json
 import subprocess
-
-
-def start_skil_docker():
-    devnull = open(os.devnull, 'w')
-
-    print(">>> Downloading latest SKIL docker image.")
-    subprocess.call(["docker", "pull", "skymindops/skil-ce"])
-    print(">>> Starting SKIL docker container.")
-    subprocess.Popen(["docker", "run", "--rm", "-it", "-p", "9008:9008",
-                      "-p", "8080:8080", "skymindops/skil-ce", "bash", "/start-skil.sh", "&"],
-                     stdout=devnull, stderr=subprocess.STDOUT)
-    print("Starting SKIL. This process will take a few seconds to start.")
-    time.sleep(20)
-    print("SKIL started! Visit http://localhost:9008 to work with the UI.")
+from .config import SKIL_CONFIG
 
 
 class Skil:
@@ -58,6 +44,10 @@ class Skil:
             self.server_id = workspace_server_id
         else:
             self.server_id = self.get_default_server_id()
+
+    @classmethod
+    def from_config(cls):
+        return Skil(**SKIL_CONFIG)
 
     def get_default_server_id(self):
         self.auth_headers = {'Authorization': 'Bearer %s' % self.token}
@@ -124,7 +114,3 @@ class Skil:
     
     # TODO: cover resource groups. add, delete etc.
     # TODO: add & remove credentials
-
-    def add_work_space(self, name=None, labels=None, verbose=False):
-        return WorkSpace(self, name=name, labels=labels, verbose=verbose)
-
