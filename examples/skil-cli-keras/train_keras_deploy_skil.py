@@ -34,11 +34,11 @@ model.summary()
 model.compile(loss='categorical_crossentropy',
               optimizer='sgd', metrics=['accuracy'])
 
-# history = model.fit(x_train, y_train,
-#                     batch_size=128,
-#                     epochs=10,
-#                     verbose=1,
-#                     validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train,
+                    batch_size=128,
+                    epochs=10,
+                    verbose=1,
+                    validation_data=(x_test, y_test))
 _, acc = model.evaluate(x_test, y_test)
 
 
