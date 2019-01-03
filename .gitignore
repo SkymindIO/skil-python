@@ -121,3 +121,5 @@ docs/sources
 
 # VS code
 .vscode/
+
+*.json
