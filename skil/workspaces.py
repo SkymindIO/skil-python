@@ -40,7 +40,7 @@ class WorkSpace:
         """
         try:
             api_response = self.skil.api.delete_model_history(
-                self.skil.server_id, self.workspace.id)
+                self.skil.server_id, self.id)
             self.skil.printer.pprint(api_response)
         except api_exception as e:
             self.skil.printer.pprint(

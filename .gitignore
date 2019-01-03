@@ -123,3 +123,4 @@ docs/sources
 .vscode/
 
 *.json
+.skil
