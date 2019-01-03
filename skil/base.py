@@ -7,7 +7,7 @@ import time
 import requests
 import json
 import subprocess
-from .config import SKIL_CONFIG
+from .config import SKIL_CONFIG, save_skil_config
 
 
 class Skil:
@@ -44,6 +44,16 @@ class Skil:
             self.server_id = workspace_server_id
         else:
             self.server_id = self.get_default_server_id()
+
+        # Store config for future connections
+        base_config = {
+            'host': host,
+            'port': port,
+            'username': user_id,
+            'password': password
+        }
+        save_skil_config(base_config)
+
 
     @classmethod
     def from_config(cls):

@@ -42,7 +42,7 @@ class Model:
                 else:
                     raise Exception('Invalid model: ' + str(model))
             if not experiment:
-                self.skil = skil.Skil()  # TODO: auth
+                self.skil = skil.Skil.from_config()
                 self.work_space = skil.workspaces.WorkSpace(self.skil)
                 self.experiment = skil.experiments.Experiment(self.work_space)
             else:
@@ -66,7 +66,7 @@ class Model:
                 self.skil.server_id,
                 skil_client.ModelInstanceEntity(
                     uri=self.model_path,
-                    model_id=model_id,
+                    model_id=self.id,
                     model_labels=labels,
                     model_name=name,
                     model_version=self.version,
@@ -88,6 +88,8 @@ class Model:
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
             self.model = model_entity
+        
+        self.service = None
 
     def delete(self):
         """Deletes the model
@@ -100,8 +102,8 @@ class Model:
 
     def add_evaluation(self, accuracy, eval_id=None, name=None, version=None):
         eval_version = version if version else 1
-        eval_id = eval_id if eval_id else uuid.uuid1()
-        eval_name = name if name else uuid.uuid1()
+        eval_id = eval_id if eval_id else str(uuid.uuid1())
+        eval_name = name if name else str(uuid.uuid1())
 
         eval_response = self.skil.api.add_evaluation_result(
             self.skil.server_id,
@@ -138,26 +140,33 @@ class Model:
         uris = ["{}/model/{}/default".format(deployment.name, self.name),
                 "{}/model/{}/v1".format(deployment.name, self.name)]
 
-        deploy_model_request = skil_client.ImportModelRequest(
-            name=self.name,
-            scale=scale,
-            file_location=self.model_path,
-            model_type="model",
-            uri=uris,
-            input_names=input_names,
-            output_names=output_names)
+        if not self.service:
+            deploy_model_request = skil_client.ImportModelRequest(
+                name=self.name,
+                scale=scale,
+                file_location=self.model_path,
+                model_type="model",
+                uri=uris,
+                input_names=input_names,
+                output_names=output_names)
 
-        self.deployment = deployment.response
-        self.model_deployment = self.skil.api.deploy_model(
-            self.deployment.id, deploy_model_request)
-        if verbose:
-            self.skil.printer.pprint(self.model_deployment)
+            self.deployment = deployment.response
 
-        service = Service(self.skil, self,
-                          self.deployment, self.model_deployment)
+            models = self.skil.api.models(self.deployment.id)
+            deployed_model = [m for m in models if m.name == self.name]
+            if deployed_model:
+                self.model_deployment = deployed_model[0]
+            else:
+                self.model_deployment = self.skil.api.deploy_model(
+                    self.deployment.id, deploy_model_request)
+                if verbose:
+                    self.skil.printer.pprint(self.model_deployment)
+
+            self.service = Service(self.skil, self,
+                            self.deployment, self.model_deployment)
         if start_server:
-            service.start()
-        return service
+            self.service.start()
+        return self.service
 
     def undeploy(self):
         """Un-deploy the model.

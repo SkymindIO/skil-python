@@ -28,6 +28,11 @@ import click
 from click.exceptions import ClickException
 from dateutil import parser
 
+from skil.experiments import Experiment
+from skil.workspaces import WorkSpace
+from skil.base import Skil
+from skil.deployments import Deployment
+
 from .config import DEFAULT_SKIL_CONFIG, save_skil_config
 
 if sys.version_info[0] == 2:
@@ -64,11 +69,15 @@ class CLI(object):
         subparsers.add_parser(
             'configure', help='Base configuration for pyskil. Run once')
 
-        subparsers.add_parser(
+        exp_parser = subparsers.add_parser(
             'init-experiment', help='Initialize a SKIL experiment from scratch.')
+        exp_parser.add_argument(
+            '-f', '--file', help='File to persist the experiment to.')
 
-        subparsers.add_parser(
+        dep_parser = subparsers.add_parser(
             'init-deployment', help='Initialize a SKIL deployment from scratch.')
+        dep_parser.add_argument(
+            '-f', '--file', help='File to persist the deployment to.')
 
         argcomplete.autocomplete(parser)
         args = parser.parse_args(args)
@@ -85,11 +94,11 @@ class CLI(object):
             return
 
         if self.command == 'init-experiment':
-            self.init_experiment()
+            self.init_experiment(self.var_args['file'])
             return
 
         if self.command == 'init-deployment':
-            self.init_experiment()
+            self.init_deployment(self.var_args['file'])
             return
 
     def configure(self):
@@ -137,11 +146,25 @@ class CLI(object):
 
         save_skil_config(cli_out)
 
-    def init_experiment(self):
-        pass
+    def init_experiment(self, file_name):
+        if not file_name:
+            file_name = 'experiment.json'
+        path = os.path.join(os.getcwd(), file_name)
+        if not os.path.isfile(path):
+            experiment = Experiment()
+            experiment.save(path)
+        else:
+            print('Warning: experiment file {} already exists'.format(file_name))
     
-    def init_deployment(self):
-        pass
+    def init_deployment(self, file_name):
+        if not file_name:
+            file_name = 'deployment.json'
+        path = os.path.join(os.getcwd(), file_name)
+        if not os.path.isfile(path):
+            deployment = Deployment()
+            deployment.save(path)
+        else:
+            print('Warning: deployment file {} already exists'.format(file_name))       
 
 
 def handle():

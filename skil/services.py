@@ -28,7 +28,6 @@ class Service:
         self.skil = skil
         self.model = model
         self.model_name = self.model.name
-        print(self.model_name)
         self.model_deployment = model_deployment
         self.deployment = deployment
 
