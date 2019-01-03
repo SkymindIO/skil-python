@@ -1,5 +1,6 @@
 import json
 
+
 class DistributedConfiguration:
 
     def __init__(self):
@@ -7,7 +8,6 @@ class DistributedConfiguration:
 
     def to_json(self):
         return json.dumps(self.config)
-
 
 
 class ParameterAveraging(DistributedConfiguration):
@@ -33,7 +33,7 @@ class ParameterAveraging(DistributedConfiguration):
 
 class ParameterSharing(DistributedConfiguration):
     def __init__(self, num_workers, batch_size,
-                 shake_frequency=0, min_threshold=1e-5, update_threshold=1e-3 , workers_per_node=-1,
+                 shake_frequency=0, min_threshold=1e-5, update_threshold=1e-3, workers_per_node=-1,
                  num_batches_prefetch=0, step_delay=50, step_trigger=0.05, threshold_step=1e-5,
                  collect_stats=False):
         """ParameterSharing

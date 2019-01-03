@@ -1,6 +1,7 @@
 import pytest
 import skil
-
+import uuid
+import os
 
 work_space = None  # because number of workspaces is limited
 _sk = None
@@ -43,7 +44,7 @@ def test_experiment_by_id():
 
 def test_deployment_by_id():
     sk = _get_sk()
-    dep = skil.Deployment(sk, name='test_dep')
+    dep = skil.Deployment(sk, name='test_dep' + str(uuid.uuid1())[:6])
     dep_id = dep.id
     dep2 = skil.get_deployment_by_id(sk, dep_id)
     assert dep.name == dep2.name
@@ -52,10 +53,13 @@ def test_deployment_by_id():
 def test_model_by_id():
     ws = _get_ws()
     exp = skil.Experiment(ws, name='test_exp2')
+    with open('model.h5', 'w') as f:
+        f.write('')
     model = skil.Model('model.h5', name='test_model', experiment=exp)
     model_id = model.id
     model2 = skil.get_model_by_id(exp, model_id)
     assert model.name == model2.name
+    os.remove('model.h5')
 
 
 if __name__ == '__main__':

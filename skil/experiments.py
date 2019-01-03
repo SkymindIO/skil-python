@@ -1,6 +1,9 @@
 import skil_client
 from skil_client.rest import ApiException as api_exception
 import uuid
+import json
+from .base import Skil
+from .workspaces import get_workspace_by_id, WorkSpace
 
 
 class Experiment:
@@ -12,18 +15,25 @@ class Experiment:
     candidate.
 
     # Arguments:
-        work_space: `WorkSpace` instance.
+        work_space: `WorkSpace` instance. If `None` a workspace will be created.
         experiment_id: integer. Unique id for workspace. If `None`, a unique id will be generated.
         name: string. Name for the experiment.
         description: string. Description for the experiment.
         verbose: boolean. If `True`, api response will be printed.
+        create: boolean. If `True` a new experiment will be created.
     """
 
-    def __init__(self, work_space=None, experiment_id=None, name='test', description='test', verbose=False, create=True):
+    def __init__(self, work_space=None, experiment_id=None, name='experiment',
+                 description='experiment', verbose=False, create=True,
+                 *args, **kwargs):
         if create:
+            if not work_space:
+                self.skil = Skil.from_config()
+                work_space = WorkSpace(self.skil)
             self.work_space = work_space
             self.skil = self.work_space.skil
-            self.id = experiment_id if experiment_id else work_space.id + "_experiment_" + str(uuid.uuid1())
+            self.id = experiment_id if experiment_id else work_space.id + \
+                "_experiment_" + str(uuid.uuid1())
             self.name = name
             experiment_entity = skil_client.ExperimentEntity(
                 experiment_id=self.id,
@@ -49,6 +59,27 @@ class Experiment:
             self.work_space = work_space
             self.id = experiment_id
             self.name = experiment_entity.experiment_name
+
+    def get_config(self):
+        return {
+            'experiment_id': self.id,
+            'experiment_name': self.name,
+            'workspace_id': self.work_space.id
+        }
+
+    def save(self, file_name):
+        config = self.get_config()
+        with open(file_name, 'w') as f:
+            json.dump(config, f)
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = Skil()
+        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
+        return get_experiment_by_id(work_space, config['experiment_id'])
 
     def delete(self):
         """Deletes the experiment.

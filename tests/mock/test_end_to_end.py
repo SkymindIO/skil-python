@@ -7,6 +7,7 @@ else:
     import mock as mock
 import os
 
+
 @mock.patch('skil.Skil')
 def test_e2e(Skil):
     model_path = './dummy.pb'
