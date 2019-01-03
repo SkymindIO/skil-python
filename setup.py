@@ -5,9 +5,20 @@ setup(
     name='skil',
     version='0.2.7',
     packages=find_packages(),
-    install_requires=['skil_client>=1.2.1', 'requests', 'numpy', 'click', 'argcomplete',
-                      'tensorflow', 'keras', 'opencv-python', 'six'],
+    install_requires=[
+        'skil_client>=1.2.1', 
+        'requests', 
+        'numpy', 
+        'click', 
+        'argcomplete',
+        'tensorflow', 
+        'keras', 
+        'opencv-python', 
+        'six'],
     extras_require={
+        'aws': ['aws'],
+        'azure': ['azure'],
+        'gce': ['google-api-python-client'],
         'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock']
     },
     include_package_data=True,
