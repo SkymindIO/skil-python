@@ -10,7 +10,7 @@ from tensorflow.python.framework import graph_io
 epochs = 100
 batch_size = 32
 
-work_directory = 'model'
+work_directory = os.path.abspath('')
 saver_write_version = 2
 
 
