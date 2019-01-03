@@ -8,7 +8,7 @@ experiment = Experiment(work_space)
 model = Model('model.pb', model_id='tf_model', experiment=experiment)
 
 deployment = Deployment(skil_server)
-service = model.deploy(deployment)
+service = model.deploy(deployment, input_names=['input'], output_names=['output'])
 
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
