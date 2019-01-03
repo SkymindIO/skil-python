@@ -5,6 +5,7 @@ import json
 from .base import Skil
 from .workspaces import get_workspace_by_id, WorkSpace
 
+
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
     encapsulating training of models, and carrying out different data cleaning tasks.
@@ -22,7 +23,7 @@ class Experiment:
         create: boolean. If `True` a new experiment will be created.
     """
 
-    def __init__(self, work_space=None, experiment_id=None, name='experiment', 
+    def __init__(self, work_space=None, experiment_id=None, name='experiment',
                  description='experiment', verbose=False, create=True,
                  *args, **kwargs):
         if create:
@@ -31,7 +32,8 @@ class Experiment:
                 work_space = WorkSpace(self.skil)
             self.work_space = work_space
             self.skil = self.work_space.skil
-            self.id = experiment_id if experiment_id else work_space.id + "_experiment_" + str(uuid.uuid1())
+            self.id = experiment_id if experiment_id else work_space.id + \
+                "_experiment_" + str(uuid.uuid1())
             self.name = name
             experiment_entity = skil_client.ExperimentEntity(
                 experiment_id=self.id,

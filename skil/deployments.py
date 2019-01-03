@@ -3,6 +3,7 @@ from .base import Skil
 import uuid
 import json
 
+
 class Deployment:
     """Deployments operate independently of workspaces to ensure that there are
     no accidental interruptions or mistakes in a production environment.
@@ -14,6 +15,7 @@ class Deployment:
     """
     # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
     # Make sure to keep this up-to-date.
+
     def __init__(self, skil=None, name=None, deployment_id=None):
         if not skil:
             skil = Skil()  # TODO: take care of auth

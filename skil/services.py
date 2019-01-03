@@ -163,8 +163,8 @@ class Service:
         cv2.imwrite(temp_path, image)
         url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
             self.skil.config.host,
-            self.model.deployment.name, 
-            self.model.name, 
+            self.model.deployment.name,
+            self.model.name,
             self.model.version
         )
 
@@ -182,7 +182,7 @@ class Service:
 
         with open(temp_path, 'rb') as data:
             resp = requests.post(
-                url=url, 
+                url=url,
                 headers=self.skil.auth_headers,
                 files={
                     'file': (temp_path, data, 'image/jpeg')

@@ -2,7 +2,7 @@ import skil
 from skil.services import Service
 
 import skil_client
-from skil_client.rest import  ApiException as api_exception
+from skil_client.rest import ApiException as api_exception
 import time
 import os
 import uuid
@@ -88,7 +88,7 @@ class Model:
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
             self.model = model_entity
-        
+
         self.service = None
 
     def delete(self):
@@ -163,7 +163,7 @@ class Model:
                     self.skil.printer.pprint(self.model_deployment)
 
             self.service = Service(self.skil, self,
-                            self.deployment, self.model_deployment)
+                                   self.deployment, self.model_deployment)
         if start_server:
             self.service.start()
         return self.service

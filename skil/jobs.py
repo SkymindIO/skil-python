@@ -21,7 +21,7 @@ class JobConfiguration:
 
     # TODO: provide a smart default for output_path relative to input data or model path.
 
-    def __init__(self, skil_model, compute_resource, storage_resource, 
+    def __init__(self, skil_model, compute_resource, storage_resource,
                  output_path, data_set_provider_class,
                  is_multi_data_set, verbose):
         self.model = skil_model
@@ -66,7 +66,7 @@ class InferenceJobConfiguration(JobConfiguration):
                  verbose=False):
         super(InferenceJobConfiguration, self).__init__(
             skil_model, compute_resource,
-            storage_resource, output_path, data_set_provider_class, 
+            storage_resource, output_path, data_set_provider_class,
             is_multi_data_set, verbose)
 
         self.batch_size = batch_size
@@ -101,6 +101,7 @@ class TrainingJobConfiguration(JobConfiguration):
     # TODO: allow multiple eval metrics?!
     # TODO: the training master config should be deconstructed. maybe provide this to the job.run(...) as argument.
     # TODO: user should just be *handed* a ui, not take care of a $%$%! URL.
+
     def __init__(self,  skil_model, num_epochs,
                  eval_type,
                  eval_data_set_provider_class,  # good lord
@@ -111,10 +112,10 @@ class TrainingJobConfiguration(JobConfiguration):
                  ui_url=None,
                  verbose=False):
         super(TrainingJobConfiguration, self).__init__(
-            skil_model, compute_resource, 
-            storage_resource, output_path, data_set_provider_class, 
+            skil_model, compute_resource,
+            storage_resource, output_path, data_set_provider_class,
             is_multi_data_set, verbose)
-        
+
         self.num_epochs = num_epochs
         self.eval_dsp = eval_data_set_provider_class
         self.eval_type = eval_type
@@ -182,7 +183,7 @@ class InferenceJob:
         inference_create_job_request = skil_client.CreateJobRequest(
             compute_resource_id=self.inference_config.compute_id,
             storage_resource_id=self.inference_config.storage_id,
-            job_args = self._inference_job_args(),
+            job_args=self._inference_job_args(),
             output_file_name=self.inference_config.output_path
         )
 

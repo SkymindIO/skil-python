@@ -4,7 +4,6 @@ except ImportError:
     cv2 = None
 
 
-
 def annotate_image(image, detection):
     """ Annotate images with object detection results
 
@@ -19,7 +18,7 @@ def annotate_image(image, detection):
         raise Exception("OpenCV is not installed.")
     objects = detection.get('objects')
     if objects:
-        for detect in objects: 
+        for detect in objects:
             confs = detect.get('confidences')
             max_conf = max(confs)
             max_index = confs.index(max_conf)
@@ -31,6 +30,7 @@ def annotate_image(image, detection):
             center_y = detect.get('centerY')
             lower = (int(center_x - w/2), int(center_y - h/2))
             upper = (int(center_x + w/2), int(center_y + h/2))
-            im = cv2.rectangle(image, lower, upper, (255,0,0), 3)
-            cv2.putText(image, max_class + " " + str(max_conf), upper, cv2.FONT_HERSHEY_SIMPLEX, 1, 0, 2)
+            im = cv2.rectangle(image, lower, upper, (255, 0, 0), 3)
+            cv2.putText(image, max_class + " " + str(max_conf),
+                        upper, cv2.FONT_HERSHEY_SIMPLEX, 1, 0, 2)
     return image

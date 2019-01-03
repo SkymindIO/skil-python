@@ -54,7 +54,6 @@ class Skil:
         }
         save_skil_config(base_config)
 
-
     @classmethod
     def from_config(cls):
         return Skil(**SKIL_CONFIG)
@@ -93,7 +92,7 @@ class Skil:
             if model_name == upload.file_name:
                 return "file://" + upload.path
         raise Exception("Model resource not found, did you upload it? ")
-    
+
     def get_all_compute_resources(self):
         return self.api.get_resource_by_type(resource_type="COMPUTE")
 
@@ -121,6 +120,6 @@ class Skil:
         - YARN                  # in house YARN (Compute)
         """
         return self.api.get_resource_by_sub_type(resource_sub_type=resource_type)
-    
+
     # TODO: cover resource groups. add, delete etc.
     # TODO: add & remove credentials

@@ -21,6 +21,7 @@ def _get_ws():
     work_space = skil.WorkSpace(sk)
     return work_space
 
+
 def save_model():
     import keras
     from keras.datasets import mnist
@@ -43,7 +44,6 @@ def save_model():
     y_train = keras.utils.to_categorical(y_train, num_classes)
     y_test = keras.utils.to_categorical(y_test, num_classes)
 
-
     inp = Input((784,))
     x = Dense(512, activation='relu')(inp)
     x = Dropout(0.2)(x)
@@ -54,7 +54,7 @@ def save_model():
     model = Model(inp, out)
 
     model.compile(loss='categorical_crossentropy',
-                optimizer='sgd', metrics=['accuracy'])
+                  optimizer='sgd', metrics=['accuracy'])
 
     model.save("model.h5")
 

@@ -38,6 +38,7 @@ class EMR(ComputeResource):
     # TODO: if cluster_id is None, spin up a cluster and retrieve id (requires work in SKIL core)
     # TODO: can we hide setting credentials? i.e. can these be put into a
     #   little config file (similar to what we do in pydl4j?).
+
     def __init__(self, skil, name, region, credential_uri, cluster_id=None):
         super(EMR, self).__init__(skil)
         self.name = name
@@ -48,7 +49,7 @@ class EMR(ComputeResource):
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
             resource_details=skil_client.EMRResourceDetails(
-                cluster_id=self.cluster_id, 
+                cluster_id=self.cluster_id,
                 region=self.region
             ),
             credential_uri=self.credential_uri,
@@ -83,7 +84,7 @@ class DataProc(ComputeResource):
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
             resource_details=skil_client.DataProcResourceDetails(
-                project_id=self.project_id, 
+                project_id=self.project_id,
                 region=self.region,
                 spark_cluster_name=self.cluster_name
             ),
@@ -119,7 +120,7 @@ class HDInsight(ComputeResource):
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
             resource_details=skil_client.HDInsightResourceDetails(
-                subscription_id=self.subscription_id, 
+                subscription_id=self.subscription_id,
                 resource_group_name=self.resource_group_name,
                 cluster_name=self.cluster_name
             ),
@@ -141,6 +142,7 @@ class YARN(ComputeResource):
         name: Resource name
         local_spark_home: full path to local Spark binary
     """
+
     def __init__(self, skil, name, local_spark_home, credential_uri):
         super(YARN, self).__init__(skil)
         self.name = name
@@ -150,7 +152,7 @@ class YARN(ComputeResource):
         resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
             resource_name=self.name,
             resource_details=skil_client.YARNResourceDetails(
-                local_spark_home = self.local_spark_home
+                local_spark_home=self.local_spark_home
             ),
             credential_uri=self.credential_uri,
             type="COMPUTE",

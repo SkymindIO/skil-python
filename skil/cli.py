@@ -57,7 +57,8 @@ class CLI(object):
         self.default_password = DEFAULT_SKIL_CONFIG['password']
 
     def command_dispatcher(self, args=None):
-        desc = ('Pyskil - train, deploy and manage deep learning experiments with SKIL from Python.\n')
+        desc = (
+            'Pyskil - train, deploy and manage deep learning experiments with SKIL from Python.\n')
         parser = argparse.ArgumentParser(description=desc)
         parser.add_argument(
             '-v', '--version', action='version',
@@ -114,16 +115,16 @@ class CLI(object):
                    "train, deploy and manage deep learning experiments with SKIL from Python!\n")
 
         host = input("Specify your SKIL host address (default '%s'): " %
-                             self.default_host) or self.default_host
+                     self.default_host) or self.default_host
 
         port = input("Specify your SKIL port (default '%s'): " %
-                               self.default_port) or self.default_port
+                     self.default_port) or self.default_port
 
         username = input("Specify your SKIL user name (default '%s'): " %
-                               self.default_username) or self.default_username
+                         self.default_username) or self.default_username
 
         password = input("Specify your SKIL password (default '%s'): " %
-                               self.default_username) or self.default_username
+                         self.default_username) or self.default_username
         cli_out = {
             'host': host,
             'port': port,
@@ -155,7 +156,7 @@ class CLI(object):
             experiment.save(path)
         else:
             print('Warning: experiment file {} already exists'.format(file_name))
-    
+
     def init_deployment(self, file_name):
         if not file_name:
             file_name = 'deployment.json'
@@ -164,7 +165,7 @@ class CLI(object):
             deployment = Deployment()
             deployment.save(path)
         else:
-            print('Warning: deployment file {} already exists'.format(file_name))       
+            print('Warning: deployment file {} already exists'.format(file_name))
 
 
 def handle():

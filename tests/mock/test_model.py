@@ -5,7 +5,8 @@ if sys.version_info >= (3, 3):
     import unittest.mock as mock
 else:
     import mock as mock
-import os 
+import os
+
 
 @mock.patch('skil.Skil')
 def test_skil_default_model(Skil):
