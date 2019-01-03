@@ -5,7 +5,7 @@ import json
 skil_server = Skil()
 ws = WorkSpace(skil_server)
 experiment = Experiment(ws)
-deployment = Deployment(skil_server, "keras_models")
+deployment = Deployment(skil_server)
 
 # Deploy all models with SKIL
 skil_services = []
