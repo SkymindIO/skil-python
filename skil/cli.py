@@ -112,7 +112,7 @@ class CLI(object):
 ╚═╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝ \n""", fg='blue', bold=True))
 
         click.echo(click.style("pyskil", bold=True) +
-                   "train, deploy and manage deep learning experiments with SKIL from Python!\n")
+                   " train, deploy and manage deep learning experiments with SKIL from Python!\n")
 
         host = input("Specify your SKIL host address (default '%s'): " %
                      self.default_host) or self.default_host
@@ -135,7 +135,7 @@ class CLI(object):
         formatted_json = json.dumps(cli_out, sort_keys=False, indent=4)
 
         click.echo("\nThis is your current settings file " +
-                   click.style("config.json", bold=True) + ":\n")
+                   click.style(".skil", bold=True) + ":\n")
         click.echo(click.style(formatted_json, fg="green", bold=True))
 
         confirm = input(
