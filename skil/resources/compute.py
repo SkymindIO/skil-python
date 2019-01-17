@@ -20,26 +20,32 @@ class EMR(Resource):
     # TODO: can we hide setting credentials? i.e. can these be put into a
     #   little config file (similar to what we do in pydl4j?).
 
-    def __init__(self, skil, name, region, credential_uri, cluster_id=None):
+    def __init__(self, skil, name, region, credential_uri, cluster_id=None,
+                 resource_id=None, create=True):
+
         super(EMR, self).__init__(skil)
         self.name = name
         self.region = region
         self.credential_uri = credential_uri
         self.cluster_id = cluster_id
+        self.resource_id = resource_id
 
-        resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
-            resource_name=self.name,
-            resource_details=skil_client.EMRResourceDetails(
-                cluster_id=self.cluster_id,
-                region=self.region
-            ),
-            credential_uri=self.credential_uri,
-            type="COMPUTE",
-            sub_type="EMR")
-        )
-
-        self.resource_id = resource_response.get("resourceId")
-
+        if create:
+            resource_response = self.skil.api.add_resource(skil_client.AddResourceRequest(
+                resource_name=self.name,
+                resource_details=skil_client.EMRResourceDetails(
+                    cluster_id=self.cluster_id,
+                    region=self.region
+                ),
+                credential_uri=self.credential_uri,
+                type="COMPUTE",
+                sub_type="EMR")
+            )
+            self.resource_id = resource_response.get("resourceId")
+        else:
+            if resource_id is None:
+                raise ValueError('If create is False you need to provide a valid resource_id')
+            
 
 class DataProc(Resource):
     """DataProc

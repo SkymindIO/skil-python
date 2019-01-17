@@ -6,11 +6,11 @@ class Resource:
     """
     __metaclass__ = type
 
-    def __init__(self, skil):
+    def __init__(self, skil, resource_id=None, *args, **kwargs):
         """Add the resource to SKIL.
         """
         self.skil = skil
-        self.resource_id = None
+        self.resource_id = resource_id
 
     def delete(self):
         """Delete the resource from SKIL.
