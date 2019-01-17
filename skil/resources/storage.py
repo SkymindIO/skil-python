@@ -1,29 +1,7 @@
 import skil_client
 
 
-class StorageResource:
-    """StorageResource
-
-    A SKIL storage resource is an abstraction for (cloud and on-premise)
-    storage capabilities, including systems like AWS S3,
-    HDFS, Azure Storage or Google Cloud storage.
-    """
-    __metaclass__ = type
-
-    def __init__(self, skil):
-        """Adds the storage resource to SKIL.
-        """
-        self.skil = skil
-        self.resource_id = None
-
-    def delete(self):
-        """Delete the storage resource from SKIL.
-        """
-        if self.resource_id:
-            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
-
-
-class AzureStorage(StorageResource):
+class AzureStorage(Resource):
     """AzureStorage
 
     SKIL Azure storage resource.
@@ -54,7 +32,7 @@ class AzureStorage(StorageResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class GoogleStorage(StorageResource):
+class GoogleStorage(Resource):
     """GoogleStorage
 
     SKIL Google storage resource.
@@ -88,7 +66,7 @@ class GoogleStorage(StorageResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class HDFS(StorageResource):
+class HDFS(Resource):
     """HDFS
 
     SKIL HDFS resource.
@@ -122,7 +100,7 @@ class HDFS(StorageResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class S3(StorageResource):
+class S3(Resource):
     """S3
 
     SKIL S3 resource.

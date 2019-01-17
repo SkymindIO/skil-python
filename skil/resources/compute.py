@@ -1,29 +1,8 @@
 import skil_client
+from .common import Resource
 
 
-class ComputeResource:
-    """ComputeResource
-
-    A SKIL compute resource is an abstraction for (cloud and on-premise)
-    compute capabilities, including systems like AWS EMR
-    and GCE DataProc.
-    """
-    __metaclass__ = type
-
-    def __init__(self, skil):
-        """Adds the compute resource to SKIL.
-        """
-        self.skil = skil
-        self.resource_id = None
-
-    def delete(self):
-        """Delete the compute resource from SKIL.
-        """
-        if self.resource_id:
-            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
-
-
-class EMR(ComputeResource):
+class EMR(Resource):
     """EMR
 
     AWS Elastic Map Reduce compute resource
@@ -60,7 +39,7 @@ class EMR(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class DataProc(ComputeResource):
+class DataProc(Resource):
     """DataProc
 
     Google cloud engine DataProc compute resource
@@ -96,7 +75,7 @@ class DataProc(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class HDInsight(ComputeResource):
+class HDInsight(Resource):
     """HDInsight
 
     Azure HDInsight compute resource.
@@ -132,7 +111,7 @@ class HDInsight(ComputeResource):
         self.resource_id = resource_response.get("resourceId")
 
 
-class YARN(ComputeResource):
+class YARN(Resource):
     """YARN
 
     YARN compute resource for local Spark computation on YARN.
