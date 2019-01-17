@@ -1,19 +1,19 @@
-class Resource:
-    """Resource
 
-    A SKIL  resource is an abstraction for (cloud and on-premise)
-    compute or storage capabilities.
-    """
-    __metaclass__ = type
+def get_all_resources(skil):
+    pass
 
-    def __init__(self, skil):
-        """Add the resource to SKIL.
-        """
-        self.skil = skil
-        self.resource_id = None
 
-    def delete(self):
-        """Delete the resource from SKIL.
-        """
-        if self.resource_id:
-            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+def get_resource_by_id(skil, resource_id):
+    pass
+
+
+def get_resources_by_type(skil, type):
+    pass
+
+
+def get_resources_by_sub_type(skil, sub_type):
+    pass
+
+
+def get_resource_details_by_id(skil, resource_id):
+    pass
