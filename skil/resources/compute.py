@@ -44,8 +44,9 @@ class EMR(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
-            
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
+
 
 class DataProc(Resource):
     """DataProc
@@ -86,8 +87,8 @@ class DataProc(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
-            
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
 
 
 class HDInsight(Resource):
@@ -106,7 +107,7 @@ class HDInsight(Resource):
     """
 
     def __init__(self, skil, name, subscription_id, resource_group_name, cluster_name, credential_uri,
-                resource_id=None, create=True):
+                 resource_id=None, create=True):
         super(HDInsight, self).__init__(skil)
         self.name = name
         self.subscription_id = subscription_id
@@ -130,7 +131,9 @@ class HDInsight(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
+
 
 class YARN(Resource):
     """YARN
@@ -166,5 +169,5 @@ class YARN(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
-
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')

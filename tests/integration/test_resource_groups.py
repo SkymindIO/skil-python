@@ -11,7 +11,7 @@ def _get_sk():
     global _sk
     if _sk is None:
         _sk = skil.Skil()
-    return _sk  
+    return _sk
 
 
 def test_group_add_and_deletion():
@@ -34,7 +34,6 @@ def test_group_add_and_deletion():
     # assert len(groups) == 0
 
     group.delete()
-
 
 
 if __name__ == '__main__':

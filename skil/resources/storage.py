@@ -38,7 +38,8 @@ class AzureStorage(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
 
 
 class GoogleStorage(Resource):
@@ -79,7 +80,8 @@ class GoogleStorage(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
 
 
 class HDFS(Resource):
@@ -120,7 +122,8 @@ class HDFS(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')
 
 
 class S3(Resource):
@@ -161,4 +164,5 @@ class S3(Resource):
             self.resource_id = resource_response.get("resourceId")
         else:
             if resource_id is None:
-                raise ValueError('If create is False you need to provide a valid resource_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid resource_id')

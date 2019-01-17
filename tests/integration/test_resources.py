@@ -10,7 +10,7 @@ def _get_sk():
     global _sk
     if _sk is None:
         _sk = skil.Skil()
-    return _sk  
+    return _sk
 
 
 def test_s3_resource():
@@ -73,13 +73,14 @@ def test_yarn_resource():
 def test_get_resource_by_id():
     sk = _get_sk()
     res = skil.resources.compute.YARN(sk, "yarn" + str(uuid.uuid1())[:6], "test_local_spark_home",
-                                        "test_credentials")
+                                      "test_credentials")
     res_id = res.resource_id
 
     retrieved = skil.resources.common.get_resource_by_id(sk, res_id)
 
     assert retrieved.resource_id == res_id
     res.delete()
+
 
 if __name__ == '__main__':
     pytest.main([__file__])

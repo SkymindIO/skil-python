@@ -1,4 +1,6 @@
 from.common import get_resource_by_id
+
+
 class ResourceGroup:
     '''ResourceGroup
 
@@ -12,6 +14,7 @@ class ResourceGroup:
         group_id: optional group ID to retrieve an existing resource group
         create: boolean, for internal use only. whether to create a new resource or not
     '''
+
     def __init__(self, skil, group_name, group_id=None, create=True):
         self.skil = skil
         self.group_name = group_name
@@ -22,25 +25,32 @@ class ResourceGroup:
             self.group_id = resp.group_id
         else:
             if group_id is None:
-                raise ValueError('If create is False you need to provide a valid group_id')
+                raise ValueError(
+                    'If create is False you need to provide a valid group_id')
 
     '''Add a skil.resource.base.Resource to this group
     '''
+
     def add_resource(self, resource):
-        self.skil.api.add_resource_to_group(self.group_id, resource.resource_id)
+        self.skil.api.add_resource_to_group(
+            self.group_id, resource.resource_id)
 
     '''Delete a skil.resource.base.Resource from this group
     '''
+
     def delete_resource(self, resource):
-        self.skil.api.delete_resource_from_group(self.group_id, resource.resource_id)
+        self.skil.api.delete_resource_from_group(
+            self.group_id, resource.resource_id)
 
     '''Delete this resource group.
     '''
+
     def delete(self):
         self.skil.api.delete_resource_group_by_id(self.group_id)
 
     '''Get all resources attached to this group
     '''
+
     def get_all_resources(self):
         resp = self.skil.api.get_resources_from_group(self.group_id)
         return [get_resource_by_id(self.skil, res.resource_id) for res in resp]
