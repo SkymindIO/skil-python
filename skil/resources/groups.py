@@ -28,30 +28,26 @@ class ResourceGroup:
                 raise ValueError(
                     'If create is False you need to provide a valid group_id')
 
-    '''Add a skil.resource.base.Resource to this group
-    '''
-
     def add_resource(self, resource):
+        '''Add a skil.resource.base.Resource to this group
+        '''
         self.skil.api.add_resource_to_group(
             self.group_id, resource.resource_id)
 
-    '''Delete a skil.resource.base.Resource from this group
-    '''
-
     def delete_resource(self, resource):
+        '''Delete a skil.resource.base.Resource from this group
+        '''
         self.skil.api.delete_resource_from_group(
             self.group_id, resource.resource_id)
 
-    '''Delete this resource group.
-    '''
-
     def delete(self):
+        '''Delete this resource group.
+        '''
         self.skil.api.delete_resource_group_by_id(self.group_id)
 
-    '''Get all resources attached to this group
-    '''
-
     def get_all_resources(self):
+        '''Get all resources attached to this group
+        '''
         resp = self.skil.api.get_resources_from_group(self.group_id)
         return [get_resource_by_id(self.skil, res.resource_id) for res in resp]
 
