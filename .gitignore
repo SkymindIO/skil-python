@@ -123,4 +123,5 @@ docs/sources
 .vscode/
 
 *.json
-.skil.DS_Store
+.skil
+.DS_Store
