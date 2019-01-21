@@ -97,34 +97,3 @@ class Skil:
             if model_name == upload.file_name:
                 return "file://" + upload.path
         raise Exception("Model resource not found, did you upload it? ")
-
-    def get_all_compute_resources(self):
-        return self.api.get_resource_by_type(resource_type="COMPUTE")
-
-    def get_all_data_resources(self):
-        return self.api.get_resource_by_type(resource_type="STORAGE")
-
-    def get_all_resources(self):
-        return self.api.get_resources()
-
-    def get_resource_by_id(self, resource_id):
-        return self.api.get_resource_by_id(resource_id=resource_id)
-
-    def get_resource_details_by_id(self, resource_id):
-        return self.api.get_resource_details_by_id(resource_id=resource_id)
-
-    def get_resource_by_type(self, resource_type):
-        """            
-        - EMR                   # AWS Elastic Map Reduce(Compute)
-        - S3                    # AWS Simple Storage Service
-        - GoogleStorage         # Google Cloud Storage
-        - DataProc              # Google Big Data Compute Engine
-        - HDInsight             # Azure Compute
-        - AzureStorage          # Azure Blob Storage
-        - HDFS                  # in house Hadoop (Storage)
-        - YARN                  # in house YARN (Compute)
-        """
-        return self.api.get_resource_by_sub_type(resource_sub_type=resource_type)
-
-    # TODO: cover resource groups. add, delete etc.
-    # TODO: add & remove credentials
