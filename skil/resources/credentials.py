@@ -13,22 +13,33 @@ class Credentials:
         uri: URI pointing to the credentials
         name: Name of the resource    
     """
-
-    def __init__(self, skil, cred_type, uri, name=None, *args, **kwargs):
-        """Add the resource to SKIL.
-        """
+    def __init__(self, skil, cred_type, uri, name=None, create=True, *args, **kwargs):
         self.skil = skil
-        if not cred_type in list("AWS", "Azure", "GoogleCloud", "Hadoop"):
+        if not cred_type in ["AWS", "Azure", "GoogleCloud", "Hadoop"]:
             raise ValueError("cred_type {} not supported".format(cred_type))
         self.cred_type = cred_type
         self.uri = uri
         self.name = name
 
-        request_body = AddCredentialsRequest(type=self.cred_type, name=self.name, uri=self.uri)
-        response = self.skil.api.add_credentials(request_body)
+        if create:
+            request_body = AddCredentialsRequest(type=self.cred_type, name=self.name, uri=self.uri)
+            response = self.skil.api.add_credentials(request_body)
+            self.id = response.credential_id
 
     def delete(self):
-        """Delete the resource from SKIL.
+        """Delete these credentials from SKIL.
         """
-        if self.resource_id:
-            self.skil.api.delete_resource_by_id(resource_id=self.resource_id)
+        if self.id:
+            self.skil.api.delete_credentials_by_id(self.id)
+
+
+def delete_credentials_by_id(skil, credentials_id):
+    skil.api.delete_credentials_by_id(credentials_id)
+
+
+def get_credentials_by_id(skil, credentials_id):
+    response = skil.api.get_credentials_by_id(credentials_id)
+    cred = Credentials(skil=skil, cred_type=response.type, uri=response.uri, 
+                       name=response.name, create=False)
+    cred.id = credentials_id
+    return cred
