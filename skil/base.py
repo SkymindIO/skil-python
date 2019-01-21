@@ -1,6 +1,11 @@
 import skil_client
 from skil_client.rest import ApiException as api_exception
 
+try:
+    from skil_client import Credentials as Cred
+except:
+    from skil_client import LoginRequest as Cred
+
 import pprint
 import os
 import time
@@ -29,8 +34,8 @@ class Skil:
 
         try:
             self.printer.pprint('>>> Authenticating SKIL...')
-            credentials = skil_client.Credentials(
-                user_id=user_id, password=password)
+            credentials = Cred(user_id=user_id, password=password)
+
             token = self.api.login(credentials)
             self.token = token.token
             config.api_key['authorization'] = self.token
