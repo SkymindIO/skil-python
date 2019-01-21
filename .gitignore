@@ -124,3 +124,4 @@ docs/sources
 
 *.json
 .skil
+.DS_Store
