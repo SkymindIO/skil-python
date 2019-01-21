@@ -26,8 +26,26 @@ def test_creation_deletion():
 
 def test_aws_creds():
     sk = _get_sk()
-    aws = AWS(sk, "uri")
+    cred = AWS(sk, "uri")
+    cred.delete()
+
+
+def test_azure_creds():
+    sk = _get_sk()
+    cred = Azure(sk, "uri")
     aws.delete()
+
+
+def test_gce_creds():
+    sk = _get_sk()
+    cred = GoogleCloud(sk, "uri")
+    cred.delete()
+
+
+def test_hadoop_creds():
+    sk = _get_sk()
+    cred = Hadoop(sk, "uri")
+    cred.delete()
 
 
 if __name__ == '__main__':

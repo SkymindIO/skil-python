@@ -44,6 +44,24 @@ def AWS(Credentials):
             skil=skil, cred_type="AWS", uri=uri, name=name)
 
 
+def Azure(Credentials):
+    def __init__(self, skil, uri, name=None):
+        super(Azure, self).__init__(
+            skil=skil, cred_type="Azure", uri=uri, name=name)
+
+
+def GoogleCloud(Credentials):
+    def __init__(self, skil, uri, name=None):
+        super(GoogleCloud, self).__init__(
+            skil=skil, cred_type="GoogleCloud", uri=uri, name=name)
+
+
+def Hadoop(Credentials):
+    def __init__(self, skil, uri, name=None):
+        super(Hadoop, self).__init__(
+            skil=skil, cred_type="Hadoop", uri=uri, name=name)
+
+
 def delete_credentials_by_id(skil, credentials_id):
     try:
         resp = skil.api.delete_credentials_by_id(credentials_id)
