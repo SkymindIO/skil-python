@@ -125,3 +125,5 @@ docs/sources
 *.json
 .skil
 .DS_Store
+
+temp_*/
