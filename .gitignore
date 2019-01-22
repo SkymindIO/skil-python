@@ -126,4 +126,6 @@ docs/sources
 .skil
 .DS_Store
 
-temp_0/*
+.part-00*
+_SUCCESS*
+._SUCCESS*
