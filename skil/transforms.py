@@ -39,7 +39,7 @@ class Transform(Model):
                     if os.path.isfile(transform_file_name):
                         os.remove(transform_file_name)
                     with open(transform_file_name, 'w') as f:
-                         f.write(tp.to_java().toJson())
+                        f.write(tp.to_java().toJson())
                 else:
                     raise Exception('Invalid TransformProcess: ' + str(model))
             if not experiment:
