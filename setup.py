@@ -19,7 +19,7 @@ setup(
         'aws': ['aws'],
         'azure': ['azure'],
         'gce': ['google-api-python-client'],
-        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock']
+        'tests': ['pytest', 'pytest-pep8', 'pytest-cov', 'mock', 'pydatavec']
     },
     include_package_data=True,
     license='Apache',

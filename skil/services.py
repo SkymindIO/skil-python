@@ -247,8 +247,9 @@ class Pipeline(Service):
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
         """
-        transformed = self.transform_service.predict(data)
-        return self.model_service.predict(transformed)
+        if self.transform_service:
+            data = self.transform_service.predict(data)
+        return self.model_service.predict(data)
 
     def predict_single(self, data):
         """Predict for a single input.
@@ -259,8 +260,9 @@ class Pipeline(Service):
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
         """
-        transformed = self.transform_service.predict_single(data)
-        return self.model_service.predict_single(transformed)
+        if self.transform_service:
+            data = self.transform_service.predict_single(data)
+        return self.model_service.predict_single(data)
 
     def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
         """Detect objects in an image for this service. Only works when deploying an object detection
@@ -277,5 +279,6 @@ class Pipeline(Service):
             `DetectionResult`, a Python dictionary with labels, confidences and locations of bounding boxes
                 of detected objects.
         """
-        transformed = self.transform_service.predict_single(data)
+        if self.transform_service:
+            image = self.transform_service.predict_single(image)
         return self.model_service.detect_objects(image, threshold, needs_preprocessing, temp_path)
