@@ -1,5 +1,5 @@
 import skil
-from skil.services import Service
+from skil.services import *
 
 import skil_client
 from skil_client.rest import ApiException as api_exception
@@ -194,6 +194,7 @@ class Transform(Model):
     # Arguments
         transform: pydatavec.TransformProcess or TransformProcess JSON
         transform_id: integer. Unique id for the transform. If `None`, a unique id will be generated.
+        transform_type: Type of the SKIL transform. Choose from "CSV", "image" or "array"
         name: string. Name for the transform.
         version: integer. Version of the transform. Defaults to 1.
         experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
@@ -202,7 +203,8 @@ class Transform(Model):
         create: boolean. Internal. Do not use.
     """
 
-    def __init__(self, transform=None, transform_id=None, name=None, version=None, experiment=None,
+    def __init__(self, transform=None, transform_type='CSV', transform_id=None, name=None, 
+                 version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
             if isinstance(transform, str) and os.path.isfile(transform):
@@ -266,6 +268,7 @@ class Transform(Model):
             self.model_path = model_entity.uri
             self.model = model_entity
 
+        self.transform_type = transform_type
         self.service = None
 
     def deploy(self, deployment=None, start_server=True, scale=1, input_names=None,
@@ -311,8 +314,13 @@ class Transform(Model):
                 if verbose:
                     self.skil.printer.pprint(self.model_deployment)
 
-            self.service = Service(self.skil, self,
-                                   self.deployment, self.model_deployment)
+            if self.transform_type == 'CSV':
+                self.service = TransformCsvService(self.skil, self, self.deployment, self.model_deployment)
+            elif self.transform_type == 'array':
+                self.service = TransformArrayService(self.skil, self, self.deployment, self.model_deployment)
+            elif self.transform_type == 'image':
+                self.service = TransformImageService(self.skil, self, self.deployment, self.model_deployment)
+
         if start_server:
             self.service.start()
         return self.service

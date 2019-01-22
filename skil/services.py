@@ -23,6 +23,7 @@ class Service:
         deployment: `skil.Deployment` instance
         model_deployment: result of `deploy_model` API call of a model
     """
+    __metaclass__ = type
 
     def __init__(self, skil, model, deployment, model_deployment):
         self.skil = skil
@@ -86,11 +87,12 @@ class Service:
             data=np_array.reshape(-1).tolist()
         )
 
-    def predict(self, data):
+    def predict(self, data, version='default'):
         """Predict for given batch of data.
 
         # Arguments:
             data: `numpy.ndarray` (or list thereof). Batch of input data, or list of batches for multi-input model.
+            version: version of the deployed service
 
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
@@ -103,7 +105,7 @@ class Service:
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
             model_name=self.model_name,
-            version_name="default",
+            version_name=version,
             body=skil_client.MultiPredictRequest(
                 id=str(uuid.uuid1()),
                 needs_pre_processing=False,
@@ -116,7 +118,7 @@ class Service:
             return outputs[0]
         return outputs
 
-    def predict_single(self, data):
+    def predict_single(self, data, version='default'):
         """Predict for a single input.
 
         # Arguments:
@@ -133,7 +135,7 @@ class Service:
         classification_response = self.skil.api.multipredict(
             deployment_name=self.deployment.name,
             model_name=self.model_name,
-            version_name="default",
+            version_name=version,
             body=skil_client.MultiPredictRequest(
                 id=str(uuid.uuid1()),
                 needs_pre_processing=False,
@@ -198,6 +200,133 @@ class Service:
 
         return json.loads(resp.content)
 
+
+class TransformCsvService(Service):
+
+    def __init__(self, *args, **kwargs):
+        super(TransformCsvService, self).__init__(*args, **kwargs)
+
+    def _to_single_csv_record(self, data):
+        return skil_client.SingleCSVRecord(data)
+
+    def _to_batch_csv_record(self, data):
+        single_records = [self._to_single_csv_record(d) for d in data]
+        return skil_client.BatchCSVRecord(single_records)
+
+    def predict(data, version='default'):
+        """Predict for given batch of data.
+
+        # Arguments
+            data: list of list of strings, where a list of strings represents a single csv record
+            version: version of the deployed service
+
+        # Returns
+            skil_client.BatchCSVRecord
+        """
+        return self.skil.api.transform_csv(
+            deployment_name=self.deployment.name,
+            transform_name=self.model_name,
+            version_name=version,
+            batch_csv_record=self._to_batch_csv_record(data)
+        )
+
+
+    def predict_single(data, version='default'):
+        """Predict a single input.
+
+        # Arguments
+            data: a list of strings, where a list of strings represents a single csv record
+            version: version of the deployed service
+
+        # Returns
+            skil_client.SingleCSVRecord
+        """
+        return self.skil.api.transformincremental_csv(
+            deployment_name=self.deployment.name,
+            transform_name=self.model_name,
+            version_name=version,
+            single_csv_record=self._to_single_csv_record(data)
+        )
+
+
+class TransformArrayService(Service): # TODO
+
+    def __init__(self, *args, **kwargs):
+        super(TransformArrayService, self).__init__(*args, **kwargs)
+
+    def predict(data, version='default'):
+        """Predict for given batch of data.
+
+        # Arguments
+            data: BatchRecord object # TODO figure out what this is / how it works
+            version: version of the deployed service
+
+        # Returns
+            skil_client.Base64NDArrayBody
+        """
+        return self.skil.api.transform_csv(
+            deployment_name=self.deployment.name,
+            transform_name=self.model_name,
+            version_name=version,
+            batch_record=self._to_batch_csv_record(data)
+        )
+
+    def predict_single(data, version='default'):
+        """Predict a single input.
+
+        # Arguments:
+            data: SingleRecord object # TODO figure out what this is / how it works
+            version: version of the deployed service
+
+        # Returns
+            skil_client.Base64NDArrayBody
+        """
+        return self.skil.api.transform_csv(
+            deployment_name=self.deployment.name,
+            transform_name=self.model_name,
+            version_name=version,
+            single_record=self._to_single_csv_record(data)
+        )
+
+
+class TransformImageService(Service): # TODO
+
+    def __init__(self, *args, **kwargs):
+        super(TransformImageService, self).__init__(*args, **kwargs)
+
+    def predict(data. version='default'):
+        """Predict for given batch of data.
+
+        # Arguments
+            data: list of files that contain the actual image data
+            version: version of the deployed service
+
+        # Returns
+            skil_client.Base64NDArrayBody
+        """
+        return self.skil.api.transformimage(
+            deployment_name=self.deployment.name,
+            image_transform_name=self.model_name,
+            version_name=version,
+            files=data
+        )
+
+    def predict_single(data, version='default'):
+        """Predict a single input
+
+        # Arguments
+            data: file that contains the actual image data
+            version: version of the deployed service
+
+        # Returns
+            skil_client.Base64NDArrayBody
+        """
+        return self.skil.api.transformincrementalimage(
+            deployment_name=self.deployment.name,
+            image_transform_name=self.model_name,
+            version_name=version,
+            file=data
+        )
 
 class Pipeline(Service):
     """Pipeline
