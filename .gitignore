@@ -126,4 +126,4 @@ docs/sources
 .skil
 .DS_Store
 
-temp_*/
+temp_*/*
