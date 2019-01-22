@@ -215,7 +215,8 @@ class Transform(Model):
                     with open(transform_file_name, 'w') as f:
                         f.write(tp.to_java().toJson())
                 else:
-                    raise Exception('Invalid TransformProcess: ' + str(transform))
+                    raise Exception(
+                        'Invalid TransformProcess: ' + str(transform))
             if not experiment:
                 self.skil = skil.Skil.from_config()
                 self.work_space = skil.workspaces.WorkSpace(self.skil)
@@ -224,7 +225,8 @@ class Transform(Model):
                 self.experiment = experiment
                 self.work_space = experiment.work_space
                 self.skil = self.work_space.skil
-            self.skil.upload_model(os.path.join(os.getcwd(), transform_file_name))
+            self.skil.upload_model(os.path.join(
+                os.getcwd(), transform_file_name))
 
             self.model_name = transform_file_name
             self.model_path = self.skil.get_model_path(transform_file_name)

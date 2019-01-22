@@ -216,7 +216,8 @@ class Pipeline(Service):
         verbose: boolean. If `True`, api response will be printed.
 
     """
-    def __init__(self, deployment, model, transform=None,  
+
+    def __init__(self, deployment, model, transform=None,
                  start_server=True, scale=1, input_names=None,
                  output_names=None, verbose=True):
 
@@ -224,7 +225,7 @@ class Pipeline(Service):
             deployment, start_server, scale, input_names, output_names, verbose
         )
         self.transform_service = transform.deploy(
-            deployment, start_server, scale, input_names,output_names, verbose
+            deployment, start_server, scale, input_names, output_names, verbose
         )
 
     def start(self):
@@ -248,7 +249,7 @@ class Pipeline(Service):
         """
         transformed = self.transform_service.predict(data)
         return self.model_service.predict(transformed)
-    
+
     def predict_single(self, data):
         """Predict for a single input.
 
