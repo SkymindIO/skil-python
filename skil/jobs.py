@@ -139,7 +139,8 @@ class Job:
             response = self.skil.api.run_a_job(self.job_id)
             self.run_id = response.run_id
         else:
-            raise Exception('Can not run job, either skil server or job_id non-existent.')
+            raise Exception(
+                'Can not run job, either skil server or job_id non-existent.')
 
     def refresh_status(self):
         if self.job_id and self.skil:
@@ -147,13 +148,15 @@ class Job:
             self.status = response.status
             print(self.status)
         else:
-            raise Exception('Can not refresh job status, either skil server or job_id non-existent.')
+            raise Exception(
+                'Can not refresh job status, either skil server or job_id non-existent.')
 
     def delete(self):
         self.skil.api.delete_job_by_id(self.job_id)
 
     def download_output_file(self, local_path):
-        download_path = skil_client.DownloadOutputFileRequest(local_download_path=local_path)
+        download_path = skil_client.DownloadOutputFileRequest(
+            local_download_path=local_path)
         self.skil.api.download_job_output_file(
             job_id=self.job_id,
             download_output_file_request=download_path
@@ -192,7 +195,8 @@ class TrainingJob(object, Job):
                 output_file_name=self.training_config.output_path
             )
 
-            response = self.skil.api.create_job("TRAINING", training_create_job_request)
+            response = self.skil.api.create_job(
+                "TRAINING", training_create_job_request)
         else:
             response = self.skil.api.get_job_by_id(job_id)
             assert response.job_id == job_id
@@ -231,6 +235,7 @@ class InferenceJob(object, Job):
         create: boolean, whether to create a new job or retrieve an existing one.
 
     """
+
     def __init__(self, skil, inference_config, job_id=None, create=True):
         super(InferenceJob, self).__init__()
 
@@ -245,7 +250,8 @@ class InferenceJob(object, Job):
                 output_file_name=self.inference_config.output_path
             )
 
-            response = self.skil.api.create_job("INFERENCE", inference_create_job_request)
+            response = self.skil.api.create_job(
+                "INFERENCE", inference_create_job_request)
         else:
             response = self.skil.api.get_job_by_id(job_id)
             assert response.job_id == job_id
@@ -286,7 +292,8 @@ def get_job_by_id(skil, job_id):
             skil=skil, inference_config=None, job_id=job_id, create=False
         )
     else:
-        raise ValueError('job_id does not correspond to training or inference job')
+        raise ValueError(
+            'job_id does not correspond to training or inference job')
 
 
 def delete_job_by_id(skil, job_id):
