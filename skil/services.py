@@ -209,16 +209,16 @@ class TransformCsvService(Service):
         super(TransformCsvService, self).__init__(*args, **kwargs)
 
     @staticmethod
-    def _to_single_csv_record(data):
-        return skil_client.SingleCSVRecord(data)
+    def _to_single_csv_record(data, separator):
+        return skil_client.SingleCSVRecord(data.split(separator))
 
     @staticmethod
-    def _to_batch_csv_record(data):
+    def _to_batch_csv_record(data, separator):
         single_records = [
-            TransformCsvService._to_single_csv_record(d) for d in data]
+            TransformCsvService._to_single_csv_record(d, separator) for d in data]
         return skil_client.BatchCSVRecord(single_records)
 
-    def predict(self, data, version='default'):
+    def predict(self, data, separator=',', version='default'):
         """Predict for given batch of data.
 
         # Arguments
@@ -228,14 +228,16 @@ class TransformCsvService(Service):
         # Returns
             skil_client.BatchCSVRecord
         """
+        batch_record = self._to_batch_csv_record(data, separator)
+
         return self.skil.api.transform_csv(
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
-            batch_csv_record=self._to_batch_csv_record(data)
+            batch_csv_record=batch_record
         )
 
-    def predict_single(self, data, version='default'):
+    def predict_single(self, data, separator=',', version='default'):
         """Predict a single input.
 
         # Arguments
@@ -245,11 +247,12 @@ class TransformCsvService(Service):
         # Returns
             skil_client.SingleCSVRecord
         """
+        single_record = self._to_single_csv_record(data, separator)
         return self.skil.api.transformincremental_csv(
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
-            single_csv_record=self._to_single_csv_record(data)
+            single_csv_record=single_record
         )
 
 

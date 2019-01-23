@@ -1,5 +1,4 @@
 import skil
-import pyspark
 import numpy as np
 
 skil_server = skil.Skil()
