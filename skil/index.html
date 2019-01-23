@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Experiments - SKIL Python Documentation</title>
+  <title>SKIL servers - SKIL Python Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Experiments";
-    var mkdocs_page_input_path = "experiment.md";
-    var mkdocs_page_url = "/skil-python/experiment/";
+    var mkdocs_page_name = "SKIL servers";
+    var mkdocs_page_input_path = "skil.md";
+    var mkdocs_page_url = "/skil-python/skil/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -76,29 +76,23 @@
 		
     <span class="caption-text">Basics</span>
     <ul class="subnav">
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../skil/">SKIL servers</a>
+    <a class="current" href="./">SKIL servers</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#skil">Skil</a></li>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
     <a class="" href="../work_space/">Workspaces</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Experiments</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#skil-experiments">SKIL Experiments</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#experiment">Experiment</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../experiment/">Experiments</a>
                 </li>
                 <li class="">
                     
@@ -167,10 +161,10 @@
         
       
     
-    <li>Experiments</li>
+    <li>SKIL servers</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/experiment.md"
+        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/skil.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -180,25 +174,20 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="skil-experiments">SKIL Experiments</h1>
-<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/experiments.py#L9">[source]</a></span></p>
-<h3 id="experiment">Experiment</h3>
-<pre><code class="python">skil.experiments.Experiment(work_space=None, experiment_id=None, name='experiment', description='experiment', verbose=False, create=True)
+                <p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/base.py#L18">[source]</a></span></p>
+<h3 id="skil">Skil</h3>
+<pre><code class="python">skil.base.Skil(workspace_server_id=None, host='localhost', port=9008, debug=False, user_id='admin', password='admin')
 </code></pre>
 
-<p>Experiments in SKIL are useful for defining different model configurations, 
-encapsulating training of models, and carrying out different data cleaning tasks.</p>
-<p>Experiments have a one-to-one relationship with Notebooks and have their own 
-storage mechanism for saving different model configurations when seeking a best 
-candidate.</p>
-<p><strong>Arguments:</strong></p>
+<p>Central class for managing connections with the SKIL server.</p>
+<p><strong>Arguments</strong></p>
 <ul>
-<li><strong>work_space</strong>: <code>WorkSpace</code> instance. If <code>None</code> a workspace will be created.</li>
-<li><strong>experiment_id</strong>: integer. Unique id for workspace. If <code>None</code>, a unique id will be generated.</li>
-<li><strong>name</strong>: string. Name for the experiment.</li>
-<li><strong>description</strong>: string. Description for the experiment.</li>
-<li><strong>verbose</strong>: boolean. If <code>True</code>, api response will be printed.</li>
-<li><strong>create</strong>: boolean. If <code>True</code> a new experiment will be created.</li>
+<li><strong>workspace_server_id</strong>: None by default, only specify if you want to connect to a non-default SKIL workspace server.</li>
+<li><strong>host</strong>: string, Host on which the SKIL server runs.</li>
+<li><strong>port</strong>: integer, Port on which the SKIL host runs.</li>
+<li><strong>debug</strong>: boolean, set to false for more verbose logging.</li>
+<li><strong>user_id</strong>: user name for your SKIL server connection.</li>
+<li><strong>password</strong>: password of the provided SKIL user.</li>
 </ul>
               
             </div>
@@ -207,10 +196,10 @@ candidate.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../model/" class="btn btn-neutral float-right" title="Models">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../work_space/" class="btn btn-neutral float-right" title="Workspaces">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../work_space/" class="btn btn-neutral" title="Workspaces"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../inference/" class="btn btn-neutral" title="SKIL inference"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -238,10 +227,10 @@ candidate.</p>
           <a href="https://github.com/SkymindIO/skil-python/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../work_space/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../inference/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../model/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../work_space/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

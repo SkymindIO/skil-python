@@ -53,13 +53,15 @@
     <a class="current" href=".">Home</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#skil-python-high-level-python-skil-client">skil-python: High-level Python SKIL client</a></li>
+    <li class="toctree-l2"><a href="#skil-deep-learning-model-lifecycle-management-for-humans">SKIL: Deep learning model lifecycle management for humans</a></li>
     
         <ul>
         
+            <li><a class="toctree-l3" href="#python-client-for-skyminds-intelligence-layer-skil">Python client for Skymind's intelligence layer (SKIL)</a></li>
+        
             <li><a class="toctree-l3" href="#installation">Installation</a></li>
         
-            <li><a class="toctree-l3" href="#example-usage">Example usage</a></li>
+            <li><a class="toctree-l3" href="#getting-started-deploying-an-object-detection-app-with-skil-in-60-seconds">Getting started: Deploying an object detection app with SKIL in 60 seconds</a></li>
         
         </ul>
     
@@ -69,37 +71,78 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="work_space/">Work Space</a>
+    <span class="caption-text">Getting started</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="core_concepts/">SKIL core concepts</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="training/">SKIL training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="inference/">SKIL inference</a>
+                </li>
+    </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="experiment/">Experiment</a>
+    <span class="caption-text">Basics</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="skil/">SKIL servers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="work_space/">Workspaces</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="experiment/">Experiments</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="model/">Models</a>
+                </li>
+    </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="model/">Model</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="deployment/">Deployment</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="service/">Service</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
+    <span class="caption-text">Training</span>
+    <ul class="subnav">
+                <li class="">
+                    
     <a class="" href="resources/">Resources</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="spark/">Distributed training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="jobs/">Jobs</a>
+                </li>
+    </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="jobs/">Jobs</a>
+    <span class="caption-text">Inference</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="deployment/">Deployments</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="service/">Services</a>
+                </li>
+    </ul>
 	    </li>
           
         </ul>
@@ -137,42 +180,56 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="skil-python-high-level-python-skil-client">skil-python: High-level Python SKIL client</h1>
+                <h1 id="skil-deep-learning-model-lifecycle-management-for-humans">SKIL: Deep learning model lifecycle management for humans</h1>
+<h2 id="python-client-for-skyminds-intelligence-layer-skil">Python client for Skymind's intelligence layer (SKIL)</h2>
+<p>SKIL is an end-to-end deep learning platform. Think of it as a unified front-end for your deep learning training and deployment process. SKIL supports many popular deep learning libraries, such as Keras, TensorFlow and Deeplearning4J. SKIL increases time-to-value of your AI applications by closing the common gap between experiments and production - bringing models to production fast and keeping them there. acting as middleware for all your AI applications. SKIL effectively acts as middleware for your AI applications and solves a range of common <em>production</em> problems of, namely:</p>
+<ul>
+<li>Install and run anywhere: SKIL integrates with your current cloud provider, custom on-premise solutions and hybrid architectures.</li>
+<li>Easy distributed training on Spark: Bring your Keras or TensorFlow model and train it on Apache Spark without any overhead. We support a wide variety of distributed data sources and other vital parts of your production stack.</li>
+<li>Seamless deployment process:  With SKIL, your company's machine learning product lifecycle can be as quick as your data scientist’s experimentation cycle. If you set up a SKIL experiment, model deployment is already accounted for, and makes product integration of deep learning models into a production-grade model server simple - batteries included.</li>
+<li>Built-in reproducibility and compliance: What model and data did you use? Which pre-processing steps were done? Who carried out the experiment? What library versions were used? Which hardware was utilized? SKIL keeps track of all this information for you.</li>
+<li>Model organisation and versioning: SKIL makes it easy to keep your various experiments organised, without interfering with your workflow. Your models are versioned and can be updated at any point.</li>
+<li>Keep working as you're used to: SKIL does not impose an entirely new workflow on you or force you into a UI, just stay right where you are. Happy with your experiment and want to deploy it? Tell SKIL to deploy a service. Your prototype works and you want to scale out training with Spark? Tell SKIL to run a training job.</li>
+</ul>
 <h2 id="installation">Installation</h2>
+<p>To install SKIL itself, head over to <a href="https://docs.skymind.ai/docs/installation">skymind.ai</a>. Probably the easiest way to get started is by using <a href="https://www.docker.com/">docker</a>:</p>
+<pre><code class="bash">docker pull skymindops/skil-ce
+docker run --rm -it -p 9008:9008 skymindops/skil-ce bash /start-skil.sh
+</code></pre>
+
+<p>SKIL's Python client can be installed from PyPI:</p>
 <pre><code class="bash">pip install skil
 </code></pre>
 
-<h2 id="example-usage">Example usage</h2>
-<p>Lightning version: SKIL does everything necessary for you under the hood, i.e. creating a production-grade model server with batteries included. </p>
+<h2 id="getting-started-deploying-an-object-detection-app-with-skil-in-60-seconds">Getting started: Deploying an object detection app with SKIL in 60 seconds</h2>
+<p>We're going to deploy an object detection model pre-trained with Google TensorFlow. The model we use
+is the second version of the <em>You Only Look Once</em> (YOLOv2) model trained on the COCO dataset. Download this model from <a href="https://github.com/deeplearning4j/dl4j-test-resources/blob/master/src/main/resources/tf_graphs/examples/yolov2_608x608/frozen_model.pb">here</a> and store it as <code>yolo.pb</code>. If you haven't done already, install and start SKIL as described in the last section.</p>
+<p>For this quick example you only need three (self-explanatory) concepts from SKIL. You first create a <code>Model</code> from the model file <code>yolo.pb</code> you just downloaded. This <code>Model</code> becomes a SKIL <code>Service</code> by deploying it to a SKIL <code>Deployment</code>. That's all there is to it:</p>
 <pre><code class="python">import skil
 
-skil_server = skil.Skil()
-
-model = skil.Model('your_model.h5')
-model.deploy(scale=42)
+model = skil.Model('yolo.pb', model_id='yolo_42', name='yolo')
+service = model.deploy(skil.Deployment(), input_names=['input'], output_names=['output'])
 </code></pre>
 
-<p>Slightly more extended example:</p>
-<pre><code class="python">from skil import Skil, WorkSpace, Experiment, Model, Deployment
+<p>Your YOLO object detection app is now live and you can send images to it using the <code>detect_objects</code> method of your <code>service</code>. We use <a href="https://opencv.org/">OpenCV</a> (imported as <code>cv2</code> into Python) to load, annotate and write images:</p>
+<pre><code class="python">import cv2
 
-# Define and persist your model first
-model_path = './tf_graph.pb'
-
-# connect to your running skil instance
-skil_server = Skil()
-
-# create a workspace and an experiment in it
-work_space = WorkSpace(skil_server)
-experiment = Experiment(work_space)
-
-# add your model to SKIL
-model = Model(model_path, experiment)
-
-# deploy and serve your model
-deployment = Deployment(skil_server)
-model.deploy(deployment, start_server=False)
-model.serve()
+image = cv2.imread(&quot;say_yolo_again.jpg&quot;)
+detection = service.detect_objects(image)
+image = skil.utils.yolo.annotate_image(image, detection)
+cv2.imwrite('annotated.jpg', image)
 </code></pre>
+
+<p>This completes your very first SKIL example, but there are many more advanced examples to get you started:</p>
+<ul>
+<li><a href="https://github.com/SkymindIO/skil-python/blob/master/examples/tensorflow-yolo/yolo_skil_web_cam.py">Running YOLO against a live web cam</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/tree/master/examples/keras-mnist-mlp">Deploying a Keras model as prediction service to SKIL</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/tree/master/examples/tensorflow-mnist-mlp">Deploying a TensorFlow model as prediction service to SKIL</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/tree/master/examples/skil-cli-keras">Using SKIL's CLI to quickly configure models and deployments</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/blob/master/examples/keras-skil-example.ipynb">Deploying a Keras model from a jupyter notebook</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/tree/master/examples/keras-job">WIP Run a Spark training job from a simple Keras model</a></li>
+<li><a href="https://github.com/SkymindIO/skil-python/tree/master/examples/keras-iris-pipeline">WIP Deploy preprocessing steps and a model as a Pipeline service</a></li>
+</ul>
               
             </div>
           </div>
@@ -180,7 +237,7 @@ model.serve()
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="work_space/" class="btn btn-neutral float-right" title="Work Space">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="core_concepts/" class="btn btn-neutral float-right" title="SKIL core concepts">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -210,7 +267,7 @@ model.serve()
       
       
       
-        <span style="margin-left: 15px"><a href="work_space/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="core_concepts/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -223,5 +280,5 @@ model.serve()
 
 <!--
 MkDocs version : 1.0.1
-Build Date UTC : 2018-12-20 09:42:37
+Build Date UTC : 2019-01-23 16:25:11
 -->

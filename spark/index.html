@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Experiments - SKIL Python Documentation</title>
+  <title>Distributed training - SKIL Python Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Experiments";
-    var mkdocs_page_input_path = "experiment.md";
-    var mkdocs_page_url = "/skil-python/experiment/";
+    var mkdocs_page_name = "Distributed training";
+    var mkdocs_page_input_path = "spark.md";
+    var mkdocs_page_url = "/skil-python/spark/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -84,21 +84,9 @@
                     
     <a class="" href="../work_space/">Workspaces</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Experiments</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#skil-experiments">SKIL Experiments</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#experiment">Experiment</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../experiment/">Experiments</a>
                 </li>
                 <li class="">
                     
@@ -115,9 +103,18 @@
                     
     <a class="" href="../resources/">Resources</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../spark/">Distributed training</a>
+    <a class="current" href="./">Distributed training</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#parameteraveraging">ParameterAveraging</a></li>
+    
+
+    <li class="toctree-l3"><a href="#parametersharing">ParameterSharing</a></li>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
@@ -163,14 +160,14 @@
     
       
         
-          <li>Basics &raquo;</li>
+          <li>Training &raquo;</li>
         
       
     
-    <li>Experiments</li>
+    <li>Distributed training</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/experiment.md"
+        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/spark.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -180,25 +177,40 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="skil-experiments">SKIL Experiments</h1>
-<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/experiments.py#L9">[source]</a></span></p>
-<h3 id="experiment">Experiment</h3>
-<pre><code class="python">skil.experiments.Experiment(work_space=None, experiment_id=None, name='experiment', description='experiment', verbose=False, create=True)
+                <p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/spark.py#L13">[source]</a></span></p>
+<h3 id="parameteraveraging">ParameterAveraging</h3>
+<pre><code class="python">skil.spark.ParameterAveraging(num_workers, batch_size, averaging_frequency=5, num_batches_prefetch=0, collect_stats=False)
 </code></pre>
 
-<p>Experiments in SKIL are useful for defining different model configurations, 
-encapsulating training of models, and carrying out different data cleaning tasks.</p>
-<p>Experiments have a one-to-one relationship with Notebooks and have their own 
-storage mechanism for saving different model configurations when seeking a best 
-candidate.</p>
+<p>Parameter averaging configuration for distributed training.</p>
 <p><strong>Arguments:</strong></p>
 <ul>
-<li><strong>work_space</strong>: <code>WorkSpace</code> instance. If <code>None</code> a workspace will be created.</li>
-<li><strong>experiment_id</strong>: integer. Unique id for workspace. If <code>None</code>, a unique id will be generated.</li>
-<li><strong>name</strong>: string. Name for the experiment.</li>
-<li><strong>description</strong>: string. Description for the experiment.</li>
-<li><strong>verbose</strong>: boolean. If <code>True</code>, api response will be printed.</li>
-<li><strong>create</strong>: boolean. If <code>True</code> a new experiment will be created.</li>
+<li><strong>num_workers</strong>: number of Spark workers/executors.</li>
+<li><strong>batch_size</strong>: batch size used for model training</li>
+<li><strong>averaging_frequency</strong>: int, after how many batches of training averaging takes place</li>
+<li><strong>num_batches_prefetch</strong>: int, how many batches to pre-fetch, deactivated if 0.</li>
+<li><strong>collect_stats</strong>: boolean, if statistics get collected during training</li>
+</ul>
+<hr />
+<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/spark.py#L35">[source]</a></span></p>
+<h3 id="parametersharing">ParameterSharing</h3>
+<pre><code class="python">skil.spark.ParameterSharing(num_workers, batch_size, shake_frequency=0, min_threshold=1e-05, update_threshold=0.001, workers_per_node=-1, num_batches_prefetch=0, step_delay=50, step_trigger=0.05, threshold_step=1e-05, collect_stats=False)
+</code></pre>
+
+<p>Parameter sharing configuration for distributed training.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>num_workers</strong>: number of Spark workers/executors.</li>
+<li><strong>batch_size</strong>: batch size used for model training</li>
+<li><strong>shake_frequency</strong>: shake frequency</li>
+<li><strong>min_threshold</strong>: minimum threshold</li>
+<li><strong>update_threshold</strong>: update threshold</li>
+<li><strong>workers_per_node</strong>: workers per node</li>
+<li><strong>num_batches_prefetch</strong>: number of batches to prefetch</li>
+<li><strong>step_delay</strong>: step delay</li>
+<li><strong>step_trigger</strong>: step trigger</li>
+<li><strong>threshold_step</strong>: threshold step</li>
+<li><strong>collect_stats</strong>: boolean, if statistics get collected during training</li>
 </ul>
               
             </div>
@@ -207,10 +219,10 @@ candidate.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../model/" class="btn btn-neutral float-right" title="Models">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../jobs/" class="btn btn-neutral float-right" title="Jobs">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../work_space/" class="btn btn-neutral" title="Workspaces"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../resources/" class="btn btn-neutral" title="Resources"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -238,10 +250,10 @@ candidate.</p>
           <a href="https://github.com/SkymindIO/skil-python/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../work_space/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../resources/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../model/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../jobs/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

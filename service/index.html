@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Service - SKIL Python Documentation</title>
+  <title>Services - SKIL Python Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,7 +17,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Service";
+    var mkdocs_page_name = "Services";
     var mkdocs_page_input_path = "service.md";
     var mkdocs_page_url = "/skil-python/service/";
   </script>
@@ -55,49 +55,96 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../work_space/">Work Space</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../experiment/">Experiment</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../model/">Model</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../deployment/">Deployment</a>
-	    </li>
-          
-            <li class="toctree-l1 current">
-		
-    <a class="current" href="./">Service</a>
+    <span class="caption-text">Getting started</span>
     <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#skil-services">SKIL Services</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l3" href="#service">Service</a></li>
-        
-        </ul>
-    
-
+                <li class="">
+                    
+    <a class="" href="../core_concepts/">SKIL core concepts</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../training/">SKIL training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../inference/">SKIL inference</a>
+                </li>
     </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="../resources/">Resources</a>
+    <span class="caption-text">Basics</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../skil/">SKIL servers</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../work_space/">Workspaces</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../experiment/">Experiments</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../model/">Models</a>
+                </li>
+    </ul>
 	    </li>
           
             <li class="toctree-l1">
 		
+    <span class="caption-text">Training</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../resources/">Resources</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../spark/">Distributed training</a>
+                </li>
+                <li class="">
+                    
     <a class="" href="../jobs/">Jobs</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Inference</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../deployment/">Deployments</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Services</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#skil-services">SKIL Services</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#service">Service</a></li>
+        
+            <li><a class="toctree-l4" href="#transformcsvservice">TransformCsvService</a></li>
+        
+            <li><a class="toctree-l4" href="#transformarrayservice">TransformArrayService</a></li>
+        
+            <li><a class="toctree-l4" href="#transformarrayservice_1">TransformArrayService</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
 	    </li>
           
         </ul>
@@ -121,8 +168,12 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Inference &raquo;</li>
+        
+      
     
-    <li>Service</li>
+    <li>Services</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/service.md"
@@ -136,12 +187,62 @@
             <div class="section">
               
                 <h1 id="skil-services">SKIL Services</h1>
-<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/services.py#L6">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/services.py#L15">[source]</a></span></p>
 <h3 id="service">Service</h3>
-<pre><code class="python">skil.services.Service(skil, model_name, deployment, model_deployment)
+<pre><code class="python">skil.services.Service(skil, model, deployment, model_deployment)
 </code></pre>
 
-<p>A wrapper around a deployed model for inference.</p>
+<p>A service is a deployed model.</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>skil</strong>: <code>Skil</code> server instance</li>
+<li><strong>model</strong>: <code>skil.Model</code> instance</li>
+<li><strong>deployment</strong>: <code>skil.Deployment</code> instance</li>
+<li><strong>model_deployment</strong>: result of <code>deploy_model</code> API call of a model</li>
+</ul>
+<hr />
+<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/services.py#L204">[source]</a></span></p>
+<h3 id="transformcsvservice">TransformCsvService</h3>
+<pre><code class="python">skil.services.TransformCsvService(skil, model, deployment, model_deployment)
+</code></pre>
+
+<p>TransformCsvService</p>
+<p>A service for transforming CSV data</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>skil</strong>: <code>Skil</code> server instance</li>
+<li><strong>model</strong>: <code>skil.Model</code> instance</li>
+<li><strong>deployment</strong>: <code>skil.Deployment</code> instance</li>
+<li><strong>model_deployment</strong>: result of <code>deploy_model</code> API call of a model</li>
+</ul>
+<hr />
+<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/services.py#L268">[source]</a></span></p>
+<h3 id="transformarrayservice">TransformArrayService</h3>
+<pre><code class="python">skil.services.TransformArrayService(skil, model, deployment, model_deployment)
+</code></pre>
+
+<p>A service for transforming array data</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>skil</strong>: <code>Skil</code> server instance</li>
+<li><strong>model</strong>: <code>skil.Model</code> instance</li>
+<li><strong>deployment</strong>: <code>skil.Deployment</code> instance</li>
+<li><strong>model_deployment</strong>: result of <code>deploy_model</code> API call of a model</li>
+</ul>
+<hr />
+<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/services.py#L268">[source]</a></span></p>
+<h3 id="transformarrayservice_1">TransformArrayService</h3>
+<pre><code class="python">skil.services.TransformArrayService(skil, model, deployment, model_deployment)
+</code></pre>
+
+<p>A service for transforming array data</p>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>skil</strong>: <code>Skil</code> server instance</li>
+<li><strong>model</strong>: <code>skil.Model</code> instance</li>
+<li><strong>deployment</strong>: <code>skil.Deployment</code> instance</li>
+<li><strong>model_deployment</strong>: result of <code>deploy_model</code> API call of a model</li>
+</ul>
               
             </div>
           </div>
@@ -149,10 +250,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../resources/" class="btn btn-neutral float-right" title="Resources">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../deployment/" class="btn btn-neutral" title="Deployment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../deployment/" class="btn btn-neutral" title="Deployments"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -182,8 +281,6 @@
       
         <span><a href="../deployment/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../resources/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

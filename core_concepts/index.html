@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Experiments - SKIL Python Documentation</title>
+  <title>SKIL core concepts - SKIL Python Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Experiments";
-    var mkdocs_page_input_path = "experiment.md";
-    var mkdocs_page_url = "/skil-python/experiment/";
+    var mkdocs_page_name = "SKIL core concepts";
+    var mkdocs_page_input_path = "core_concepts.md";
+    var mkdocs_page_url = "/skil-python/core_concepts/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -57,9 +57,15 @@
 		
     <span class="caption-text">Getting started</span>
     <ul class="subnav">
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../core_concepts/">SKIL core concepts</a>
+    <a class="current" href="./">SKIL core concepts</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#getting-started-with-skil-in-python">Getting started with SKIL in Python</a></li>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
@@ -84,21 +90,9 @@
                     
     <a class="" href="../work_space/">Workspaces</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Experiments</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#skil-experiments">SKIL Experiments</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#experiment">Experiment</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../experiment/">Experiments</a>
                 </li>
                 <li class="">
                     
@@ -163,14 +157,14 @@
     
       
         
-          <li>Basics &raquo;</li>
+          <li>Getting started &raquo;</li>
         
       
     
-    <li>Experiments</li>
+    <li>SKIL core concepts</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/experiment.md"
+        <a href="https://github.com/SkymindIO/skil-python/edit/master/docs/core_concepts.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -180,26 +174,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="skil-experiments">SKIL Experiments</h1>
-<p><span style="float:right;"><a href="https://github.com/skymindIO/skil-python/blob/master/skil/experiments.py#L9">[source]</a></span></p>
-<h3 id="experiment">Experiment</h3>
-<pre><code class="python">skil.experiments.Experiment(work_space=None, experiment_id=None, name='experiment', description='experiment', verbose=False, create=True)
-</code></pre>
-
-<p>Experiments in SKIL are useful for defining different model configurations, 
-encapsulating training of models, and carrying out different data cleaning tasks.</p>
-<p>Experiments have a one-to-one relationship with Notebooks and have their own 
-storage mechanism for saving different model configurations when seeking a best 
-candidate.</p>
-<p><strong>Arguments:</strong></p>
-<ul>
-<li><strong>work_space</strong>: <code>WorkSpace</code> instance. If <code>None</code> a workspace will be created.</li>
-<li><strong>experiment_id</strong>: integer. Unique id for workspace. If <code>None</code>, a unique id will be generated.</li>
-<li><strong>name</strong>: string. Name for the experiment.</li>
-<li><strong>description</strong>: string. Description for the experiment.</li>
-<li><strong>verbose</strong>: boolean. If <code>True</code>, api response will be printed.</li>
-<li><strong>create</strong>: boolean. If <code>True</code> a new experiment will be created.</li>
-</ul>
+                <h1 id="getting-started-with-skil-in-python">Getting started with SKIL in Python</h1>
               
             </div>
           </div>
@@ -207,10 +182,10 @@ candidate.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../model/" class="btn btn-neutral float-right" title="Models">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../training/" class="btn btn-neutral float-right" title="SKIL training">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../work_space/" class="btn btn-neutral" title="Workspaces"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -238,10 +213,10 @@ candidate.</p>
           <a href="https://github.com/SkymindIO/skil-python/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../work_space/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../model/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../training/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
