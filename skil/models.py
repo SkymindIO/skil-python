@@ -203,7 +203,7 @@ class Transform(Model):
         create: boolean. Internal. Do not use.
     """
 
-    def __init__(self, transform=None, transform_type='CSV', transform_id=None, name=None, 
+    def __init__(self, transform=None, transform_type='CSV', transform_id=None, name=None,
                  version=None, experiment=None,
                  labels='', verbose=False, create=True):
         if create:
@@ -315,11 +315,14 @@ class Transform(Model):
                     self.skil.printer.pprint(self.model_deployment)
 
             if self.transform_type == 'CSV':
-                self.service = TransformCsvService(self.skil, self, self.deployment, self.model_deployment)
+                self.service = TransformCsvService(
+                    self.skil, self, self.deployment, self.model_deployment)
             elif self.transform_type == 'array':
-                self.service = TransformArrayService(self.skil, self, self.deployment, self.model_deployment)
+                self.service = TransformArrayService(
+                    self.skil, self, self.deployment, self.model_deployment)
             elif self.transform_type == 'image':
-                self.service = TransformImageService(self.skil, self, self.deployment, self.model_deployment)
+                self.service = TransformImageService(
+                    self.skil, self, self.deployment, self.model_deployment)
 
         if start_server:
             self.service.start()

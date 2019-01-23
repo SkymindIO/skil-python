@@ -123,6 +123,7 @@ class Service:
 
         # Arguments:
             data: `numpy.ndarray` (or list thereof). Input data.
+            version: version of the deployed service
 
         # Returns
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
@@ -184,6 +185,7 @@ class Service:
 
         with open(temp_path, 'rb') as data:
             resp = requests.post(
+                # TODO: should also have a model "version"?
                 url=url,
                 headers=self.skil.auth_headers,
                 files={
@@ -206,14 +208,17 @@ class TransformCsvService(Service):
     def __init__(self, *args, **kwargs):
         super(TransformCsvService, self).__init__(*args, **kwargs)
 
-    def _to_single_csv_record(self, data):
+    @staticmethod
+    def _to_single_csv_record(data):
         return skil_client.SingleCSVRecord(data)
 
-    def _to_batch_csv_record(self, data):
-        single_records = [self._to_single_csv_record(d) for d in data]
+    @staticmethod
+    def _to_batch_csv_record(data):
+        single_records = [
+            TransformCsvService._to_single_csv_record(d) for d in data]
         return skil_client.BatchCSVRecord(single_records)
 
-    def predict(data, version='default'):
+    def predict(self, data, version='default'):
         """Predict for given batch of data.
 
         # Arguments
@@ -230,8 +235,7 @@ class TransformCsvService(Service):
             batch_csv_record=self._to_batch_csv_record(data)
         )
 
-
-    def predict_single(data, version='default'):
+    def predict_single(self, data, version='default'):
         """Predict a single input.
 
         # Arguments
@@ -249,12 +253,12 @@ class TransformCsvService(Service):
         )
 
 
-class TransformArrayService(Service): # TODO
+class TransformArrayService(Service):
 
     def __init__(self, *args, **kwargs):
         super(TransformArrayService, self).__init__(*args, **kwargs)
 
-    def predict(data, version='default'):
+    def predict(self, data, version='default'):
         """Predict for given batch of data.
 
         # Arguments
@@ -268,10 +272,10 @@ class TransformArrayService(Service): # TODO
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
-            batch_record=self._to_batch_csv_record(data)
+            batch_record=data
         )
 
-    def predict_single(data, version='default'):
+    def predict_single(self, data, version='default'):
         """Predict a single input.
 
         # Arguments:
@@ -285,16 +289,16 @@ class TransformArrayService(Service): # TODO
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
-            single_record=self._to_single_csv_record(data)
+            single_record=data
         )
 
 
-class TransformImageService(Service): # TODO
+class TransformImageService(Service):
 
     def __init__(self, *args, **kwargs):
         super(TransformImageService, self).__init__(*args, **kwargs)
 
-    def predict(data. version='default'):
+    def predict(self, data, version='default'):
         """Predict for given batch of data.
 
         # Arguments
@@ -311,7 +315,7 @@ class TransformImageService(Service): # TODO
             files=data
         )
 
-    def predict_single(data, version='default'):
+    def predict_single(self, data, version='default'):
         """Predict a single input
 
         # Arguments
@@ -327,6 +331,7 @@ class TransformImageService(Service): # TODO
             version_name=version,
             file=data
         )
+
 
 class Pipeline(Service):
     """Pipeline
@@ -350,6 +355,8 @@ class Pipeline(Service):
                  start_server=True, scale=1, input_names=None,
                  output_names=None, verbose=True):
 
+        super(Pipeline, self).__init__(self, model.skil, deployment, None)
+
         self.model_service = model.deploy(
             deployment, start_server, scale, input_names, output_names, verbose
         )
@@ -367,7 +374,7 @@ class Pipeline(Service):
         self.model_service.stop()
         self.transform_service.stop()
 
-    def predict(self, data):
+    def predict(self, data, version='default'):
         """Predict for given batch of data.
 
         # Arguments:
@@ -377,10 +384,10 @@ class Pipeline(Service):
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
         """
         if self.transform_service:
-            data = self.transform_service.predict(data)
-        return self.model_service.predict(data)
+            data = self.transform_service.predict(data, version)
+        return self.model_service.predict(data, version)
 
-    def predict_single(self, data):
+    def predict_single(self, data, version='default'):
         """Predict for a single input.
 
         # Arguments:
@@ -390,10 +397,11 @@ class Pipeline(Service):
             `numpy.ndarray` instance for single output model and list of `numpy.ndarray` for multi-output model.
         """
         if self.transform_service:
-            data = self.transform_service.predict_single(data)
-        return self.model_service.predict_single(data)
+            data = self.transform_service.predict_single(data, version)
+        return self.model_service.predict_single(data, version)
 
-    def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
+    def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg',
+                       version='default'):
         """Detect objects in an image for this service. Only works when deploying an object detection
             model like YOLO or SSD.
 
@@ -409,5 +417,5 @@ class Pipeline(Service):
                 of detected objects.
         """
         if self.transform_service:
-            image = self.transform_service.predict_single(image)
+            image = self.transform_service.predict_single(image, version)
         return self.model_service.detect_objects(image, threshold, needs_preprocessing, temp_path)
