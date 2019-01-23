@@ -1,12 +1,11 @@
 from pydatavec.utils import download_file
-from pydatavec import Schema, TransformProcess, SparkExecutor
+from pydatavec import Schema, TransformProcess
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 import numpy as np
 import os
 import pyspark
-import json
 
 
 # Download dataset, if not already downloaded.
@@ -23,7 +22,7 @@ if not os.path.isfile(filename):
 # We use pyspark to filter empty lines
 sc = pyspark.SparkContext(master='local[*]', appName='iris')
 data = sc.textFile('iris.data')
-filtered_data = data.filter(lambda x: len(x) > 0)
+filtered_data = data.filter(lambda d: len(d) > 0)
 
 # Define Input Schema
 input_schema = Schema()
@@ -58,4 +57,3 @@ model.fit(x, y, batch_size=5, epochs=200)
 with open('iris_tp.json', 'w') as f:
     f.write(tp.to_java().toJson())
 model.save('iris_model.h5')
-

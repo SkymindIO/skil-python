@@ -20,7 +20,6 @@ class JobConfiguration:
     """
 
     # TODO: provide a smart default for output_path relative to input data or model path.
-
     def __init__(self, skil_model, compute_resource, storage_resource,
                  output_path, data_set_provider_class,
                  is_multi_data_set, verbose):
@@ -33,7 +32,7 @@ class JobConfiguration:
         self.verbose = verbose
 
 
-class InferenceJobConfiguration(JobConfiguration):
+class InferenceJobConfiguration(object, JobConfiguration):
     """InferenceJobConfiguration
 
     Configuration for a SKIL inference job. On top of what you need to specify for a base JobConfiguration,
@@ -72,7 +71,7 @@ class InferenceJobConfiguration(JobConfiguration):
         self.batch_size = batch_size
 
 
-class TrainingJobConfiguration(JobConfiguration):
+class TrainingJobConfiguration(object, JobConfiguration):
 
     """TrainingJobConfiguration
 
@@ -122,37 +121,85 @@ class TrainingJobConfiguration(JobConfiguration):
         self.ui_url = ui_url
 
 
-class TrainingJob:
+class Job:
+    """Job
+
+    Basic SKIL job abstraction. You can run a job, refresh its status,
+    download its output file once completed, and delete a Job.
+    """
+
+    def __init__(self):
+        self.job_id = None
+        self.run_id = None
+        self.skil = None
+        self.status = None
+
+    def run(self):
+        if self.job_id and self.skil:
+            response = self.skil.api.run_a_job(self.job_id)
+            self.run_id = response.run_id
+        else:
+            raise Exception('Can not run job, either skil server or job_id non-existent.')
+
+    def refresh_status(self):
+        if self.job_id and self.skil:
+            response = self.skil.api.refresh_job_status(self.job_id)
+            self.status = response.status
+            print(self.status)
+        else:
+            raise Exception('Can not refresh job status, either skil server or job_id non-existent.')
+
+    def delete(self):
+        self.skil.api.delete_job_by_id(self.job_id)
+
+    def download_output_file(self, local_path):
+        download_path = skil_client.DownloadOutputFileRequest(local_download_path=local_path)
+        self.skil.api.download_job_output_file(
+            job_id=self.job_id,
+            download_output_file_request=download_path
+        )
+
+
+class TrainingJob(object, Job):
     """TrainingJob
 
-    Initialize and run a SKIL training job. If a distributed config is provided,
-    SKIL will run your model on Spark. Otherwise it will carry out regular training
-    on provided resources.
+    Initialize and run a SKIL training job.
 
     # Arguments:
         training_config: `TrainingJobConfiguration` instance
         distributed_config: `DistributedConfiguration` instance
+        job_id: None by default, provide this ID for existing jobs.
+        create: boolean, whether to create a new job or retrieve an existing one.
 
     """
+    # TODO make is so that If a distributed config is provided,
+    #     SKIL will run your model on Spark. Otherwise it will carry out regular training
+    #     on provided resources.
 
-    def __init__(self, skil, training_config, distributed_config=None):
+    def __init__(self, skil, training_config, distributed_config=None, job_id=None, create=True):
+
+        super(TrainingJob, self).__init__()
 
         self.skil = skil
         self.training_config = training_config
         self.tm = distributed_config
 
-        training_create_job_request = skil_client.CreateJobRequest(
-            compute_resource_id=self.training_config.compute_id,
-            storage_resource_id=self.training_config.storage_id,
-            job_args=self._training_job_args(),
-            output_file_name=self.training_config.output_path
-        )
+        if create:
+            training_create_job_request = skil_client.CreateJobRequest(
+                compute_resource_id=self.training_config.compute_id,
+                storage_resource_id=self.training_config.storage_id,
+                job_args=self._training_job_args(),
+                output_file_name=self.training_config.output_path
+            )
 
-        # TODO: why do we need to specify the training type here if the request already knows it?
-        self.skil.api.create_job("TRAINING", training_create_job_request)
+            response = self.skil.api.create_job("TRAINING", training_create_job_request)
+        else:
+            response = self.skil.api.get_job_by_id(job_id)
+            assert response.job_id == job_id
 
-    def run(self):
-        pass
+        self.job_id = response.job_id
+        self.run_id = response.run_id
+        self.status = response.status
 
     def _training_job_args(self):
         tc = self.training_config
@@ -165,7 +212,7 @@ class TrainingJob:
         dsp = "-dsp {} ".format(tc.dsp)
         eval_dsp = "--evalDataSetProviderClass {} ".format(tc.eval_dsp)
         eval_type = "--evalType {} ".format(tc.eval_type)
-        tm = "-tm {} ".format(tc.tm)
+        tm = "-tm {} ".format(tm)
         mds = "--multiDataSet {} ".format(_bool_to_string(tc.mds))
         verbose = "--verbose {} ".format(_bool_to_string(tc.verbose))
 
@@ -173,24 +220,39 @@ class TrainingJob:
             eval_dsp + eval_type + tm + mds + verbose
 
 
-class InferenceJob:
+class InferenceJob(object, Job):
+    """InferenceJob
 
-    def __init__(self, skil, inference_config):
+    Initialize and run a SKIL inference job.
+
+    # Arguments:
+        inference_config: `InferenceJobConfiguration` instance
+        job_id: None by default, provide this ID for existing jobs.
+        create: boolean, whether to create a new job or retrieve an existing one.
+
+    """
+    def __init__(self, skil, inference_config, job_id=None, create=True):
+        super(InferenceJob, self).__init__()
 
         self.skil = skil
         self.inference_config = inference_config
 
-        inference_create_job_request = skil_client.CreateJobRequest(
-            compute_resource_id=self.inference_config.compute_id,
-            storage_resource_id=self.inference_config.storage_id,
-            job_args=self._inference_job_args(),
-            output_file_name=self.inference_config.output_path
-        )
+        if create:
+            inference_create_job_request = skil_client.CreateJobRequest(
+                compute_resource_id=self.inference_config.compute_id,
+                storage_resource_id=self.inference_config.storage_id,
+                job_args=self._inference_job_args(),
+                output_file_name=self.inference_config.output_path
+            )
 
-        self.skil.api.create_job("INFERENCE", inference_create_job_request)
+            response = self.skil.api.create_job("INFERENCE", inference_create_job_request)
+        else:
+            response = self.skil.api.get_job_by_id(job_id)
+            assert response.job_id == job_id
 
-    def run(self):
-        pass
+        self.job_id = response.job_id
+        self.run_id = response.run_id
+        self.status = response.status
 
     def _inference_job_args(self):
         ic = self.inference_config
@@ -207,9 +269,28 @@ class InferenceJob:
             mds + verbose
 
 
-def get_job_by_id(skil_server, job_id):
-    # TODO is this available?
-    pass
+def get_all_jobs(skil):
+    jobs = skil.api.get_all_jobs()
+    return [get_job_by_id(skil, j.job_id) for j in jobs]
+
+
+def get_job_by_id(skil, job_id):
+    job = skil.api.get_job_by_id(job_id)
+    job_type = job.job_type
+    if job_type.lower() == 'training':
+        return TrainingJob(
+            skil=skil, training_config=None, distributed_config=None, job_id=job_id, create=False
+        )
+    elif job_type.lower() == 'inference':
+        return InferenceJob(
+            skil=skil, inference_config=None, job_id=job_id, create=False
+        )
+    else:
+        raise ValueError('job_id does not correspond to training or inference job')
+
+
+def delete_job_by_id(skil, job_id):
+    skil.api.delete_job_by_id(job_id)
 
 
 def _bool_to_string(bool):

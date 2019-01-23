@@ -1,6 +1,9 @@
 import pytest
 import skil
 import os
+from keras.datasets import mnist
+from keras.models import Model
+from keras.layers import Dense, Dropout, Input
 
 work_space = None  # because number of workspaces is limited
 _sk = None
@@ -23,14 +26,7 @@ def _get_ws():
 
 
 def save_model():
-    import keras
-    from keras.datasets import mnist
-    from keras.models import Model
-    from keras.layers import Dense, Dropout, Input
-
-    batch_size = 128
     num_classes = 10
-    epochs = 10
 
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -40,9 +36,6 @@ def save_model():
     x_test = x_test.astype('float32')
     x_train /= 255
     x_test /= 255
-
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
 
     inp = Input((784,))
     x = Dense(512, activation='relu')(inp)
