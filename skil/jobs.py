@@ -163,7 +163,7 @@ class Job:
         )
 
 
-class TrainingJob(object, Job):
+class TrainingJob(Job):
     """TrainingJob
 
     Initialize and run a SKIL training job.
@@ -224,7 +224,7 @@ class TrainingJob(object, Job):
             eval_dsp + eval_type + tm + mds + verbose
 
 
-class InferenceJob(object, Job):
+class InferenceJob(Job):
     """InferenceJob
 
     Initialize and run a SKIL inference job.
