@@ -33,7 +33,8 @@ PAGES = [
     {
         'page': 'model.md',
         'classes': [
-            skil.Model
+            skil.Model,
+            skil.Transform
         ]
     },
     {
@@ -43,9 +44,25 @@ PAGES = [
         ]
     },
     {
+        'page': 'skil.md',
+        'classes': [
+            skil.Skil
+        ]
+    },
+    {
+        'page': 'spark.md',
+        'classes': [
+            skil.ParameterAveraging,
+            skil.ParameterSharing
+        ]
+    },
+    {
         'page': 'service.md',
         'classes': [
-            skil.Service
+            skil.Service,
+            skil.TransformCsvService,
+            skil.TransformArrayService,
+            skil.TransformArrayService
         ]
     },
     {

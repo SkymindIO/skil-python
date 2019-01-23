@@ -13,9 +13,7 @@ except ImportError:
 
 
 class Service:
-    """Service
-
-    A service is a deployed model.
+    """A service is a deployed model.
 
     # Arguments:
         skil: `Skil` server instance
@@ -204,9 +202,20 @@ class Service:
 
 
 class TransformCsvService(Service):
+    """TransformCsvService
 
-    def __init__(self, *args, **kwargs):
-        super(TransformCsvService, self).__init__(*args, **kwargs)
+    A service for transforming CSV data
+
+    # Arguments:
+        skil: `Skil` server instance
+        model: `skil.Model` instance
+        deployment: `skil.Deployment` instance
+        model_deployment: result of `deploy_model` API call of a model
+    """
+
+    def __init__(self, skil, model, deployment, model_deployment):
+        super(TransformCsvService, self).__init__(
+            skil, model, deployment, model_deployment)
 
     @staticmethod
     def _to_single_csv_record(data, separator):
@@ -257,9 +266,18 @@ class TransformCsvService(Service):
 
 
 class TransformArrayService(Service):
+    """A service for transforming array data
 
-    def __init__(self, *args, **kwargs):
-        super(TransformArrayService, self).__init__(*args, **kwargs)
+    # Arguments:
+        skil: `Skil` server instance
+        model: `skil.Model` instance
+        deployment: `skil.Deployment` instance
+        model_deployment: result of `deploy_model` API call of a model
+    """
+
+    def __init__(self, skil, model, deployment, model_deployment):
+        super(TransformArrayService, self).__init__(
+            skil, model, deployment, model_deployment)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.
@@ -297,9 +315,18 @@ class TransformArrayService(Service):
 
 
 class TransformImageService(Service):
+    """A service for transforming array data
 
-    def __init__(self, *args, **kwargs):
-        super(TransformImageService, self).__init__(*args, **kwargs)
+    # Arguments:
+        skil: `Skil` server instance
+        model: `skil.Model` instance
+        deployment: `skil.Deployment` instance
+        model_deployment: result of `deploy_model` API call of a model
+    """
+
+    def __init__(self, skil, model, deployment, model_deployment):
+        super(TransformImageService, self).__init__(
+            skil, model, deployment, model_deployment)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.

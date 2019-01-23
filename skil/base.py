@@ -16,6 +16,18 @@ from .config import SKIL_CONFIG, save_skil_config
 
 
 class Skil:
+    """Central class for managing connections with the SKIL server.
+
+    # Arguments
+        workspace_server_id: None by default, only specify if you want to connect to a non-default SKIL workspace server.
+        host: string, Host on which the SKIL server runs.
+        port: integer, Port on which the SKIL host runs.
+        debug: boolean, set to false for more verbose logging.
+        user_id: user name for your SKIL server connection.
+        password: password of the provided SKIL user.
+
+    """
+
     def __init__(self, workspace_server_id=None, host='localhost', port=9008,
                  debug=False, user_id='admin', password='admin'):
 

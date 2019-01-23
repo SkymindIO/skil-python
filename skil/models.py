@@ -9,9 +9,7 @@ import uuid
 
 
 class Model:
-    """Model
-
-    SKIL wrapper for DL4J, Keras and TF models
+    """SKIL wrapper for DL4J, Keras, TensorFlow and other models
 
     SKIL has a robust model storage, serving, and import system for supporting major 
     deep learning libraries.
@@ -184,12 +182,9 @@ def get_model_by_id(experiment, model_id):
 
 
 class Transform(Model):
-    """Transform
-
-    SKIL wrapper for for preprocessing (transform) steps. Currently only
+    """SKIL wrapper for for preprocessing (transform) steps. Currently only
     supports `TransformProcess` instances from pydatavec or their serialized
     versions (JSON format).
-
 
     # Arguments
         transform: pydatavec.TransformProcess or TransformProcess JSON
