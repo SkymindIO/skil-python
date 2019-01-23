@@ -9,10 +9,21 @@ dev_addr: '0.0.0.0:8000'
 
 pages:
 - Home: index.md
-- Work Space: work_space.md
-- Experiment: experiment.md
-- Model: model.md
-- Deployment: deployment.md
-- Service: service.md
-- Resources: resources.md
-- Jobs: jobs.md
+- Getting started:
+  - SKIL core concepts: core_concepts.md
+  - SKIL training: training.md
+  - SKIL inference: inference.md
+- Basics:
+  - SKIL servers: skil.md
+  - Workspaces: work_space.md
+  - Experiments: experiment.md
+  - Models: model.md
+- Training:
+  - Resources: resources.md
+  - Distributed training: spark.md
+  - Jobs: jobs.md
+- Inference:
+  - Deployments: deployment.md
+  - Services: service.md
+
+

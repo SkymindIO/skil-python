@@ -7,6 +7,7 @@ from skil.context import *
 from skil.services import *
 from skil.resources import *
 from skil.jobs import *
+from skil.spark import *
 from skil.utils import *
 from skil.config import load_skil_config
 

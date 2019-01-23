@@ -125,3 +125,7 @@ docs/sources
 *.json
 .skil
 .DS_Store
+
+.part-00*
+_SUCCESS*
+._SUCCESS*
