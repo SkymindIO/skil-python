@@ -32,7 +32,7 @@ class JobConfiguration:
         self.verbose = verbose
 
 
-class InferenceJobConfiguration(object, JobConfiguration):
+class InferenceJobConfiguration(JobConfiguration):
     """InferenceJobConfiguration
 
     Configuration for a SKIL inference job. On top of what you need to specify for a base JobConfiguration,
@@ -71,7 +71,7 @@ class InferenceJobConfiguration(object, JobConfiguration):
         self.batch_size = batch_size
 
 
-class TrainingJobConfiguration(object, JobConfiguration):
+class TrainingJobConfiguration(JobConfiguration):
 
     """TrainingJobConfiguration
 
