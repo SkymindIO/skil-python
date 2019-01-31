@@ -2,67 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://skymind.ai/skil-python/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/core_concepts/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/training/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/inference/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/skil/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/work_space/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/experiment/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/model/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/resources/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/spark/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/jobs/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/deployment/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://skymind.ai/skil-python/service/</loc>
-     <lastmod>2019-01-23</lastmod>
+     <lastmod>2019-01-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
