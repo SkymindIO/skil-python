@@ -55,7 +55,7 @@ class Skil:
             self.printer.pprint('>>> Done!')
         except api_exception as e:
             raise Exception(
-                "Exception when calling DefaultApi->login: {}\n".format(e))
+                "Exception when calling  DefaultApi->login: {}\n".format(e))
 
         if workspace_server_id:
             self.server_id = workspace_server_id

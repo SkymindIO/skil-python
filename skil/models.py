@@ -17,12 +17,12 @@ class Model:
     or alternatively you can import models into SKIL.
 
     # Arguments
-        model: Model file path or Keras model instance
+        model: Model file path or  model instance
         model_id: integer. Unique id for model. If `None`, a unique id will be generated.
         name: string. Name for the model.
         version: integer. Version of the model. Defaults to 1.
         experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
-        labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+        labels: string. Labels for this model
         verbose: boolean. If `True`, prints api response.
         create: boolean. Internal. Do not use.
     """
@@ -86,7 +86,6 @@ class Model:
             self.name = model_entity.model_name
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
-            self.model = model_entity
 
         self.service = None
 
@@ -149,6 +148,7 @@ class Model:
                 input_names=input_names,
                 output_names=output_names)
 
+            # TODO: why ".response"? Doesn't make sense.
             self.deployment = deployment.response
 
             models = self.skil.api.models(self.deployment.id)
@@ -210,7 +210,7 @@ class Transform(Model):
                     if os.path.isfile(transform_file_name):
                         os.remove(transform_file_name)
                     with open(transform_file_name, 'w') as f:
-                        f.write(tp.to_java().toJson())
+                        f.write(transform.to_java().toJson())
                 else:
                     raise Exception(
                         'Invalid TransformProcess: ' + str(transform))
@@ -254,8 +254,8 @@ class Transform(Model):
             self.experiment = experiment
             self.work_space = experiment.work_space
             self.skil = self.work_space.skil
-            assert model_id is not None
-            self.id = model_id
+            assert transform_id is not None
+            self.id = transform_id
             model_entity = self.skil.api.get_model_instance(self.skil.server_id,
                                                             self.id)
             self.name = model_entity.model_name
