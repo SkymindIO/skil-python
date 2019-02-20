@@ -4,7 +4,7 @@ import sys
 import uuid
 
 import keras
-from six import u as unicode
+from six import text_type as unicode
 from six import string_types
 
 
