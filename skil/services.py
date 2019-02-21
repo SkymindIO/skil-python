@@ -19,7 +19,7 @@ class Service:
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_deployment: result of `deploy_model` SKIL API call of a `Model`
     """
     __metaclass__ = type
 
@@ -141,7 +141,7 @@ class Service:
                 inputs=inputs
             )
         )
-        output = classification_response.outputs[0]
+        output = classification_response.outputs[0] # TODO should support multi-out
         return np.asarray(output.data).reshape(output.shape)
 
     def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):
@@ -289,7 +289,7 @@ class TransformArrayService(Service):
         # Returns
             skil_client.Base64NDArrayBody
         """
-        return self.skil.api.transform_csv(
+        return self.skil.api.transformarray(
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
@@ -306,7 +306,7 @@ class TransformArrayService(Service):
         # Returns
             skil_client.Base64NDArrayBody
         """
-        return self.skil.api.transform_csv(
+        return self.skil.api.transformincrementalarray(
             deployment_name=self.deployment.name,
             transform_name=self.model_name,
             version_name=version,
@@ -373,7 +373,7 @@ class Pipeline(Service):
         deployment: skil.Deployment instance
         model: skil.Model instance
         transform: skil.Transform instance (optional)
-        start_server: boolean. If `True`, the service is immedietely started.
+        start_server: boolean. If `True`, the service is immediately started.
         scale: integer. Scale-out for deployment.
         input_names: list of strings. Input variable names of the model.
         output_names: list of strings. Output variable names of the model.
@@ -381,7 +381,7 @@ class Pipeline(Service):
 
     """
 
-    def __init__(self, deployment, model, transform=None,
+    def __init__(self, skil, deployment, model, transform=None,
                  start_server=True, scale=1, input_names=None,
                  output_names=None, verbose=True):
 

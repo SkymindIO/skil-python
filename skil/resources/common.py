@@ -69,22 +69,21 @@ def get_resource_details_by_id(skil, resource_id):
     elif res_type == 'S3':
         return S3(skil, resource.name,
                   details['bucket'], details['region'], None, resource_id, False)
-    else:
-        if res_type == 'GoogleStorage':
-            return GoogleStorage(
-                skil, resource.name, details['projectId'], details['bucketName'], None, resource_id, False)
-        elif res_type == 'DataProc':
-            return DataProc(skil, resource.name, details['projectId'], details['region'],
-                            details['sparkClusterName'], None, resource_id, False)
-        elif res_type == 'HDInsight':
-            return HDInsight(skil, resource.name, details['subscriptionId'], details['resourceGroupName'],
-                             details['clusterName'], None, resource_id, False)
-        elif res_type == 'AzureStorage':
-            return AzureStorage(
-                skil, resource.name, details['containerName'], None, resource_id, False)
-        elif res_type == 'HDFS':
-            return HDFS(skil, resource.name, details['nameNodeHost'],
-                        details['nameNodePort'], None, resource_id, False)
-        elif res_type == 'YARN':
-            return YARN(skil, resource.name,
-                        details['localSparkHome'], None, resource_id, False)
+    elif res_type == 'GoogleStorage':
+        return GoogleStorage(
+            skil, resource.name, details['projectId'], details['bucketName'], None, resource_id, False)
+    elif res_type == 'DataProc':
+        return DataProc(skil, resource.name, details['projectId'], details['region'],
+                        details['sparkClusterName'], None, resource_id, False)
+    elif res_type == 'HDInsight':
+        return HDInsight(skil, resource.name, details['subscriptionId'], details['resourceGroupName'],
+                            details['clusterName'], None, resource_id, False)
+    elif res_type == 'AzureStorage':
+        return AzureStorage(
+            skil, resource.name, details['containerName'], None, resource_id, False)
+    elif res_type == 'HDFS':
+        return HDFS(skil, resource.name, details['nameNodeHost'],
+                    details['nameNodePort'], None, resource_id, False)
+    elif res_type == 'YARN':
+        return YARN(skil, resource.name,
+                    details['localSparkHome'], None, resource_id, False)

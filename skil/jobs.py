@@ -10,14 +10,15 @@ class JobConfiguration:
 
     # Arguments:
         skil_model: a `skil.Model` instance
-        compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
-        storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job.
+        compute_resource: `skil.resources.compute.ComputeResource` instance, created before running a job.
+        storage_resource: `skil.resources.storage.StorageResource` instance, created before running a job.
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
         verbose: boolean, log level. Set True for detailed logging.
 
     """
+    __metaclass__ = type
 
     # TODO: provide a smart default for output_path relative to input data or model path.
     def __init__(self, skil_model, compute_resource, storage_resource,
@@ -73,6 +74,7 @@ class InferenceJobConfiguration(JobConfiguration):
 
 class TrainingJobConfiguration(JobConfiguration):
 
+    # TODO update doc string
     """TrainingJobConfiguration
 
     Configuration for a SKIL training job. On top of what you need to specify for a base JobConfiguration,
@@ -127,6 +129,8 @@ class Job:
     Basic SKIL job abstraction. You can run a job, refresh its status,
     download its output file once completed, and delete a Job.
     """
+    __metaclass__ = type
+
 
     def __init__(self):
         self.job_id = None
@@ -185,7 +189,7 @@ class TrainingJob(Job):
 
         self.skil = skil
         self.training_config = training_config
-        self.tm = distributed_config
+        self.tm = distributed_config # TODO serialize it
 
         if create:
             training_create_job_request = skil_client.CreateJobRequest(
@@ -211,7 +215,7 @@ class TrainingJob(Job):
 
         inference = "-i false "
         output = "-o {} ".format(tc.output_path)
-        num_epochs = "--batchSize {} ".format(tc.num_epochs)
+        num_epochs = "--numEpochs {} ".format(tc.num_epochs)
         model_path = "-mo {} ".format(tc.model.model_path)
         dsp = "-dsp {} ".format(tc.dsp)
         eval_dsp = "--evalDataSetProviderClass {} ".format(tc.eval_dsp)

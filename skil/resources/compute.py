@@ -58,7 +58,8 @@ class DataProc(Resource):
         name: Resource name
         project_id: GCE project ID
         region: GCE region
-        cluster_name: DataProc cluster name
+        spark_cluster_name: DataProc cluster name
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
@@ -100,8 +101,9 @@ class HDInsight(Resource):
         skil: `Skil` server instance
         name: Resource name
         subscription_id: Azure subscription ID
-        resource_group_name: Resource group name  # TODO: is this SKIL or Azure?
+        resource_group_name: Azure resource group name
         cluster_name: HDInsight cluster name
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
@@ -145,6 +147,7 @@ class YARN(Resource):
         name: Resource name
         local_spark_home: full path to local Spark binary
         resource_id: optional resource ID to retrieve an existing resource
+        credential_uri: path to credential file
         create: boolean, for internal use only. whether to create a new resource or not
     """
 

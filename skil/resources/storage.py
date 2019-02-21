@@ -11,6 +11,7 @@ class AzureStorage(Resource):
         skil: `Skil` server instance
         name: Resource name
         container_name: Azure storage container name
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
@@ -52,6 +53,7 @@ class GoogleStorage(Resource):
         name: Resource name
         project_id: Google project ID
         bucket_name: bucket name
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
@@ -94,6 +96,7 @@ class HDFS(Resource):
         name: Resource name
         name_node_host: host of the name node
         name_node_port: port of the name node
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
@@ -136,6 +139,7 @@ class S3(Resource):
         name: Resource name
         bucket: S3 bucket name
         region: AWS region
+        credential_uri: path to credential file
         resource_id: optional resource ID to retrieve an existing resource
         create: boolean, for internal use only. whether to create a new resource or not
     """
