@@ -2,7 +2,7 @@ from skil_client import AddCredentialsRequest
 import skil_client
 
 
-class Credentials:
+class Credentials():
     """Credentials
 
     SKIL resource credentials manage cloud provider and other credentials for you.
@@ -15,8 +15,9 @@ class Credentials:
         name: Name of the resource
         create   
     """
+    __metaclass__ = type
 
-    def __init__(self, skil, cred_type, uri, name=None, create=True, *args, **kwargs):
+    def __init__(self, skil, cred_type, uri, name, create=True, *args, **kwargs):
         self.skil = skil
         if not cred_type in ["AWS", "Azure", "GoogleCloud", "Hadoop"]:
             raise ValueError("cred_type {} not supported".format(cred_type))
@@ -38,26 +39,26 @@ class Credentials:
             self.id = None
 
 
-def AWS(Credentials):
-    def __init__(self, skil, uri, name=None):
+class AWS(Credentials):
+    def __init__(self, skil, uri, name):
         super(AWS, self).__init__(
             skil=skil, cred_type="AWS", uri=uri, name=name)
 
 
-def Azure(Credentials):
-    def __init__(self, skil, uri, name=None):
+class Azure(Credentials):
+    def __init__(self, skil, uri, name):
         super(Azure, self).__init__(
             skil=skil, cred_type="Azure", uri=uri, name=name)
 
 
-def GoogleCloud(Credentials):
-    def __init__(self, skil, uri, name=None):
+class GoogleCloud(Credentials):
+    def __init__(self, skil, uri, name):
         super(GoogleCloud, self).__init__(
             skil=skil, cred_type="GoogleCloud", uri=uri, name=name)
 
 
-def Hadoop(Credentials):
-    def __init__(self, skil, uri, name=None):
+class Hadoop(Credentials):
+    def __init__(self, skil, uri, name):
         super(Hadoop, self).__init__(
             skil=skil, cred_type="Hadoop", uri=uri, name=name)
 
