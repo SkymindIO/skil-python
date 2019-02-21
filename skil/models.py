@@ -50,7 +50,6 @@ class Model:
                 self.skil = self.work_space.skil
             self.skil.upload_model(os.path.join(os.getcwd(), model_file_name))
 
-            self.model_name = model_file_name
             self.model_path = self.skil.get_model_path(model_file_name)
             self.id = model_id if model_id else str(uuid.uuid1())
             self.name = name if name else model_file_name
@@ -225,7 +224,6 @@ class Transform(Model):
             self.skil.upload_model(os.path.join(
                 os.getcwd(), transform_file_name))
 
-            self.model_name = transform_file_name
             self.model_path = self.skil.get_model_path(transform_file_name)
             self.id = transform_id if transform_id else str(uuid.uuid1())
             self.name = name if name else transform_file_name
@@ -261,7 +259,6 @@ class Transform(Model):
             self.name = model_entity.model_name
             self.version = model_entity.model_version
             self.model_path = model_entity.uri
-            self.model = model_entity
 
         self.transform_type = transform_type
         self.service = None

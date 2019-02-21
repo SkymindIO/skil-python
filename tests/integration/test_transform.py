@@ -29,7 +29,6 @@ def test_skil_creation():
 
 def test_work_space_creation():
     global work_space
-    global work_space_id
     work_space = skil.WorkSpace(sk)
 
 

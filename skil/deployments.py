@@ -28,11 +28,12 @@ class Deployment:
             self.id = deployment_id
         else:
             self.name = name if name else 'deployment-' + str(uuid.uuid1())[:8]
-            create_deployment_request = self.skil.api.CreateDeploymentRequest(
+            create_deployment_request = skil_client.CreateDeploymentRequest(
                 self.name)
             self.response = skil.api.deployment_create(
                 create_deployment_request)
             self.id = self.response.id
+        self.skil = skil
 
     def get_config(self):
         return {

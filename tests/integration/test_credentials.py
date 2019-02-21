@@ -1,6 +1,8 @@
 from skil.resources.credentials import *
 import pytest
-
+import skil
+import uuid
+import time
 
 _sk = None
 
@@ -20,31 +22,32 @@ def test_creation_deletion():
     assert rep_cred.id == cred_id
 
     rep_cred.delete()
+    time.sleep(1)
     with pytest.raises(Exception):
         delete_credentials_by_id(sk, cred_id)
 
 
 def test_aws_creds():
     sk = _get_sk()
-    cred = AWS(sk, "uri")
+    cred = AWS(sk, "uri_" + str(uuid.uuid1())[:6], "name_" + str(uuid.uuid1())[:6])
     cred.delete()
 
 
 def test_azure_creds():
     sk = _get_sk()
-    cred = Azure(sk, "uri")
-    aws.delete()
+    cred = Azure(sk, "uri" + str(uuid.uuid1())[:6], "name_" + str(uuid.uuid1())[:6])
+    cred.delete()
 
 
 def test_gce_creds():
     sk = _get_sk()
-    cred = GoogleCloud(sk, "uri")
+    cred = GoogleCloud(sk, "uri" + str(uuid.uuid1())[:6], "name_" + str(uuid.uuid1())[:6])
     cred.delete()
 
 
 def test_hadoop_creds():
     sk = _get_sk()
-    cred = Hadoop(sk, "uri")
+    cred = Hadoop(sk, "uri" + str(uuid.uuid1())[:6], "name_" + str(uuid.uuid1())[:6])
     cred.delete()
 
 

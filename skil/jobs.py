@@ -10,14 +10,15 @@ class JobConfiguration:
 
     # Arguments:
         skil_model: a `skil.Model` instance
-        compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
-        storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job.
+        compute_resource: `skil.resources.compute.ComputeResource` instance, created before running a job.
+        storage_resource: `skil.resources.storage.StorageResource` instance, created before running a job.
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
         verbose: boolean, log level. Set True for detailed logging.
 
     """
+    __metaclass__ = type
 
     # TODO: provide a smart default for output_path relative to input data or model path.
     def __init__(self, skil_model, compute_resource, storage_resource,
@@ -73,6 +74,7 @@ class InferenceJobConfiguration(JobConfiguration):
 
 class TrainingJobConfiguration(JobConfiguration):
 
+    # TODO update doc string
     """TrainingJobConfiguration
 
     Configuration for a SKIL training job. On top of what you need to specify for a base JobConfiguration,
@@ -121,12 +123,13 @@ class TrainingJobConfiguration(JobConfiguration):
         self.ui_url = ui_url
 
 
-class Job:
+class Job():
     """Job
 
     Basic SKIL job abstraction. You can run a job, refresh its status,
     download its output file once completed, and delete a Job.
     """
+    __metaclass__ = type
 
     def __init__(self):
         self.job_id = None
@@ -175,17 +178,18 @@ class TrainingJob(Job):
         create: boolean, whether to create a new job or retrieve an existing one.
 
     """
-    # TODO make is so that If a distributed config is provided,
+    # TODO make it so that if a distributed config is provided,
     #     SKIL will run your model on Spark. Otherwise it will carry out regular training
     #     on provided resources.
 
-    def __init__(self, skil, training_config, distributed_config=None, job_id=None, create=True):
+    def __init__(self, skil, training_config, distributed_config, job_id=None, create=True):
 
         super(TrainingJob, self).__init__()
 
         self.skil = skil
         self.training_config = training_config
-        self.tm = distributed_config
+
+        self.tm = distributed_config.to_json()
 
         if create:
             training_create_job_request = skil_client.CreateJobRequest(
@@ -211,7 +215,7 @@ class TrainingJob(Job):
 
         inference = "-i false "
         output = "-o {} ".format(tc.output_path)
-        num_epochs = "--batchSize {} ".format(tc.num_epochs)
+        num_epochs = "--numEpochs {} ".format(tc.num_epochs)
         model_path = "-mo {} ".format(tc.model.model_path)
         dsp = "-dsp {} ".format(tc.dsp)
         eval_dsp = "--evalDataSetProviderClass {} ".format(tc.eval_dsp)
@@ -220,8 +224,11 @@ class TrainingJob(Job):
         mds = "--multiDataSet {} ".format(_bool_to_string(tc.mds))
         verbose = "--verbose {} ".format(_bool_to_string(tc.verbose))
 
-        return inference + output + num_epochs + model_path + dsp + \
+        args = inference + output + num_epochs + model_path + dsp + \
             eval_dsp + eval_type + tm + mds + verbose
+
+        print(args)
+        return args
 
 
 class InferenceJob(Job):

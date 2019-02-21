@@ -33,6 +33,7 @@ def test_group_add_and_deletion():
     # groups = group.get_all_resources()
     # assert len(groups) == 0
 
+    res.delete()
     group.delete()
 
 
