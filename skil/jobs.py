@@ -179,7 +179,7 @@ class TrainingJob(Job):
         create: boolean, whether to create a new job or retrieve an existing one.
 
     """
-    # TODO make is so that If a distributed config is provided,
+    # TODO make it so that if a distributed config is provided,
     #     SKIL will run your model on Spark. Otherwise it will carry out regular training
     #     on provided resources.
 
@@ -189,7 +189,7 @@ class TrainingJob(Job):
 
         self.skil = skil
         self.training_config = training_config
-        self.tm = distributed_config # TODO serialize it
+        self.tm = distributed_config.to_json()
 
         if create:
             training_create_job_request = skil_client.CreateJobRequest(

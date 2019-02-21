@@ -1,7 +1,7 @@
 import json
 
 
-class DistributedConfiguration:
+class DistributedConfiguration():
 
     def __init__(self):
         self.config = None
@@ -30,6 +30,17 @@ class ParameterAveraging(DistributedConfiguration):
             'numBatchesPrefetch': num_batches_prefetch,
             'collectStats': collect_stats
         }
+
+    @staticmethod
+    def from_json(config):
+        loaded_config = json.loads(config)
+        return ParameterAveraging(
+            loaded_config.get('numWorkers'),
+            loaded_config.get('batchSize'),
+            loaded_config.get('averagingFrequency'),
+            loaded_config.get('numBatchesPrefetch'),
+            loaded_config.get('collectStats')
+        )
 
 
 class ParameterSharing(DistributedConfiguration):
@@ -63,6 +74,24 @@ class ParameterSharing(DistributedConfiguration):
             'workersPerNode': workers_per_node,
             'numBatchesPrefetch': num_batches_prefetch,
             'stepDelay': step_delay,
+            'stepTrigger': step_trigger,
             'thresholdStep': threshold_step,
             'collectStats': collect_stats
         }
+
+    @staticmethod
+    def from_json(config):
+        loaded_config = json.loads(config)
+        return ParameterSharing(
+            loaded_config.get('numWorkers'),
+            loaded_config.get('batchSize'),
+            loaded_config.get('shakeFrequency'),
+            loaded_config.get('minThreshold'),
+            loaded_config.get('updateThreshold'),
+            loaded_config.get('workersPerNode'),
+            loaded_config.get('numBatchesPrefetch'),
+            loaded_config.get('stepDelay'),
+            loaded_config.get('stepTrigger'),
+            loaded_config.get('thresholdStep'),
+            loaded_config.get('collectStats')
+        )
