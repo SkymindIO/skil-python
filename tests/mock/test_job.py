@@ -23,7 +23,7 @@ def test_training_job_config():
 
 def test_base_job():
     job = Job()
-    assert job.job_id == None
+    assert job.job_id is None
 
 
 if __name__ == '__main__':
