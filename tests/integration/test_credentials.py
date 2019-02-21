@@ -2,6 +2,7 @@ from skil.resources.credentials import *
 import pytest
 import skil
 import uuid
+import time
 
 _sk = None
 
@@ -21,6 +22,7 @@ def test_creation_deletion():
     assert rep_cred.id == cred_id
 
     rep_cred.delete()
+    time.sleep(1)
     with pytest.raises(Exception):
         delete_credentials_by_id(sk, cred_id)
 
