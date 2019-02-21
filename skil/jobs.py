@@ -123,7 +123,7 @@ class TrainingJobConfiguration(JobConfiguration):
         self.ui_url = ui_url
 
 
-class Job:
+class Job():
     """Job
 
     Basic SKIL job abstraction. You can run a job, refresh its status,
@@ -183,12 +183,13 @@ class TrainingJob(Job):
     #     SKIL will run your model on Spark. Otherwise it will carry out regular training
     #     on provided resources.
 
-    def __init__(self, skil, training_config, distributed_config=None, job_id=None, create=True):
+    def __init__(self, skil, training_config, distributed_config, job_id=None, create=True):
 
         super(TrainingJob, self).__init__()
 
         self.skil = skil
         self.training_config = training_config
+
         self.tm = distributed_config.to_json()
 
         if create:
@@ -224,8 +225,11 @@ class TrainingJob(Job):
         mds = "--multiDataSet {} ".format(_bool_to_string(tc.mds))
         verbose = "--verbose {} ".format(_bool_to_string(tc.verbose))
 
-        return inference + output + num_epochs + model_path + dsp + \
+        args =  inference + output + num_epochs + model_path + dsp + \
             eval_dsp + eval_type + tm + mds + verbose
+
+        print(args)
+        return args
 
 
 class InferenceJob(Job):
