@@ -77,7 +77,7 @@ def get_resource_details_by_id(skil, resource_id):
                         details['sparkClusterName'], None, resource_id, False)
     elif res_type == 'HDInsight':
         return HDInsight(skil, resource.name, details['subscriptionId'], details['resourceGroupName'],
-                            details['clusterName'], None, resource_id, False)
+                         details['clusterName'], None, resource_id, False)
     elif res_type == 'AzureStorage':
         return AzureStorage(
             skil, resource.name, details['containerName'], None, resource_id, False)

@@ -141,7 +141,8 @@ class Service:
                 inputs=inputs
             )
         )
-        output = classification_response.outputs[0] # TODO should support multi-out
+        # TODO should support multi-out
+        output = classification_response.outputs[0]
         return np.asarray(output.data).reshape(output.shape)
 
     def detect_objects(self, image, threshold=0.5, needs_preprocessing=False, temp_path='temp.jpg'):

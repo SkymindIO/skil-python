@@ -131,7 +131,6 @@ class Job():
     """
     __metaclass__ = type
 
-
     def __init__(self):
         self.job_id = None
         self.run_id = None
@@ -225,7 +224,7 @@ class TrainingJob(Job):
         mds = "--multiDataSet {} ".format(_bool_to_string(tc.mds))
         verbose = "--verbose {} ".format(_bool_to_string(tc.verbose))
 
-        args =  inference + output + num_epochs + model_path + dsp + \
+        args = inference + output + num_epochs + model_path + dsp + \
             eval_dsp + eval_type + tm + mds + verbose
 
         print(args)

@@ -9,8 +9,10 @@ def test_base_training_job():
     skil_server = skil.Skil()
     model = skil.Model('keras_mnist.h5')
 
-    res = skil.resources.compute.EMR(skil_server, 'name', 'region', 'creds', 'id')
-    conf = TrainingJobConfiguration(model, 10, "acc", "EvalDSP", res, res, './', "DSP")
+    res = skil.resources.compute.EMR(
+        skil_server, 'name', 'region', 'creds', 'id')
+    conf = TrainingJobConfiguration(
+        model, 10, "acc", "EvalDSP", res, res, './', "DSP")
     distributed_config = ParameterAveraging(8, 32)
 
     # TODO "jobArgs" does not get recognize"
@@ -24,7 +26,8 @@ def test_base_inference_job():
     skil_server = skil.Skil()
     model = skil.Model('keras_mnist.h5')
 
-    res = skil.resources.compute.EMR(skil_server, 'name', 'region', 'creds', 'id')
+    res = skil.resources.compute.EMR(
+        skil_server, 'name', 'region', 'creds', 'id')
     conf = InferenceJobConfiguration(model, 32, res, res, './', "DSP")
 
     # job = InferenceJob(skil_server, conf)
