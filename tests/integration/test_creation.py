@@ -44,6 +44,7 @@ def test_experiment_creation():
 def test_deployment_creation():
     sk = _get_sk()
     dep = skil.Deployment(sk)
+    dep.delete()
 
 
 def test_model_creation_1():
@@ -59,6 +60,21 @@ def test_model_creation_2():
     model.delete()
 
 
+def test_transform_creation_1():
+    transform = skil.Transform('iris_tp.json')
+    transform.delete()
+
+
+def test_transform_creation_2():
+    ws = _get_ws()
+    exp = skil.Experiment(ws)
+    transform = skil.Transform('iris_tp.json', experiment=exp)
+    transform.add_evaluation(0.42)
+    ws.delete()
+    exp.delete()
+    transform.delete()
+
+
 def test_service_creation():
     ws = _get_ws()
     exp = skil.Experiment(ws)
@@ -70,6 +86,7 @@ def test_service_creation():
     ws.delete()
     exp.delete()
     model.delete()
+    dep.delete()
 
 if __name__ == '__main__':
     pytest.main([__file__])

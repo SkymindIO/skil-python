@@ -51,6 +51,11 @@ class Deployment:
         skil = Skil.from_config()
         return get_deployment_by_id(skil, config['deployment_id'])
 
+    """Delete this deployment.
+    """
+    def delete(self):
+        self.skil.deployment_delete(self.id)
+
 
 def get_deployment_by_id(skil, deployment_id):
     """ Get model deployment by ID

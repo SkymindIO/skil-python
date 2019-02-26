@@ -62,5 +62,14 @@ def test_model_by_id():
     os.remove('model.h5')
 
 
+def test_transform_by_id():
+    ws = _get_ws()
+    exp = skil.Experiment(ws, name='test_transform')
+    transform = skil.Transform('iris_tp.json')
+    transform_id = transform.id
+    tf_2 = skil.get_transform_by_id(exp, transform_id)
+    assert tf_2.name == transform.name
+
+
 if __name__ == '__main__':
     pytest.main([__file__])
