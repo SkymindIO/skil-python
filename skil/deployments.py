@@ -53,6 +53,7 @@ class Deployment:
 
     """Delete this deployment.
     """
+
     def delete(self):
         self.skil.api.deployment_delete(self.id)
 

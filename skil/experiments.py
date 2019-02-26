@@ -79,7 +79,7 @@ class Experiment:
 
         skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment =  get_experiment_by_id(work_space, config['experiment_id'])
+        experiment = get_experiment_by_id(work_space, config['experiment_id'])
         experiment.name = config['experiment_name']
         return experiment
 

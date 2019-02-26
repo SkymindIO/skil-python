@@ -1,6 +1,7 @@
 import pytest
 import skil
 
+
 def test_skil_creation():
     sk = skil.Skil()
 
@@ -28,6 +29,7 @@ def test_deployment_creation():
 def test_model_creation_1():
     model = skil.Model('keras_mnist.h5')
     model.delete()
+
 
 def test_model_creation_2():
     sk = skil.Skil()
@@ -68,6 +70,7 @@ def test_service_creation():
     exp.delete()
     model.delete()
     dep.delete()
+
 
 if __name__ == '__main__':
     pytest.main([__file__])
