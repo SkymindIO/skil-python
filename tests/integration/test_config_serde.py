@@ -38,5 +38,16 @@ def test_deployment_serde():
     assert recov.get_config() == dep.get_config()
 
 
+def test_service_serde():
+    dep = skil.Deployment()
+    model = skil.Model('keras_mnist.h5', name='bar')
+    service = model.deploy(dep)
+    service.save('service.json')
+
+    recov = skil.Service.load('service.json')
+
+    assert recov.get_config() == service.get_config()
+
+
 if __name__ == '__main__':
     pytest.main([__file__])

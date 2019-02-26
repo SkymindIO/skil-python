@@ -1,3 +1,4 @@
+import skil
 import skil_client
 import time
 import uuid
@@ -28,6 +29,37 @@ class Service(object):
         self.model_name = self.model.name
         self.model_entity = model_entity
         self.deployment = deployment
+
+    def get_config(self):
+        return {
+            'model_entity_id': self.model_entity.id,
+            'deployment_id': self.deployment.id,
+            'model_id': self.model.id,
+            'model_name': self.model.name,
+            'experiment_id': self.model.experiment.id,
+            'workspace_id': self.model.experiment.work_space.id
+        }
+
+    def save(self, file_name):
+        config = self.get_config()
+        with open(file_name, 'w') as f:
+            json.dump(config, f)
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = skil.Skil.from_config()
+        work_space = skil.workspaces.get_workspace_by_id(skil_server, config['workspace_id'])
+        experiment = skil.experiments.get_experiment_by_id(work_space, config['experiment_id'])
+        model = skil.Model(model_id=config['model_id'],
+                      experiment=experiment, create=False)
+        model.name = config['model_name']
+        deployment = skil.get_deployment_by_id(skil, config['deployment_id'])
+        model_entity = skil_client.ModelEntity(id=config['model_entity_id'])
+
+        return Service(skil=skil_server, model=model, deployment=deployment, model_entity=model_entity)
 
     def start(self):
         """Starts the service.
