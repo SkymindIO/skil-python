@@ -1,7 +1,7 @@
 import skil_client
 
 
-class JobConfiguration:
+class JobConfiguration(object):
     """JobConfiguration
 
     A SKIL job configuration collects all data needed to set up and run a SKIL Job.
@@ -18,7 +18,6 @@ class JobConfiguration:
         verbose: boolean, log level. Set True for detailed logging.
 
     """
-    __metaclass__ = type
 
     # TODO: provide a smart default for output_path relative to input data or model path.
     def __init__(self, skil_model, compute_resource, storage_resource,
@@ -123,13 +122,12 @@ class TrainingJobConfiguration(JobConfiguration):
         self.ui_url = ui_url
 
 
-class Job():
+class Job(object):
     """Job
 
     Basic SKIL job abstraction. You can run a job, refresh its status,
     download its output file once completed, and delete a Job.
     """
-    __metaclass__ = type
 
     def __init__(self):
         self.job_id = None

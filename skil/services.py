@@ -12,34 +12,33 @@ except ImportError:
     cv2 = None
 
 
-class Service:
+class Service(object):
     """A service is a deployed model.
 
     # Arguments:
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` SKIL API call of a `Model`
+        model_entity: skil_client.ModelEntity, result of `deploy_model` SKIL API call of a `Model`
     """
-    __metaclass__ = type
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         self.skil = skil
         self.model = model
         self.model_name = self.model.name
-        self.model_deployment = model_deployment
+        self.model_entity = model_entity
         self.deployment = deployment
 
     def start(self):
         """Starts the service.
         """
-        if not self.model_deployment:
+        if not self.model_entity:
             self.skil.printer.pprint(
                 "No model deployed yet, call 'deploy()' on a model first.")
         else:
             self.skil.api.model_state_change(
                 self.deployment.id,
-                self.model_deployment.id,
+                self.model_entity.id,
                 skil_client.SetState("start")
             )
 
@@ -48,7 +47,7 @@ class Service:
                 time.sleep(5)
                 model_state = self.skil.api.model_state_change(
                     self.deployment.id,
-                    self.model_deployment.id,
+                    self.model_entity.id,
                     skil_client.SetState("start")
                 ).state
                 if model_state == "started":
@@ -64,7 +63,7 @@ class Service:
         """
         self.skil.api.model_state_change(
             self.deployment.id,
-            self.model_deployment.id,
+            self.model_entity.id,
             skil_client.SetState("stop")
         )
 
@@ -220,12 +219,12 @@ class TransformCsvService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformCsvService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     @staticmethod
     def _to_single_csv_record(data, separator):
@@ -282,12 +281,12 @@ class TransformArrayService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformArrayService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.
@@ -331,12 +330,12 @@ class TransformImageService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformImageService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.
