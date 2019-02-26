@@ -71,6 +71,7 @@ class Service:
     def delete(self):
         """Delete the service, i.e. undeploy the model
         """
+        self.stop()
         try:
             self.skil.api.delete_model(self.deployment.id, self.model.id)
         except skil_client.rest.ApiException as e:
