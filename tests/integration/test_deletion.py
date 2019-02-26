@@ -34,5 +34,10 @@ def test_experiment_deletion():
     exp.delete()
 
 
+def test_model_deletion():
+    model = skil.Model('keras_mnist.h5')
+    model.delete()
+
+
 if __name__ == '__main__':
     pytest.main([__file__])

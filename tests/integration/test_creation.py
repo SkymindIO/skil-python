@@ -30,12 +30,15 @@ def test_skil_creation():
 def test_work_sapce_creation():
     global work_space
     global work_space_id
-    work_sapce = skil.WorkSpace(sk)
+    work_space = skil.WorkSpace(sk)
+    work_space.delete()
 
 
 def test_experiment_creation():
     ws = _get_ws()
     exp = skil.Experiment(work_space)
+    ws.delete()
+    exp.delete()
 
 
 def test_deployment_creation():
@@ -45,21 +48,28 @@ def test_deployment_creation():
 
 def test_model_creation_1():
     model = skil.Model('keras_mnist.h5')
-
+    model.delete()
 
 def test_model_creation_2():
     ws = _get_ws()
     exp = skil.Experiment(ws)
     model = skil.Model('keras_mnist.h5', experiment=exp)
+    ws.delete()
+    exp.delete()
+    model.delete()
 
 
 def test_service_creation():
     ws = _get_ws()
     exp = skil.Experiment(ws)
     model = skil.Model('keras_mnist.h5', experiment=exp)
+    model.add_evaluation(0.95)
+
     dep = skil.Deployment(ws.skil)
     model.deploy(dep)
-
+    ws.delete()
+    exp.delete()
+    model.delete()
 
 if __name__ == '__main__':
     pytest.main([__file__])
