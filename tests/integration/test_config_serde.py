@@ -3,12 +3,30 @@ import skil
 
 
 def test_experiment_serde():
-    exp = skil.Experiment()
+    exp = skil.Experiment(name='foo')
     exp.save('exp.json')
 
     recov = skil.Experiment.load('exp.json')
 
     assert recov.get_config() == exp.get_config()
+
+
+def test_model_serde():
+    model = skil.Model('keras_mnist.h5', name='bar')
+    model.save('model.json')
+
+    recov = skil.Model.load('model.json')
+
+    assert recov.get_config() == model.get_config()
+
+
+def test_transform_serde():
+    transform = skil.Transform('iris_tp.json', 'baz')
+    transform.save('transform.json')
+
+    recov = skil.Transform.load('transform.json')
+
+    assert recov.get_config() == transform.get_config()
 
 
 def test_deployment_serde():

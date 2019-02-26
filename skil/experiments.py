@@ -77,9 +77,11 @@ class Experiment:
         with open(file_name, 'r') as f:
             config = json.load(f)
 
-        skil_server = Skil()
+        skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        return get_experiment_by_id(work_space, config['experiment_id'])
+        experiment =  get_experiment_by_id(work_space, config['experiment_id'])
+        experiment.name = config['experiment_name']
+        return experiment
 
     def delete(self):
         """Deletes the experiment.
