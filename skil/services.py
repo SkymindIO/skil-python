@@ -51,10 +51,12 @@ class Service(object):
             config = json.load(f)
 
         skil_server = skil.Skil.from_config()
-        work_space = skil.workspaces.get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = skil.experiments.get_experiment_by_id(work_space, config['experiment_id'])
+        work_space = skil.workspaces.get_workspace_by_id(
+            skil_server, config['workspace_id'])
+        experiment = skil.experiments.get_experiment_by_id(
+            work_space, config['experiment_id'])
         model = skil.Model(model_id=config['model_id'],
-                      experiment=experiment, create=False)
+                           experiment=experiment, create=False)
         model.name = config['model_name']
         deployment = skil.get_deployment_by_id(skil, config['deployment_id'])
         model_entity = skil_client.ModelEntity(id=config['model_entity_id'])
