@@ -165,15 +165,6 @@ class Model:
             self.service.start()
         return self.service
 
-    def undeploy(self):
-        """Un-deploy the model.
-        """
-        try:
-            self.skil.api.delete_model(self.deployment.id, self.id)
-        except skil_client.rest.ApiException as e:
-            self.skil.printer.pprint(
-                ">>> Exception when calling delete_model_instance: %s\n" % e)
-
 
 def get_model_by_id(experiment, model_id):
     return Model(model_id=model_id, experiment=experiment, create=False)

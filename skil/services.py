@@ -68,6 +68,15 @@ class Service:
             skil_client.SetState("stop")
         )
 
+    def delete(self):
+        """Delete the service, i.e. undeploy the model
+        """
+        try:
+            self.skil.api.delete_model(self.deployment.id, self.model.id)
+        except skil_client.rest.ApiException as e:
+            self.skil.printer.pprint(
+                ">>> Exception when calling delete_model_instance: %s\n" % e)
+
     @staticmethod
     def _indarray(np_array):
         """Convert a numpy array to `skil_client.INDArray` instance.
