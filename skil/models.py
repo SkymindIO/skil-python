@@ -134,8 +134,8 @@ class Model:
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
 
-        uris = ["{}/model/{}/default".format(deployment.name, self.name),
-                "{}/model/{}/v1".format(deployment.name, self.name)]
+        uris = ["{}/model/{}/default".format(deployment.slug, self.name),
+                "{}/model/{}/v1".format(deployment.slug, self.name)]
 
         if not self.service:
             deploy_model_request = skil_client.ImportModelRequest(
@@ -147,9 +147,7 @@ class Model:
                 input_names=input_names,
                 output_names=output_names)
 
-            # TODO: why ".response"? Doesn't make sense.
             self.deployment = deployment.response
-            print(deployment.response)
 
             models = self.skil.api.models(self.deployment.id)
             deployed_model = [m for m in models if m.name == self.name]
@@ -282,8 +280,8 @@ class Transform(Model):
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
 
-        uris = ["{}/datavec/{}/default".format(deployment.name, self.name),
-                "{}/datavec/{}/v1".format(deployment.name, self.name)]
+        uris = ["{}/datavec/{}/default".format(deployment.slug, self.name),
+                "{}/datavec/{}/v1".format(deployment.slug, self.name)]
 
         if not self.service:
             deploy_model_request = skil_client.ImportModelRequest(

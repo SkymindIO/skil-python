@@ -31,6 +31,7 @@ class Deployment:
                 create_deployment_request)
             self.id = self.response.id
         self.skil = skil
+        self.slug = self.response.deployment_slug
 
     def get_config(self):
         return {
