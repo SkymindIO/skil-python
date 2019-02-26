@@ -149,6 +149,7 @@ class Model:
 
             # TODO: why ".response"? Doesn't make sense.
             self.deployment = deployment.response
+            print(deployment.response)
 
             models = self.skil.api.models(self.deployment.id)
             deployed_model = [m for m in models if m.name == self.name]

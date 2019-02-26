@@ -62,7 +62,6 @@ class Service:
     def stop(self):
         """Stops the service.
         """
-        # TODO: test this
         self.skil.api.model_state_change(
             self.deployment.id,
             self.model_deployment.id,
