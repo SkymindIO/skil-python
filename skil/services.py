@@ -6,6 +6,7 @@ import numpy as np
 import requests
 import json
 import os
+from skil_client.rest import ApiException as api_exception
 
 try:
     import cv2
@@ -107,7 +108,7 @@ class Service(object):
         self.stop()
         try:
             self.skil.api.delete_model(self.deployment.id, self.model.id)
-        except skil_client.rest.ApiException as e:
+        except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_model_instance: %s\n" % e)
 

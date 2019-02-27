@@ -11,7 +11,7 @@ import os
 import uuid
 
 
-class Model:
+class Model(object):
     """SKIL wrapper for DL4J, Keras, TensorFlow and other models
 
     SKIL has a robust model storage, serving, and import system for supporting major 
@@ -211,14 +211,16 @@ class Transform(Model):
         name: string. Name for the transform.
         version: integer. Version of the transform. Defaults to 1.
         experiment: `Experiment` instance. If `None`, an `Experiment` object will be created internally.
-        labels: string. Labels associated with the workspace, useful for searching (comma seperated).
+        labels: string. Labels associated with the workspace, useful for searching (comma separated).
         verbose: boolean. If `True`, prints api response.
         create: boolean. Internal. Do not use.
     """
 
-    def __init__(self, transform=None, transform_type='CSV', transform_id=None, name=None,
+    def __init__(self, transform=None, transform_type="CSV", transform_id=None, name=None,
                  version=None, experiment=None,
                  labels='', verbose=False, create=True):
+
+        super(Transform, self).__init__()
         if create:
             if isinstance(transform, str) and os.path.isfile(transform):
                 transform_file_name = transform
@@ -343,6 +345,7 @@ class Transform(Model):
         return {
             'transform_id': self.id,
             'transform_name': self.name,
+            'transform_type': self.transform_type,
             'experiment_id': self.experiment.id,
             'workspace_id': self.experiment.work_space.id
         }
@@ -355,12 +358,16 @@ class Transform(Model):
         skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
         experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        transform_type = config['transform_type']
         transform = Transform(
-            transform_id=config['transform_id'], experiment=experiment, create=False)
+            transform_id=config['transform_id'], transform_type=transform_type,
+            experiment=experiment, create=False
+        )
         transform.name = config['transform_name']
 
         return transform
 
 
-def get_transform_by_id(experiment, transform_id):
-    return Transform(transform_id=transform_id, experiment=experiment, create=False)
+def get_transform_by_id(transform_id, transform_type, experiment):
+    return Transform(transform_id=transform_id, transform_type=transform_type,
+                     experiment=experiment, create=False)

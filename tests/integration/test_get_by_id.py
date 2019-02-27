@@ -67,7 +67,7 @@ def test_transform_by_id():
     exp = skil.Experiment(ws, name='test_transform')
     transform = skil.Transform('iris_tp.json')
     transform_id = transform.id
-    tf_2 = skil.get_transform_by_id(exp, transform_id)
+    tf_2 = skil.get_transform_by_id(transform_id, "CSV", exp)
     assert tf_2.name == transform.name
 
 
