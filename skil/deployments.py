@@ -9,16 +9,14 @@ class Deployment:
     no accidental interruptions or mistakes in a production environment.
 
     # Arguments:
-        skil: `Skil` server instance.
+        skil: `Skil` server instance. If `None`, SKIL will load from config.
         name: string. Name for the deployment.
         id: Unique id for the deployment. If `None`, a unique id will be generated.
     """
-    # TODO: starting from skil 1.2 deployments are linked to workspaces and experiments.
-    # Make sure to keep this up-to-date.
 
     def __init__(self, skil=None, name=None, deployment_id=None):
         if not skil:
-            skil = Skil()  # TODO: take care of auth
+            skil = Skil.from_config()
         if deployment_id is not None:
             response = skil.api.deployment_get(deployment_id)
             if response is None:
@@ -34,6 +32,7 @@ class Deployment:
                 create_deployment_request)
             self.id = self.response.id
         self.skil = skil
+        self.slug = self.response.deployment_slug
 
     def get_config(self):
         return {
@@ -51,6 +50,12 @@ class Deployment:
             config = json.load(f)
         skil = Skil.from_config()
         return get_deployment_by_id(skil, config['deployment_id'])
+
+    """Delete this deployment.
+    """
+
+    def delete(self):
+        self.skil.api.deployment_delete(self.id)
 
 
 def get_deployment_by_id(skil, deployment_id):

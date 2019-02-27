@@ -1,5 +1,8 @@
 import skil
 from skil.services import *
+from skil import Skil
+from skil.workspaces import get_workspace_by_id
+from skil.experiments import get_experiment_by_id
 
 import skil_client
 from skil_client.rest import ApiException as api_exception
@@ -88,6 +91,32 @@ class Model:
 
         self.service = None
 
+    def get_config(self):
+        return {
+            'model_id': self.id,
+            'model_name': self.name,
+            'experiment_id': self.experiment.id,
+            'workspace_id': self.experiment.work_space.id
+        }
+
+    def save(self, file_name):
+        config = self.get_config()
+        with open(file_name, 'w') as f:
+            json.dump(config, f)
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = Skil.from_config()
+        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
+        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        model = Model(model_id=config['model_id'],
+                      experiment=experiment, create=False)
+        model.name = config['model_name']
+        return model
+
     def delete(self):
         """Deletes the model
         """
@@ -134,8 +163,8 @@ class Model:
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
 
-        uris = ["{}/model/{}/default".format(deployment.name, self.name),
-                "{}/model/{}/v1".format(deployment.name, self.name)]
+        uris = ["{}/model/{}/default".format(deployment.slug, self.name),
+                "{}/model/{}/v1".format(deployment.slug, self.name)]
 
         if not self.service:
             deploy_model_request = skil_client.ImportModelRequest(
@@ -147,7 +176,6 @@ class Model:
                 input_names=input_names,
                 output_names=output_names)
 
-            # TODO: why ".response"? Doesn't make sense.
             self.deployment = deployment.response
 
             models = self.skil.api.models(self.deployment.id)
@@ -165,15 +193,6 @@ class Model:
         if start_server:
             self.service.start()
         return self.service
-
-    def undeploy(self):
-        """Un-deploy the model.
-        """
-        try:
-            self.skil.api.delete_model(self.deployment.id, self.id)
-        except skil_client.rest.ApiException as e:
-            self.skil.printer.pprint(
-                ">>> Exception when calling delete_model_instance: %s\n" % e)
 
 
 def get_model_by_id(experiment, model_id):
@@ -281,8 +300,8 @@ class Transform(Model):
         if not deployment:
             deployment = skil.Deployment(skil=self.skil, name=self.name)
 
-        uris = ["{}/datavec/{}/default".format(deployment.name, self.name),
-                "{}/datavec/{}/v1".format(deployment.name, self.name)]
+        uris = ["{}/datavec/{}/default".format(deployment.slug, self.name),
+                "{}/datavec/{}/v1".format(deployment.slug, self.name)]
 
         if not self.service:
             deploy_model_request = skil_client.ImportModelRequest(
@@ -319,6 +338,28 @@ class Transform(Model):
         if start_server:
             self.service.start()
         return self.service
+
+    def get_config(self):
+        return {
+            'transform_id': self.id,
+            'transform_name': self.name,
+            'experiment_id': self.experiment.id,
+            'workspace_id': self.experiment.work_space.id
+        }
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = Skil.from_config()
+        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
+        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        transform = Transform(
+            transform_id=config['transform_id'], experiment=experiment, create=False)
+        transform.name = config['transform_name']
+
+        return transform
 
 
 def get_transform_by_id(experiment, transform_id):

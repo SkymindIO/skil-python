@@ -1,10 +1,9 @@
-class Resource:
+class Resource(object):
     """Resource
 
     A SKIL  resource is an abstraction for (cloud and on-premise)
     compute or storage capabilities.
     """
-    __metaclass__ = type
 
     def __init__(self, skil, resource_id=None, *args, **kwargs):
         """Add the resource to SKIL.

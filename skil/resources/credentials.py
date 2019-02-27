@@ -2,7 +2,7 @@ from skil_client import AddCredentialsRequest
 import skil_client
 
 
-class Credentials():
+class Credentials(object):
     """Credentials
 
     SKIL resource credentials manage cloud provider and other credentials for you.
@@ -15,7 +15,6 @@ class Credentials():
         name: Name of the resource
         create   
     """
-    __metaclass__ = type
 
     def __init__(self, skil, cred_type, uri, name, create=True, *args, **kwargs):
         self.skil = skil

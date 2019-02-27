@@ -34,5 +34,20 @@ def test_experiment_deletion():
     exp.delete()
 
 
+def test_model_deletion():
+    model = skil.Model('keras_mnist.h5')
+    model.delete()
+
+
+def test_transform_deletion():
+    transform = skil.Transform('iris_tp.json')
+    transform.delete()
+
+
+def test_deployment_deletion():
+    dep = skil.Deployment()
+    dep.delete()
+
+
 if __name__ == '__main__':
     pytest.main([__file__])

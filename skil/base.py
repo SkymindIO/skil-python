@@ -97,9 +97,9 @@ class Skil:
     def upload_model(self, model_name):
         self.printer.pprint('>>> Uploading model, this might take a while...')
         upload = self.api.upload(file=model_name).file_upload_response_list
-        self.uploads = self.uploads + upload
+        self.uploads = self.uploads + [upload[-1]]
         self.uploaded_model_names.append(model_name)
-        self.printer.pprint(self.uploads)
+        self.printer.pprint(upload)
 
     def get_uploaded_model_names(self):
         return self.uploaded_model_names

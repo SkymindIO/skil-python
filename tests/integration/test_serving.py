@@ -1,6 +1,7 @@
 import pytest
 import skil
 import os
+import time
 from keras.datasets import mnist
 from keras.models import Model
 from keras.layers import Dense, Dropout, Input
@@ -66,6 +67,17 @@ def test_serving():
     x_test /= 255
     service.predict_single(x_test[0])
     service.predict(x_test[:10])
+
+    service.stop()
+    time.sleep(4)
+    with pytest.raises(Exception):
+        service.predict(x_test[:10])
+
+    service.start()
+    time.sleep(4)
+    service.predict(x_test[:10])
+
+    service.delete()
     os.remove('model.h5')
 
 

@@ -1,3 +1,4 @@
+import skil
 import skil_client
 import time
 import uuid
@@ -12,34 +13,66 @@ except ImportError:
     cv2 = None
 
 
-class Service:
+class Service(object):
     """A service is a deployed model.
 
     # Arguments:
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` SKIL API call of a `Model`
+        model_entity: skil_client.ModelEntity, result of `deploy_model` SKIL API call of a `Model`
     """
-    __metaclass__ = type
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         self.skil = skil
         self.model = model
         self.model_name = self.model.name
-        self.model_deployment = model_deployment
+        self.model_entity = model_entity
         self.deployment = deployment
+
+    def get_config(self):
+        return {
+            'model_entity_id': self.model_entity.id,
+            'deployment_id': self.deployment.id,
+            'model_id': self.model.id,
+            'model_name': self.model.name,
+            'experiment_id': self.model.experiment.id,
+            'workspace_id': self.model.experiment.work_space.id
+        }
+
+    def save(self, file_name):
+        config = self.get_config()
+        with open(file_name, 'w') as f:
+            json.dump(config, f)
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'r') as f:
+            config = json.load(f)
+
+        skil_server = skil.Skil.from_config()
+        work_space = skil.workspaces.get_workspace_by_id(
+            skil_server, config['workspace_id'])
+        experiment = skil.experiments.get_experiment_by_id(
+            work_space, config['experiment_id'])
+        model = skil.Model(model_id=config['model_id'],
+                           experiment=experiment, create=False)
+        model.name = config['model_name']
+        deployment = skil.get_deployment_by_id(skil, config['deployment_id'])
+        model_entity = skil_client.ModelEntity(id=config['model_entity_id'])
+
+        return Service(skil=skil_server, model=model, deployment=deployment, model_entity=model_entity)
 
     def start(self):
         """Starts the service.
         """
-        if not self.model_deployment:
+        if not self.model_entity:
             self.skil.printer.pprint(
                 "No model deployed yet, call 'deploy()' on a model first.")
         else:
             self.skil.api.model_state_change(
                 self.deployment.id,
-                self.model_deployment.id,
+                self.model_entity.id,
                 skil_client.SetState("start")
             )
 
@@ -48,7 +81,7 @@ class Service:
                 time.sleep(5)
                 model_state = self.skil.api.model_state_change(
                     self.deployment.id,
-                    self.model_deployment.id,
+                    self.model_entity.id,
                     skil_client.SetState("start")
                 ).state
                 if model_state == "started":
@@ -62,12 +95,21 @@ class Service:
     def stop(self):
         """Stops the service.
         """
-        # TODO: test this
         self.skil.api.model_state_change(
             self.deployment.id,
-            self.model_deployment.id,
+            self.model_entity.id,
             skil_client.SetState("stop")
         )
+
+    def delete(self):
+        """Delete the service, i.e. undeploy the model
+        """
+        self.stop()
+        try:
+            self.skil.api.delete_model(self.deployment.id, self.model.id)
+        except skil_client.rest.ApiException as e:
+            self.skil.printer.pprint(
+                ">>> Exception when calling delete_model_instance: %s\n" % e)
 
     @staticmethod
     def _indarray(np_array):
@@ -211,12 +253,12 @@ class TransformCsvService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformCsvService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     @staticmethod
     def _to_single_csv_record(data, separator):
@@ -273,12 +315,12 @@ class TransformArrayService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformArrayService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.
@@ -322,12 +364,12 @@ class TransformImageService(Service):
         skil: `Skil` server instance
         model: `skil.Model` instance
         deployment: `skil.Deployment` instance
-        model_deployment: result of `deploy_model` API call of a model
+        model_entity: result of `deploy_model` API call of a model
     """
 
-    def __init__(self, skil, model, deployment, model_deployment):
+    def __init__(self, skil, model, deployment, model_entity):
         super(TransformImageService, self).__init__(
-            skil, model, deployment, model_deployment)
+            skil, model, deployment, model_entity)
 
     def predict(self, data, version='default'):
         """Predict for given batch of data.
