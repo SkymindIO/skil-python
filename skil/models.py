@@ -360,14 +360,14 @@ class Transform(Model):
         experiment = get_experiment_by_id(work_space, config['experiment_id'])
         transform_type = config['transform_type']
         transform = Transform(
-            transform_id=config['transform_id'], transform_type=transform_type, 
+            transform_id=config['transform_id'], transform_type=transform_type,
             experiment=experiment, create=False
-            )
+        )
         transform.name = config['transform_name']
 
         return transform
 
 
 def get_transform_by_id(transform_id, transform_type, experiment):
-    return Transform(transform_id=transform_id, transform_type=transform_type, 
+    return Transform(transform_id=transform_id, transform_type=transform_type,
                      experiment=experiment, create=False)
