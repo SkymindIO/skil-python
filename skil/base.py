@@ -66,7 +66,7 @@ class Skil:
         base_config = {
             'host': host,
             'port': port,
-            'username': user_id,
+            'username': user_id,  # TODO: this needs to be called user_id
             'password': password
         }
         save_skil_config(base_config)
