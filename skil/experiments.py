@@ -2,9 +2,11 @@ import skil_client
 from skil_client.rest import ApiException as api_exception
 import uuid
 import json
+import yaml
+
 from .base import Skil
 from .workspaces import get_workspace_by_id, WorkSpace
-
+from .utils.io import serialize_config, deserialize_config
 
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
@@ -71,18 +73,15 @@ class Experiment:
             'workspace_id': self.work_space.id
         }
 
-    def save(self, file_name):
+    def save(self, file_name, file_format='json'):
         config = self.get_config()
-        with open(file_name, 'w') as f:
-            json.dump(config, f)
+        serialize_config(config, file_name, file_format)            
 
     @classmethod
-    def load(cls, file_name):
-        with open(file_name, 'r') as f:
-            config = json.load(f)
+    def load(cls, file_name, skil_server=None):
+        config = deserialize_config(file_name)
 
-        skil_server = Skil.from_config()
-        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
+        skil_server = Skil.from_config() if skil_server is None else skil_server
         experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         experiment.name = config['experiment_name']
         return experiment
