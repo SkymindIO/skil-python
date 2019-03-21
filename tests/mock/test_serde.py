@@ -48,7 +48,7 @@ def test_failed_serde(Skil):
 
     with open(file_name, 'w') as f:
         f.write('foobar')
-   
+
     with pytest.raises(Exception):
         conf = deserialize_config(file_name)
 

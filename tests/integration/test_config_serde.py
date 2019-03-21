@@ -19,6 +19,7 @@ def test_experiment_serde_yaml():
 
     assert recov.get_config() == exp.get_config()
 
+
 def test_model_serde():
     model = skil.Model('keras_mnist.h5', name='bar')
     model.save('model.json')

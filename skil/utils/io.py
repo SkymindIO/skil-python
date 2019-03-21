@@ -1,6 +1,7 @@
 import json
 import yaml
 
+
 def serialize_config(config, file_name, file_format):
     """ Serialize a configuration object to a file in a provided
     file format.
@@ -31,9 +32,9 @@ def deserialize_config(file_name):
         try:
             result = yaml.load(f)
         except:
-            raise Exception('Could not infer file format. Did you serialize your object as "yaml" or "json"?')
+            raise Exception(
+                'Could not infer file format. Did you serialize your object as "yaml" or "json"?')
         if not hasattr(result, 'keys'):
-            raise Exception('Could not infer file format. Did you serialize your object as "yaml" or "json"?')
+            raise Exception(
+                'Could not infer file format. Did you serialize your object as "yaml" or "json"?')
         return result
-
-    

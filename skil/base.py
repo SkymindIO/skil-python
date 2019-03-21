@@ -67,7 +67,7 @@ class Skil:
             'user_id': user_id,
             'password': password,
             'debug': debug,
-            'workspace_server_id': self.server_id 
+            'workspace_server_id': self.server_id
         }
         save_skil_config(result)
 

@@ -8,6 +8,7 @@ from .base import Skil
 from .workspaces import get_workspace_by_id, WorkSpace
 from .utils.io import serialize_config, deserialize_config
 
+
 class Experiment:
     """Experiments in SKIL are useful for defining different model configurations, 
     encapsulating training of models, and carrying out different data cleaning tasks.
@@ -75,7 +76,7 @@ class Experiment:
 
     def save(self, file_name, file_format='json'):
         config = self.get_config()
-        serialize_config(config, file_name, file_format)            
+        serialize_config(config, file_name, file_format)
 
     @classmethod
     def load(cls, file_name, skil_server=None):
@@ -96,7 +97,7 @@ class Experiment:
         except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_experiment: %s\n" % e)
-    
+
     @classmethod
     def current_skil_experiment(cls, skil_server, sc, zeppelin_context):
         """Get the SKIL experiment associated with this Zeppelin notebook.
