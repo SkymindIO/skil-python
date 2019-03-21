@@ -62,14 +62,13 @@ class Skil:
         else:
             self.server_id = self.get_default_server_id()
 
-        # Store config for future connections
-        base_config = {
+        result = {
             'host': host,
             'port': port,
-            'username': user_id,  # TODO: this needs to be called user_id
+            'user_id': user_id,
             'password': password
         }
-        save_skil_config(base_config)
+        save_skil_config(result)
 
     @classmethod
     def from_config(cls):
