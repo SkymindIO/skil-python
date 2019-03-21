@@ -111,7 +111,7 @@ class Model(object):
         skil_server = Skil.from_config()
         experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         result = Model(model_id=config['model_id'],
-                      experiment=experiment, create=False)
+                       experiment=experiment, create=False)
         result.name = config['model_name']
         return result
 

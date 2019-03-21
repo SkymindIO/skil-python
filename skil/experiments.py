@@ -34,7 +34,7 @@ class Experiment:
     def __init__(self, work_space=None, experiment_id=None, name='experiment',
                  description='experiment', verbose=False, skil_server=None, create=True,
                  *args, **kwargs):
-        
+
         if create:
             if not work_space:
                 if skil_server:
@@ -71,8 +71,9 @@ class Experiment:
             self.work_space = work_space
             self.id = experiment_id
             self.name = experiment_entity.experiment_name
-        
-        self.skil_environment = None # only used when experiment is retrieved through notebook
+
+        # only used when experiment is retrieved through notebook
+        self.skil_environment = None
 
     def get_config(self):
         return {
@@ -174,9 +175,11 @@ class Experiment:
             The path of the saved model
         """
         if model_type.lower() == 'tensorflow' or model_type.lower() == 'tf':
-            dest_path = os.path.join(self._models_path(), str(uuid.uuid1()) + '.pb')
+            dest_path = os.path.join(
+                self._models_path(), str(uuid.uuid1()) + '.pb')
         elif model_type.lower() == 'onnx':
-            dest_path = os.path.join(self._models_path(), str(uuid.uuid1()) + '.onnx')
+            dest_path = os.path.join(
+                self._models_path(), str(uuid.uuid1()) + '.onnx')
         else:
             raise NotImplementedError(
                 'Only TensorFlow and ONNX model types are supported.')
