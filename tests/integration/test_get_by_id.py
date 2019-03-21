@@ -38,7 +38,7 @@ def test_experiment_by_id():
     ws = _get_ws()
     exp = skil.Experiment(ws, name='test_exp')
     exp_id = exp.id
-    exp2 = skil.get_experiment_by_id(ws, exp_id)
+    exp2 = skil.get_experiment_by_id(ws.skil, exp_id)
     assert exp.name == exp2.name
 
 

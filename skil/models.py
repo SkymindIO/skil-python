@@ -111,7 +111,7 @@ class Model(object):
 
         skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         model = Model(model_id=config['model_id'],
                       experiment=experiment, create=False)
         model.name = config['model_name']
@@ -357,7 +357,7 @@ class Transform(Model):
 
         skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         transform_type = config['transform_type']
         transform = Transform(
             transform_id=config['transform_id'], transform_type=transform_type,

@@ -20,15 +20,19 @@ class Experiment:
         name: string. Name for the experiment.
         description: string. Description for the experiment.
         verbose: boolean. If `True`, api response will be printed.
+        skil_server: Optional `Skil` instance, used when create is false.
         create: boolean. If `True` a new experiment will be created.
     """
 
     def __init__(self, work_space=None, experiment_id=None, name='experiment',
-                 description='experiment', verbose=False, create=True,
+                 description='experiment', verbose=False, skil_server=None, create=True,
                  *args, **kwargs):
         if create:
             if not work_space:
-                self.skil = Skil.from_config()
+                if skil_server:
+                    self.skil = skil_server
+                else:
+                    self.skil = Skil.from_config()
                 work_space = WorkSpace(self.skil)
             self.work_space = work_space
             self.skil = self.work_space.skil
@@ -51,8 +55,8 @@ class Experiment:
             if verbose:
                 self.skil.printer.pprint(add_experiment_response)
         else:
-            experiment_entity = work_space.skil.api.get_experiment(
-                work_space.skil.server_id,
+            experiment_entity = skil_server.api.get_experiment(
+                skil_server.server_id,
                 experiment_id
             )
             self.experiment_entity = experiment_entity
@@ -79,7 +83,7 @@ class Experiment:
 
         skil_server = Skil.from_config()
         work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         experiment.name = config['experiment_name']
         return experiment
 
@@ -93,7 +97,34 @@ class Experiment:
         except api_exception as e:
             self.skil.printer.pprint(
                 ">>> Exception when calling delete_experiment: %s\n" % e)
+    
+    @classmethod
+    def current_skil_experiment(cls, skil_server, sc, zeppelin_context):
+        """Get the SKIL experiment associated with this Zeppelin notebook.
+
+        # Arguments:
+            skil_server: a `Skil` instance
+            spark_context: a `SparkContext` instance
+            zeppelin_context: a `ZeppelinContext` instance
+
+        # Return value:
+            A `skil.Experiment`
+        """
+        jvm_skil_context = sc._jvm.io.skymind.zeppelin.utils.SkilContext
+        context = jvm_skil_context()
+        skil_environment = sc._jvm.io.skymind.skil.service.SKILEnvironment
+        # self.ModelInstanceEntity = sc._jvm.io.skymind.modelproviders.history.model.ModelInstanceEntity
+        # Nd4j = sc._jvm.org.nd4j.linalg.factory.Nd4j
+        # self.Evaluation = sc._jvm.org.deeplearning4j.eval.Evaluation
+
+        experiment_id = context.experimentId(zeppelin_context.z)
+
+        result = get_experiment_by_id(skil_server, experiment_id)
+        result.jvm_skil_context = jvm_skil_context
+        result.context = context
+        result.skil_environment = skil_environment
+        return result
 
 
-def get_experiment_by_id(work_space, experiment_id):
-    return Experiment(work_space=work_space, experiment_id=experiment_id, create=False)
+def get_experiment_by_id(skil_server, experiment_id):
+    return Experiment(skil_server=skil_server, experiment_id=experiment_id, create=False)

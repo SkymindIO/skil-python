@@ -55,7 +55,7 @@ class Service(object):
         work_space = skil.workspaces.get_workspace_by_id(
             skil_server, config['workspace_id'])
         experiment = skil.experiments.get_experiment_by_id(
-            work_space, config['experiment_id'])
+            skil_server, config['experiment_id'])
         model = skil.Model(model_id=config['model_id'],
                            experiment=experiment, create=False)
         model.name = config['model_name']
