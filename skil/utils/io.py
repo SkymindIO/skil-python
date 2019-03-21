@@ -10,7 +10,6 @@ def serialize_config(config, file_name, file_format):
         config: Python dictionary with fields to serialize
         file_name: file name in your local file system to store configuration to
         file_format: supported file format, choose from 'json' and 'yaml'
-
     """
     with open(file_name, 'w') as f:
         if file_format == 'json':
