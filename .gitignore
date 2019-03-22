@@ -129,3 +129,5 @@ docs/sources
 .part-00*
 _SUCCESS*
 ._SUCCESS*
+
+mock.*

@@ -2,6 +2,7 @@ import pytest
 
 from skil.utils.io import serialize_config, deserialize_config
 from skil import Experiment
+import os
 
 import sys
 if sys.version_info >= (3, 3):
@@ -26,6 +27,7 @@ def test_experiment_json_serde(Skil):
     assert config == MOCK_CONFIG
     exp = Experiment.load(file_name, Skil())
     assert exp.id == 'foo'
+    os.remove(file_name)
 
 
 @mock.patch('skil.Skil')
@@ -37,6 +39,7 @@ def test_experiment_yaml_serde(Skil):
     assert config == MOCK_CONFIG
     exp = Experiment.load(file_name, Skil())
     assert exp.id == 'foo'
+    os.remove(file_name)
 
 
 @mock.patch('skil.Skil')
@@ -51,6 +54,7 @@ def test_failed_serde(Skil):
 
     with pytest.raises(Exception):
         conf = deserialize_config(file_name)
+    os.remove(file_name)
 
 
 if __name__ == '__main__':
