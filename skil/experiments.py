@@ -107,23 +107,22 @@ class Experiment:
                 ">>> Exception when calling delete_experiment: %s\n" % e)
 
     @classmethod
-    def current_skil_experiment(cls, skil_server, spark_context, zeppelin_context):
+    def current_skil_experiment(cls, skil_server, zeppelin_context):
         """Get the SKIL experiment associated with this Zeppelin notebook.
 
         # Arguments:
             skil_server: a `Skil` instance
-            spark_context: a `SparkContext` instance
             zeppelin_context: a `ZeppelinContext` instance
 
         # Return value:
             A `skil.Experiment`
         """
-        jvm_skil_context = spark_context._jvm.io.skymind.zeppelin.utils.SkilContext
+        jvm_skil_context = zeppelin_context.sc._jvm.io.skymind.zeppelin.utils.SkilContext
         context = jvm_skil_context()
         experiment_id = context.experimentId(zeppelin_context.z)
 
         result = get_experiment_by_id(skil_server, experiment_id)
-        result.skil_environment = spark_context._jvm.io.skymind.skil.service.SKILEnvironment
+        result.skil_environment = zeppelin_context.sc._jvm.io.skymind.skil.service.SKILEnvironment
         return result
 
     def _models_path(self):
