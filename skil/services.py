@@ -1,4 +1,6 @@
 import skil
+from skil.utils.io import serialize_config, deserialize_config
+
 import skil_client
 import time
 import uuid
@@ -41,23 +43,20 @@ class Service(object):
             'workspace_id': self.model.experiment.work_space.id
         }
 
-    def save(self, file_name):
+    def save(self, file_name, file_format='json'):
         config = self.get_config()
-        with open(file_name, 'w') as f:
-            json.dump(config, f)
+        serialize_config(config, file_name, file_format)
 
     @classmethod
     def load(cls, file_name):
-        with open(file_name, 'r') as f:
-            config = json.load(f)
+        config = deserialize_config(file_name)
 
         skil_server = skil.Skil.from_config()
-        work_space = skil.workspaces.get_workspace_by_id(
-            skil_server, config['workspace_id'])
         experiment = skil.experiments.get_experiment_by_id(
-            work_space, config['experiment_id'])
+            skil_server, config['experiment_id'])
         model = skil.Model(model_id=config['model_id'],
-                           experiment=experiment, create=False)
+                           experiment=experiment,
+                           create=False)
         model.name = config['model_name']
         deployment = skil.get_deployment_by_id(skil, config['deployment_id'])
         model_entity = skil_client.ModelEntity(id=config['model_entity_id'])

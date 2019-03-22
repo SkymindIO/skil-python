@@ -22,14 +22,13 @@ class Skil:
         workspace_server_id: None by default, only specify if you want to connect to a non-default SKIL workspace server.
         host: string, Host on which the SKIL server runs.
         port: integer, Port on which the SKIL host runs.
-        debug: boolean, set to false for more verbose logging.
         user_id: user name for your SKIL server connection.
         password: password of the provided SKIL user.
-
+        debug: boolean, set to false for more verbose logging.
     """
 
     def __init__(self, workspace_server_id=None, host='localhost', port=9008,
-                 debug=False, user_id='admin', password='admin'):
+                 user_id='admin', password='admin', debug=False):
 
         self.printer = pprint.PrettyPrinter(indent=4)
 
@@ -62,14 +61,15 @@ class Skil:
         else:
             self.server_id = self.get_default_server_id()
 
-        # Store config for future connections
-        base_config = {
+        result = {
             'host': host,
             'port': port,
-            'username': user_id,  # TODO: this needs to be called user_id
-            'password': password
+            'user_id': user_id,
+            'password': password,
+            'debug': debug,
+            'workspace_server_id': self.server_id
         }
-        save_skil_config(base_config)
+        save_skil_config(result)
 
     @classmethod
     def from_config(cls):

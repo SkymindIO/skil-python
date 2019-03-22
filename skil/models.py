@@ -3,6 +3,7 @@ from skil.services import *
 from skil import Skil
 from skil.workspaces import get_workspace_by_id
 from skil.experiments import get_experiment_by_id
+from skil.utils.io import serialize_config, deserialize_config
 
 import skil_client
 from skil_client.rest import ApiException as api_exception
@@ -99,23 +100,20 @@ class Model(object):
             'workspace_id': self.experiment.work_space.id
         }
 
-    def save(self, file_name):
+    def save(self, file_name, file_format='json'):
         config = self.get_config()
-        with open(file_name, 'w') as f:
-            json.dump(config, f)
+        serialize_config(config, file_name, file_format)
 
     @classmethod
     def load(cls, file_name):
-        with open(file_name, 'r') as f:
-            config = json.load(f)
+        config = deserialize_config(file_name)
 
         skil_server = Skil.from_config()
-        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = get_experiment_by_id(work_space, config['experiment_id'])
-        model = Model(model_id=config['model_id'],
-                      experiment=experiment, create=False)
-        model.name = config['model_name']
-        return model
+        experiment = get_experiment_by_id(skil_server, config['experiment_id'])
+        result = Model(model_id=config['model_id'],
+                       experiment=experiment, create=False)
+        result.name = config['model_name']
+        return result
 
     def delete(self):
         """Deletes the model
@@ -352,20 +350,18 @@ class Transform(Model):
 
     @classmethod
     def load(cls, file_name):
-        with open(file_name, 'r') as f:
-            config = json.load(f)
+        config = deserialize_config(file_name)
 
         skil_server = Skil.from_config()
-        work_space = get_workspace_by_id(skil_server, config['workspace_id'])
-        experiment = get_experiment_by_id(work_space, config['experiment_id'])
+        experiment = get_experiment_by_id(skil_server, config['experiment_id'])
         transform_type = config['transform_type']
-        transform = Transform(
+        result = Transform(
             transform_id=config['transform_id'], transform_type=transform_type,
             experiment=experiment, create=False
         )
-        transform.name = config['transform_name']
+        result.name = config['transform_name']
 
-        return transform
+        return result
 
 
 def get_transform_by_id(transform_id, transform_type, experiment):
