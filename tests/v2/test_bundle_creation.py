@@ -42,7 +42,7 @@ def test_create_bundle_for_iris():
                                               outputAdapterType=skil.v2.OutputAdapterType.CLASSIFICATION,
                                               modelType=skil.v2.ModelType.MULTILAYERNETWORK)
 
-    modelLoadingConfig=skil.v2.ModelLoadingConfig([modelConfigType])
+    modelLoadingConfig = skil.v2.ModelLoadingConfig([modelConfigType])
 
     configuration = skil.v2.InferenceVerticleConfiguration(inputDataType=skil.v2.InputDataType.JSON,
                                                            inferenceLoadingConfigKey=modelServerInferenceConfig,
