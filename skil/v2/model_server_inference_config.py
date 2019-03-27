@@ -50,4 +50,5 @@ class ModelServerInferenceConfig(object):
     def tojson(self):
         j = self.__dict__.copy()
         j["evalConfig"] = j["evalConfig"].tojson()
+        j["@class"] = "ai.skymind.modelserver.inference.config.ModelServerInferenceConfig"
         return j
