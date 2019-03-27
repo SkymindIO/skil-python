@@ -1,6 +1,6 @@
 # EvalConfig.java (SKIL)
 # InferenceMode.java (DL4J)
-
+from .mock_java_class import MockJavaClass
 import uuid
 
 
@@ -13,7 +13,10 @@ class EvalType:
     ROC_MULTI_CLASS = "ROC_MULTI_CLASS"
 
 
-class EvalConfig(object):
+class EvalConfig(MockJavaClass):
+
+    java_class = "ai.skymind.modelserver.retrain.EvalConfig"
+
     def __init__(self,
                  inputs=None,
                  testSet=None,
@@ -74,8 +77,4 @@ class EvalConfig(object):
         assert isinstance(experimentId, str)
         self.experimentId = experimentId
 
-    def tojson(self):
-        j = self.__dict__.copy()
-        j["@class"] = "ai.skymind.modelserver.retrain.EvalConfig"
-        return j
-
+        super(EvalConfig, self).__init__()

@@ -1,17 +1,13 @@
+# Schema.java (DL4J)
 
-_AVAILABLE_COLUMN_TYPES = [
-    "Boolean",
-    "Categorical",
-    "Double",
-    "Float",
-    "Integer",
-    "Long",
-    "NDArray",
-    "String",
-    "Time"
-]
+from .mock_java_class import MockJavaClass
 
-class Schema(object):
+
+# NOTE: Schema mock class API doesnt map to the actual datavec Schema API
+
+class Schema(MockJavaClass):
+
+    java_class = "org.datavec.api.transform.schema.Schema"
 
     def __init__(self):
         self.columns = []
@@ -46,7 +42,7 @@ class Schema(object):
 
     def tojson(self):
         j = {}
-        j["@class"] = "org.datavec.api.transform.schema.Schema"
+        j["@class"] = self.java_class
         columns = []
         for col in self.columns:
             col_type = col[1]

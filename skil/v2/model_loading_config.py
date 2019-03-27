@@ -2,6 +2,8 @@
 # ModelConfigType.java
 
 
+from .mock_java_class import MockJavaClass
+
 class HandlerType:
     CSV = "CSV"
     DICTIONARY = "DICTIONARY"
@@ -28,8 +30,11 @@ class OutputAdapterType:
     RAW = "RAW"
 
 
-class ModelConfigType(object):
-    def __init__(self, modelLoadingPath, outputAdapterType, modelType, schemaJson):
+class ModelConfigType(MockJavaClass):
+
+    java_class = "ai.skymind.modelserver.verticles.ModelConfigType"
+
+    def __init__(self, modelLoadingPath, outputAdapterType, modelType, schemaJson=None):
         if modelLoadingPath is None:
             modelLoadingPath = ""
         assert isinstance(modelLoadingPath, str)
@@ -38,27 +43,20 @@ class ModelConfigType(object):
         self.outputAdapterType = outputAdapterType
         assert hasattr(ModelType, modelType), "Invalid ModelType"
         self.modelType = modelType
+        if schemaJson is not None:
+            assert isinstance(schemaJson, str)
         self.schemaJson = schemaJson
-
-    def tojson(self):
-        j = {}
-        j["@class"] = "ai.skymind.modelserver.verticles.ModelConfigType"
-        j["modelLoadingPath"] = self.modelLoadingPath
-        j["outputAdapterType"] = self.outputAdapterType
-        j["modelType"] = self.modelType
-        j["schemaJson"] = self.schemaJson
-        return j
+        super(ModelConfigType, self).__init__()
 
 
-class ModelLoadingconfig(object):
+class ModelLoadingConfig(MockJavaClass):
+
+    java_class = "ai.skymind.modelserver.config.ModelLoadingConfig"
+
     def __init__(self, modelConfigTypes):
         assert isinstance(modelConfigTypes, list)
         for mct in modelConfigTypes:
             assert isinstance(mct, ModelConfigType)
         self.modelConfigTypes = modelConfigTypes
+        super(ModelLoadingConfig, self).__init__()
 
-    def tojson(self):
-        j = {}
-        j["@class"] = "ai.skymind.modelserver.config.ModelLoadingConfig"
-        j["modelConfigTypes"] = [mct.tojson() for mct in self.modelConfigTypes]
-        return j
