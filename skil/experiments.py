@@ -188,4 +188,37 @@ class Experiment:
 
 
 def get_experiment_by_id(skil_server, experiment_id):
+    """Get an experiment by ID
+
+    # Arguments:
+        skil_server: Skil instance
+        experiment_id: Valid SKIL Experiment ID
+    """
     return Experiment(skil_server=skil_server, experiment_id=experiment_id, create=False)
+
+
+def get_all_workspace_experiments(work_space):
+    """Get all experiments in a given WorkSpace.
+    
+    # Arguments:
+        work_space: WorkSpace to obtain experiments from
+    """
+    experiment_entities = work_space.skil.api.getExperimentsForModelHistory(
+        work_space.skil.server_id,
+        work_space.id
+    )
+    return [get_experiment_by_id(work_space.skil, e.experiment_id) for e in experiment_entities]
+
+
+def get_all_experiments(skil_server):
+    """Get all experiments for this SKIL instance
+
+    # Arguments:
+        skil_server: Skil instance
+    """    
+    experiment_entities = skil_server.api.listAllExperiments(
+        skil_server.server_id
+    )
+    return [get_experiment_by_id(skil_server, e.experiment_id) for e in experiment_entities]
+
+  
