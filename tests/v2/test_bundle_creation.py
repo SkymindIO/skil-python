@@ -2,6 +2,7 @@ from keras.layers import Dense
 from keras.models import Sequential
 import pytest
 import skil
+import skil_client
 import os
 
 
@@ -40,7 +41,7 @@ def test_create_bundle_for_iris():
 
     modelConfigType = skil.v2.ModelConfigType(modelLoadingPath="",
                                               outputAdapterType=skil.v2.OutputAdapterType.CLASSIFICATION,
-                                              modelType=skil.v2.ModelType.MULTILAYERNETWORK)
+                                              modelType=skil.v2.ModelType.KERAS)
 
     modelLoadingConfig = skil.v2.ModelLoadingConfig([modelConfigType])
 
@@ -54,7 +55,7 @@ def test_create_bundle_for_iris():
                                                     modelServerV2ConfigFileLocation="",
                                                     name="testmodel",
                                                     scale=1,
-                                                    uri="",
+                                                    uri=[""],
                                                     modelType="modelv2",
                                                     )
     
@@ -64,6 +65,16 @@ def test_create_bundle_for_iris():
                                               inferenceVerticleConfiguration=configuration)
 
     assert os.path.isfile(deployment_bundle)
+
+    sk = skil.Skil()
+    sk.upload_model(deployment_bundle)
+    importModelRequest2 = skil_client.ImportModelRequest(file_location=sk.get_model_path(deployment_bundle),
+                                                         name="testmodel",
+                                                         scale=1,
+                                                         model_type="modelv2",
+                                                         uri=[""],
+                                                         )
+    sk.api.deploy_model(0, importModelRequest2)
 
 
 

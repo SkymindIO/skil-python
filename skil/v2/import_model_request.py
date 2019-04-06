@@ -27,7 +27,7 @@ class ImportModelRequest(MockJavaClass):
         self.scale = scale
 
         if uri is not None:
-            assert isinstance(uri, str)
+            assert isinstance(uri, (str, list))
         self.uri = uri
 
         if modelType is None:

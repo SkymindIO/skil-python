@@ -10,6 +10,7 @@ from skil.jobs import *
 from skil.spark import *
 from skil.utils import *
 from skil.config import load_skil_config
+from skil import v2
 
 # Try to find SKIL config when first importing skil
 load_skil_config()
