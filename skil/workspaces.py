@@ -47,18 +47,18 @@ class WorkSpace:
                 ">>> Exception when calling delete_model_history: %s\n" % e)
 
 
-def get_workspace_by_id(skil, workspace_id):
+def get_workspace_by_id(skil_server, workspace_id):
     """Get workspace by ID
 
     # Arguments:
-        skil: `Skil` server instance
+        skil_server: `Skil` server instance
         workspace_id: string, workspace ID
     """
-    server_id = skil.server_id
-    response = skil.api.get_model_history(server_id, workspace_id)
+    server_id = skil_server.server_id
+    response = skil_server.api.get_model_history(server_id, workspace_id)
     ws = WorkSpace(create=False)
-    ws.skil = skil
-    ws.printer = skil.printer
+    ws.skil = skil_server
+    ws.printer = skil_server.printer
     ws.workspace = response
     ws.id = workspace_id
     ws.name = response.model_name

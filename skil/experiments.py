@@ -188,4 +188,10 @@ class Experiment:
 
 
 def get_experiment_by_id(skil_server, experiment_id):
+    """Get experiment by ID
+
+    # Arguments:
+        skil: `Skil` server instance
+        experiment: string, experiment ID
+    """
     return Experiment(skil_server=skil_server, experiment_id=experiment_id, create=False)

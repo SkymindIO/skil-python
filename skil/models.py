@@ -194,6 +194,12 @@ class Model(object):
 
 
 def get_model_by_id(experiment, model_id):
+    """Get model by ID
+
+    # Arguments:
+        experiment: SKIL Experiment instance
+        model_id: string, Model ID
+    """
     return Model(model_id=model_id, experiment=experiment, create=False)
 
 
@@ -365,5 +371,12 @@ class Transform(Model):
 
 
 def get_transform_by_id(transform_id, transform_type, experiment):
+    """Get transform by ID
+
+    # Arguments:
+        transform_id: string, Transform ID
+        transform_type: string, Transfrom type ("CSV", "array" or "image")
+        experiment: SKIL Experiment instance
+    """
     return Transform(transform_id=transform_id, transform_type=transform_type,
                      experiment=experiment, create=False)

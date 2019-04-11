@@ -358,7 +358,7 @@ class TransformArrayService(Service):
 
 
 class TransformImageService(Service):
-    """A service for transforming array data
+    """A service for transforming image data
 
     # Arguments:
         skil: `Skil` server instance
