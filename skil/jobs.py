@@ -82,11 +82,15 @@ class TrainingJobConfiguration(JobConfiguration):
 
     # Arguments:
         skil_model: a `skil.Model` instance
+        num_epochs: number of epochs to train
+        eval_type: evaluation type
+        eval_data_set_provider_class: name of the `DataSetProvider` class 
         compute_resource: `skil.resources.compute.ComputeResource' instance, created before running a job.
         storage_resource: `skil.resources.storage.StorageResource` instance created before runnning a job
         output_path: string with path to folder in which job output should be stored.
         data_set_provider_class: name of the class to be used as `DataSetProvider` in SKIL
         is_multi_data_set: boolean, whether data set uses `MultiDataSet` interface.
+        ui_url: url of a previously started DL4J training UI  
         verbose: boolean, log level. Set True for detailed logging.
     """
     # TODO signature to aim for: (model, num_epochs, data_path, eval_data_path, eval_types,
@@ -102,7 +106,8 @@ class TrainingJobConfiguration(JobConfiguration):
     # TODO: the training master config should be deconstructed. maybe provide this to the job.run(...) as argument.
     # TODO: user should just be *handed* a ui, not take care of a $%$%! URL.
 
-    def __init__(self,  skil_model, num_epochs,
+    def __init__(self,  skil_model, 
+                 num_epochs,
                  eval_type,
                  eval_data_set_provider_class,  # good lord
                  compute_resource, storage_resource,
