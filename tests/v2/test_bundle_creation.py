@@ -55,7 +55,7 @@ def test_create_bundle_for_iris():
                                                     modelServerV2ConfigFileLocation="",
                                                     name="testmodel",
                                                     scale=1,
-                                                    uri=[""],
+                                                    uri=[],
                                                     modelType="modelv2",
                                                     )
     
@@ -66,15 +66,16 @@ def test_create_bundle_for_iris():
 
     assert os.path.isfile(deployment_bundle)
 
-    sk = skil.Skil()
+    sk = skil.Skil(password="adminadmin")
     sk.upload_model(deployment_bundle)
     importModelRequest2 = skil_client.ImportModelRequest(file_location=sk.get_model_path(deployment_bundle),
                                                          name="testmodel",
                                                          scale=1,
                                                          model_type="modelv2",
-                                                         uri=[""],
+                                                         uri=[],
                                                          )
-    sk.api.deploy_model(0, importModelRequest2)
+    deployment = skil.Deployment(sk)
+    sk.api.deploy_model(deployment.id, importModelRequest2)
 
 
 
