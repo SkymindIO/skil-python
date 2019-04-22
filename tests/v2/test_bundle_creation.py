@@ -12,7 +12,7 @@ def _get_iris_model():
     model.add(Dense(3, activation="softmax"))
 
     model.compile(loss="mse", optimizer="sgd")
-    path = "temp.h5"
+    path = "model.h5"
     model.save(path)
     return path
 
@@ -51,7 +51,7 @@ def test_create_bundle_for_iris():
                                                            modelLoadingConfig=modelLoadingConfig,
                                                            schemaKey=_get_iris_input_schema())
 
-    importModelRequest = skil.v2.ImportModelRequest(fileLocation="",
+    importModelRequest = skil.v2.ImportModelRequest(fileLocation="model.h5",
                                                     modelServerV2ConfigFileLocation="",
                                                     name="testmodel",
                                                     scale=1,
