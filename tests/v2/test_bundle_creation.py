@@ -136,7 +136,7 @@ def test_model_server_v2():
 
     input_batch = _get_random_input()
     np.save("x.npy", input_batch)
-    data = requests.post("http://localhost:9613/raw/classification/numpy", {'0': 'x.npy', open('x.npy', 'rb')})
+    data = requests.post("http://localhost:9613/raw/classification/numpy", {'0': ('x.npy', open('x.npy', 'rb'))})
     return data
     
 
