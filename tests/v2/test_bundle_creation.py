@@ -4,6 +4,7 @@ import pytest
 import skil
 import skil_client
 import os
+import time
 
 
 def _get_iris_model():
@@ -34,7 +35,8 @@ def _get_iris_output_schema():
     return schema
 
 
-def test_create_bundle_for_iris():
+def test_model_server_v2():
+    # Create V2 bundle:
     modelFile = _get_iris_model()
 
     modelServerInferenceConfig = skil.v2.ModelServerInferenceConfig.defaultConfig()
@@ -76,6 +78,33 @@ def test_create_bundle_for_iris():
                                                          )
     deployment = skil.Deployment(sk)
     sk.api.deploy_model(deployment.id, importModelRequest2)
+    # V2 model deployed
+
+    # Start service:
+    model_entity = sk.api.models(deployment.id)[0]
+    sk.api.model_state_change(deployment.id,
+                              model_entity.id,
+                              skil_client.SetState("start"))
+
+    sk.printer.pprint("Starting service...")
+    while True:
+        time.sleep(2)
+        model_state = sk.api.model_state_change(deployment.id,
+                                                model_entity.id,
+                                                skil_client.SetState("start")).state
+        if model_state == "started":
+            sk.printer.pprint("Model Server V2 started successfully!")
+            break
+        else:
+            sk.printer.pprint(".")
+
+    # Service started
+
+    # Do inference:
+
+    
+
+
 
 
 
