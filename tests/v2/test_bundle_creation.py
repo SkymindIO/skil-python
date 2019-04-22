@@ -1,21 +1,35 @@
-from keras.layers import Dense
-from keras.models import Sequential
+from keras.layers import Dense, Input
+from keras.models import Model, load_model
 import pytest
 import skil
 import skil_client
 import os
 import time
+import numpy as np
+import uuid
+from numpy.testing import assert_allclose
+import requests
 
 
 def _get_iris_model():
-    model = Sequential()
-    model.add(Dense(10, input_dim=4, activation="tanh"))
-    model.add(Dense(3, activation="softmax"))
+    inp = Input((4,))
+    x = Dense(10, activation='tanh')(inp)
+    out = Dense(3, activation='softmax')(x)
+
+    model = Model(inp, out)
 
     model.compile(loss="mse", optimizer="sgd")
     path = "model.h5"
     model.save(path)
     return path
+
+
+def _get_random_input():
+    return np.random.random((32, 4))
+
+
+def _do_local_inference(model_path, input):
+    return load_model(model_path).predict(input)
 
 
 def _get_iris_input_schema():
@@ -35,6 +49,22 @@ def _get_iris_output_schema():
     return schema
 
 
+def _indarray(np_array):
+    """Convert a numpy array to `skil_client.INDArray` instance.
+
+    # Arguments
+        np_array: `numpy.ndarray` instance.
+
+    # Returns
+        `skil_client.INDArray` instance.
+    """
+    return skil_client.INDArray(
+        ordering='c',
+        shape=list(np_array.shape),
+        data=np_array.reshape(-1).tolist()
+    )
+
+
 def test_model_server_v2():
     # Create V2 bundle:
     modelFile = _get_iris_model()
@@ -51,7 +81,9 @@ def test_model_server_v2():
                                                            inferenceLoadingConfigKey=modelServerInferenceConfig,
                                                            outputsKey=_get_iris_output_schema(),
                                                            modelLoadingConfig=modelLoadingConfig,
-                                                           schemaKey=_get_iris_input_schema())
+                                                           schemaKey=_get_iris_input_schema(),
+                                                           outputTypeKey=skil.v2.OutputType.CLASSIFICATION,
+                                                           httpPort=9601)
 
     importModelRequest = skil.v2.ImportModelRequest(fileLocation="model.h5",
                                                     modelServerV2ConfigFileLocation="",
@@ -102,10 +134,11 @@ def test_model_server_v2():
 
     # Do inference:
 
+    input_batch = _get_random_input()
+    np.save("x.npy", input_batch)
+    data = requests.post("http://localhost:9613/raw/classification/numpy", {'0': 'x.npy', open('x.npy', 'rb')})
+    return data
     
-
-
-
 
 
 
