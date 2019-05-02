@@ -241,7 +241,7 @@ class Service(object):
         if os.path.isfile(temp_path):
             os.remove(temp_path)
 
-        return json.loads(resp.content)
+        return resp.json()
 
 
 def get_service_by_id(skil_server, experiment_id, model_id, deployment_id, model_entity_id=None):
