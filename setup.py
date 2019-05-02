@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='skil',
-    version='1.2.1',
+    version='1.2.1.1',
     packages=find_packages(),
     install_requires=[
         'skil_client>=1.2.1',
