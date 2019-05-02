@@ -11,17 +11,20 @@ with open('keras_config.json', 'r') as f:
 skil_server = skil.Skil()
 ws = skil.WorkSpace(skil_server)
 experiment = skil.Experiment(ws)
-model = skil.Model(model, model_id='keras_mnist_mlp_42', name='keras', experiment=experiment)
+model = skil.Model(model, model_id='keras_mnist_mlp_42',
+                   name='keras', experiment=experiment)
 
 # Register compute and storage resources.
-s3 = skil.resources.storage.S3(skil_server, 's3_resource', 'bucket_name', 'region')
-emr = skil.resources.compute.EMR(skil_server, 'emr_cluster', 'region', 'credential_uri', 'cluster_id')
+s3 = skil.resources.storage.S3(
+    skil_server, 's3_resource', 'bucket_name', 'region')
+emr = skil.resources.compute.EMR(
+    skil_server, 'emr_cluster', 'region', 'credential_uri', 'cluster_id')
 
 # Define your general training setup
 training_config = skil.jobs.TrainingJobConfiguration(
     skil_model=model, num_epochs=10, eval_type='ROC_MULTI_CLASS',
-    storage_resource=s3,compute_resource=emr,
-    data_set_provider_class='MnistProvider', 
+    storage_resource=s3, compute_resource=emr,
+    data_set_provider_class='MnistProvider',
     eval_data_set_provider_class='MnistProvider',
     output_path='.')
 

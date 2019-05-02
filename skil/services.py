@@ -254,7 +254,8 @@ def get_service_by_id(skil_server, experiment_id, model_id, deployment_id, model
         deployment_id: string, deployment ID
         model_entity_id: optional string, ModelEntity ID of the deployed model
     """
-    deployment = skil.deployments.get_deployment_by_id(skil_server, deployment_id)
+    deployment = skil.deployments.get_deployment_by_id(
+        skil_server, deployment_id)
     experiment = get_experiment_by_id(skil_server, experiment_id)
     model = skil.models.get_model_by_id(experiment, model_id)
 

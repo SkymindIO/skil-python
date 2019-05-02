@@ -30,7 +30,8 @@ input_schema.add_double_column('Sepal length')
 input_schema.add_double_column('Sepal width')
 input_schema.add_double_column('Petal length')
 input_schema.add_double_column('Petal width')
-input_schema.add_categorical_column("Species", ["Iris-setosa", "Iris-versicolor", "Iris-virginica"])
+input_schema.add_categorical_column(
+    "Species", ["Iris-setosa", "Iris-versicolor", "Iris-virginica"])
 
 # Define Transform Process
 tp = TransformProcess(input_schema)

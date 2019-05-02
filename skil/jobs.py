@@ -106,7 +106,7 @@ class TrainingJobConfiguration(JobConfiguration):
     # TODO: the training master config should be deconstructed. maybe provide this to the job.run(...) as argument.
     # TODO: user should just be *handed* a ui, not take care of a $%$%! URL.
 
-    def __init__(self,  skil_model, 
+    def __init__(self,  skil_model,
                  num_epochs,
                  eval_type,
                  eval_data_set_provider_class,  # good lord
