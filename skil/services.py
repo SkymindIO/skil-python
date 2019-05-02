@@ -241,7 +241,7 @@ class Service(object):
         if os.path.isfile(temp_path):
             os.remove(temp_path)
 
-        return json.loads(resp.content)
+        return resp.json()
 
 
 class TransformCsvService(Service):
