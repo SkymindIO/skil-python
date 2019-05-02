@@ -47,7 +47,7 @@ class Service(object):
         config = self.get_config()
         serialize_config(config, file_name, file_format)
 
-    @classmethodervice
+    @classmethod
     def load(cls, file_name):
         config = deserialize_config(file_name)
 
