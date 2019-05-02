@@ -48,7 +48,7 @@ experiment = Experiment.load('exp.json')
 
 # Save the model to SKIL
 skil_model = SkilModel(model, experiment=experiment)
-    
+
 # Add accuracy as evaluation metric to SKIL
 skil_model.add_evaluation(accuracy=acc, name="MNIST test set")
 

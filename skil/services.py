@@ -244,6 +244,34 @@ class Service(object):
         return json.loads(resp.content)
 
 
+def get_service_by_id(skil_server, experiment_id, model_id, deployment_id, model_entity_id=None):
+    """Get SKIL service by experiment, model and deployment ID
+
+    # Arguments:
+        skil: `Skil` server instance
+        experiment_id: string, experiment ID
+        model_id: string, model ID
+        deployment_id: string, deployment ID
+        model_entity_id: optional string, ModelEntity ID of the deployed model
+    """
+    deployment = skil.deployments.get_deployment_by_id(
+        skil_server, deployment_id)
+    experiment = get_experiment_by_id(skil_server, experiment_id)
+    model = skil.models.get_model_by_id(experiment, model_id)
+
+    if model_entity_id:
+        model_entity = skil_client.ModelEntity(id=model_entity_id)
+    else:
+        model_entity = None
+
+    return Service(
+        skil=skil_server,
+        model=model,
+        deployment=deployment,
+        model_entity=model_entity
+    )
+
+
 class TransformCsvService(Service):
     """TransformCsvService
 
