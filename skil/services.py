@@ -207,7 +207,7 @@ class Service(object):
         cv2.imwrite(temp_path, image)
         url = 'http://{}/endpoints/{}/model/{}/v{}/detectobjects'.format(
             self.skil.config.host,
-            self.model.deployment.name,
+            self.deployment.name,
             self.model.name,
             self.model.version
         )
@@ -254,15 +254,16 @@ def get_service_by_id(skil_server, experiment_id, model_id, deployment_id, model
         deployment_id: string, deployment ID
         model_entity_id: optional string, ModelEntity ID of the deployed model
     """
-    deployment = skil.deployments.get_deployment_by_id(
-        skil_server, deployment_id)
-    experiment = get_experiment_by_id(skil_server, experiment_id)
-    model = skil.models.get_model_by_id(experiment, model_id)
+    deployment = skil.deployments.get_deployment_by_id(skil_server, deployment_id)
+    experiment = skil.experiments.get_experiment_by_id(skil_server, experiment_id)
+    model      = skil.models.get_model_by_id(experiment, model_id)
 
     if model_entity_id:
-        model_entity = skil_client.ModelEntity(id=model_entity_id)
+        model_entity = skil_server.api.get_model_details(deployment_id, model_entity_id)
     else:
-        model_entity = None
+        model_entities = skil_server.api.models(deployment_id)
+        # retrieve model_entity that matches model name
+        model_entity = next(entity for entity in model_entities if entity.name == model.name)
 
     return Service(
         skil=skil_server,
