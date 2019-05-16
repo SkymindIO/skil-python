@@ -84,11 +84,11 @@ class Model(object):
             self.skil = self.work_space.skil
             assert model_id is not None
             self.id = model_id
-            model_entity = self.skil.api.get_model_instance(self.skil.server_id,
+            model_instance = self.skil.api.get_model_instance(self.skil.server_id,
                                                             self.id)
-            self.name = model_entity.model_name
-            self.version = model_entity.model_version
-            self.model_path = model_entity.uri
+            self.name = model_instance.model_name
+            self.version = model_instance.model_version
+            self.model_path = model_instance.uri
 
         self.service = None
 

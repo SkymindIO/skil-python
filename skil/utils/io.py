@@ -13,7 +13,7 @@ def serialize_config(config, file_name, file_format):
     """
     with open(file_name, 'w') as f:
         if file_format == 'json':
-            json.dump(config, f)
+            json.dump(config, f, indent=4, sort_keys=True)
         elif file_format == 'yaml':
             yaml.dump(config, f)
         else:

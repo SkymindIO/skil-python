@@ -68,7 +68,13 @@ class Experiment:
                 experiment_id
             )
             self.experiment_entity = experiment_entity
-            self.work_space = work_space
+            
+            if not work_space:
+                workspace_id = experiment_entity.model_history_id
+                self.work_space = get_workspace_by_id(skil_server, workspace_id)
+            else:
+                self.work_space = work_space
+                
             self.id = experiment_id
             self.name = experiment_entity.experiment_name
 
